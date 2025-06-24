@@ -1,0 +1,1 @@
+export const alumniRouter = (router) => {};
