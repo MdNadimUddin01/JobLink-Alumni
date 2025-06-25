@@ -1,9 +1,10 @@
-import { adminUpdateEventController } from "../Controller/admin.event.controller.js";
 import {
   adminAddEventConroller,
   adminDeleteEventcontroller,
   getAllEvent,
+  adminUpdateEventController
 } from "../Controller/index.js";
+
 import { getAuth, verifyAdmin } from "../Middleware/auth.js";
 
 export const eventRouter = (router) => {

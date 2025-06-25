@@ -16,7 +16,12 @@ export const message = {
   LIST_FETCHED_SUCCESSFULLY: "List fetched successfully",
   EVENT_DELETE_ERROR: "Error while deleting event",
   EVENT_DELETED: "Event deleted successfully",
-  EVENT_UPDATED : "Event Updation Successfull"
+  EVENT_UPDATED: "Event Updation Successfull",
+  MAIL_SENDING_ERROR: "Error While Sending mail",
+  PROFILE_UPLOAD_ERROR: "Error While Uploading Profile Pic",
+  WAIT_FOR_ADMIN_APPROVAL: "Wait for Admin Approval till that you need to verify yourself on mail",
+  MAIL_VERIFYING_ERROR: "Error occur While Verifying mail",
+  MAIL_VERIFICATION_SUCCESSFULL: "Mail Verification successs full"
 };
 
 export const statusCode = {
