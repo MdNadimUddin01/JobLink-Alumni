@@ -109,3 +109,15 @@ export const alumniEmailVerify = async (req, res) => {
         })
     }
 }
+
+export const getAlumniData = async (req, res) => {
+  
+  try {
+
+    const alumniData = await AlumniModel.find({}).populate("alumniId");
+
+    return re
+  } catch (error) {
+    console.log("Error occur While fetching alumni data list");
+  }
+}

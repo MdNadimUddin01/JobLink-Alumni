@@ -21,7 +21,11 @@ export const message = {
   PROFILE_UPLOAD_ERROR: "Error While Uploading Profile Pic",
   WAIT_FOR_ADMIN_APPROVAL: "Wait for Admin Approval till that you need to verify yourself on mail",
   MAIL_VERIFYING_ERROR: "Error occur While Verifying mail",
-  MAIL_VERIFICATION_SUCCESSFULL: "Mail Verification successs full"
+  MAIL_VERIFICATION_SUCCESSFULL: "Mail Verification successs full",
+  ADMIN_VERIFICATION_SUCCESSFULL: "Admin Verification successfull",
+  ACCOUNT_CLOSED: "Your Account is closed If you want to optn please contact Admin",
+  JOB_ADDITION_SUCCESSFULL: "Job Posting Successfull",
+  JOB_ADMIN_VIEW_SUCCESS : "JOb fetched successfully",
 };
 
 export const statusCode = {

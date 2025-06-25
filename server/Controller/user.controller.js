@@ -1,4 +1,4 @@
-import { UserModel } from "../Model/index.js";
+import { AlumniModel, UserModel } from "../Model/index.js";
 import { message, statusCode } from "../Utils/index.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -31,6 +31,30 @@ export const logincontroller = async (req, res) => {
       });
     }
 
+    if (userInfo.role === "Alumni") {
+      
+      const alumniDetails = await AlumniModel.findOne({ alumniId: userInfo._id });
+
+      if (alumniDetails.emailVerify === "Not verifeid") {
+        return res.status(statusCode.REQUIRED).send({
+          message : "Please verify your mail"
+        })
+      }
+
+      if (alumniDetails.adminVerify == "Not verifeid") {
+        return res.status(statusCode.REQUIRED).send({
+          message : "Your account is not verified"
+        })
+      }
+
+      if (!alumniDetails.status) {
+        return res.status(statusCode.NOT_FOUND).send({
+          message : message.ACCOUNT_CLOSED
+        })
+      }
+      
+    }
+
     console.log("userInfo : ", userInfo);
 
     const payload = {
@@ -46,6 +70,7 @@ export const logincontroller = async (req, res) => {
         message: message.ACCOUNT_LOGIN_SUCCESSFULL,
         user: userInfo,
       });
+    
   } catch (error) {
     console.log(error.message);
     return res.status(statusCode.ERROR).send({

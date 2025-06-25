@@ -1,4 +1,4 @@
-import { UserModel } from "../Model/index.js";
+import { AlumniModel, UserModel } from "../Model/index.js";
 import { statusCode, message } from "../Utils/index.js";
 import bcrypt from "bcrypt";
 
@@ -40,3 +40,30 @@ export const adminSignUpController = async (req, res) => {
     });
   }
 };
+
+export const adminVerifyAlumni = async (req, res) => {
+  
+  try {
+    const { alumniId } = req.body;
+
+    const status = {
+      $set: {
+        adminVerify : "Verified"
+      }
+    }
+
+    const result = await AlumniModel.updateOne({ alumniId }, status);
+
+    console.log(result);
+
+    //send mail for verification
+    return res.status(statusCode.SUCCESS).send({
+      message : message.ADMIN_VERIFICATION_SUCCESSFULL
+    })
+  } catch (error) {
+    console.log("Error Occur While Verifying Alumni");
+    return res.status(statusCode.ERROR).send({
+      message :message.SOMETHING_WENT_WRONG
+    })
+  }
+}
