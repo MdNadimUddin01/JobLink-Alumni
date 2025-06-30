@@ -43,7 +43,7 @@ function BannerSlider() {
 
     return (
 
-        <div className="container mx-auto -z-1">
+        <div className="container mx-auto -z-10">
 
             <div className="relative max-[320px]:h-40 max-[450px]:h-47 h-53 sm:h-61 md:h-68 lg:h-78 xl:h-88 2xl:h-108">
                 {data.map((image, index) => {

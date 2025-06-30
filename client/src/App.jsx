@@ -1,47 +1,81 @@
-import { useState } from 'react'
-import { BannerSlider, Card, Navbar } from './Component'
-import { forum } from "./assets/Slider/Svg/Herosection.js"
-import { SignIn } from "./Component"
-import { Home } from './Pages'
-import { AddEvent } from './Component/Admin'
-import { Event } from './Pages/Admin/Event.jsx'
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { Event, Home, UserOutlet } from "./Pages"
+import { AddEvent, AddJob, AlumniTable, SignIn, SignUp, VerifyEmail } from "./Component"
 
 
 function App() {
 
-  const cardArray = [
+  let route = createBrowserRouter([
     {
-      "title": "Alumni",
-      "content": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque dicta praesentium temporibus totam voluptate culpa amet perferendis corporis excepturi reiciendis ab aliquam voluptatum, repudiandae ipsam repellendus quis sequi quasi expedita.",
-      "icon": forum
-    },
-    {
-      "title": "Forum",
-      "content": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque dicta praesentium temporibus totam voluptate culpa amet perferendis corporis excepturi reiciendis ab aliquam voluptatum, repudiandae ipsam repellendus quis sequi quasi expedita.",
-      "icon": forum
-    },
-    {
-      "title": "Events",
-      "content": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque dicta praesentium temporibus totam voluptate culpa amet perferendis corporis excepturi reiciendis ab aliquam voluptatum, repudiandae ipsam repellendus quis sequi quasi expedita.",
-      "icon": forum
+      path: "/",
+      element: <UserOutlet />,
+      // errorElement:<E
+      children: [
+        {
+          path: "",
+          element: <Home />
+        },
+        {
+          path: "signIn",
+          element: <SignIn />
+        },
+        {
+          path: "signUp",
+          element: <SignUp />
+        },
+
+        {
+          path: "/events",
+          element: <Event />
+        },
+        {
+          path: "/jobs",
+          element:<></>
+        },
+
+
+        // -------------------------------------------- Alumin --------------------------------------------------
+
+        {
+          path: "alumni/verifyEmail",
+          element:<VerifyEmail/>
+        },
+
+        {
+          path: "/alumni/addJobPost",
+          element: <AddJob/>
+        },
+        {
+
+          path: "/alumni/viewMyJob",
+          element:<>View My Job</>
+        },
+
+
+
+        //------------------------------------------------ Admin ----------------------------------------
+        {
+          path: "/admin/alumni",
+          element : <AlumniTable/>
+        },
+        
+        {
+          path: "/admin/events",
+          element:<Event/>
+        },
+        {
+          path: "/admin/addEvent",
+          element:<AddEvent/>
+        }
+
+      ]
     }
-  ]
+  ])
+
   return (
-    <div className='mx-auto bg-gradient-to-b from-gary-50 to-gray-50 min-h-screen'>
-
-
-      {/* <Navbar/>
-      <BannerSlider />
-      {
-        cardArray.map((card) => (
-          <Card title={card.title} content={card.content} />
-        ))
-      } */}
-
-      {/* <AddEvent /> */}
-      <Event/>
-      {/* <SignIn/> */}
-    </div>
+    <>
+      <RouterProvider router={route} />
+    </>
   )
 }
 
