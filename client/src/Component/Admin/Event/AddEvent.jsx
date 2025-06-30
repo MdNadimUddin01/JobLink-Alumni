@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import axios from "axios";
 import { eventEndpoints } from '../../../Utils/api';
+import { addEvent } from '../../../Services/apiService';
+import { useNavigate } from 'react-router';
 
 
 export const AddEvent = () => {
+
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         eventName: '',
@@ -18,8 +22,8 @@ export const AddEvent = () => {
         modeOfApply: '',
         startDateToApply: '',
         lastDateToApply: '',
-        // uploadDate: '',
-        // uploadTime: '',
+        startTimeToApply: '',
+        endTimeToApply : '',
         status: true
     });
 
@@ -31,34 +35,14 @@ export const AddEvent = () => {
         }));
     };
 
-    const apiCall = async () => {
-
-        const data = await axios.post(eventEndpoints.ADD_EVENT, {
-            event: formData
-        })
-
-        console.log("data : ", data)
-    }
+    
     const handleSubmit = async(e) => {
         e.preventDefault();
 
-        await apiCall();
-        // Auto-fill upload date and time
-        // const now = new Date();
-        // console.log(now.toISOString())
-        // console.log(now.toTimeString());
-
-        // console.log(now.toDateString())
-        // console.log(now.toLocaleTimeString())
-        // const uploadData = {
-        //     ...formData,
-        //     uploadDate: now.toISOString().split('T')[0],
-        //     uploadTime: now.toTimeString().split(' ')[0]
-        // };
-        // console.log('Event Data:', uploadData);
-
+        await addEvent(formData , navigate);
+       
         console.log(formData)
-        alert('Event added successfully!');
+        // alert('Event added successfully!');
     };
 
     const applyModes = [
@@ -297,6 +281,40 @@ export const AddEvent = () => {
                                         className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         required
                                     />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Start Time to Apply*
+                                    </label>
+                                    <div className="relative">
+                                        <span className="absolute left-3 top-3 text-gray-400">🕐</span>
+                                        <input
+                                            type="time"
+                                            name="startTimeToApply"
+                                            value={formData.startTimeToApply}
+                                            onChange={handleInputChange}
+                                            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        End Time to Apply*
+                                    </label>
+                                    <div className="relative">
+                                        <span className="absolute left-3 top-3 text-gray-400">🕐</span>
+                                        <input
+                                            type="time"
+                                            name="endTimeToApply"
+                                            value={formData.endTimeToApply}
+                                            onChange={handleInputChange}
+                                            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            required
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -1,41 +1,31 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 export const EventCard = ({
-    serialNo = 1,
-    eventName = "Annual Tech Conference 2025",
-    startDate = "2025-07-15",
-    endDate = "2025-07-17",
-    startTime = "09:00",
-    endTime = "18:00",
-    location = "Convention Center, New Delhi",
-    description = "Join us for three days of cutting-edge technology discussions, networking opportunities, and hands-on workshops. This premier event brings together industry leaders, developers, and innovators from across the globe.",
-    eventType = "Conference",
-    criteria = "Open to all professionals with 2+ years experience in technology",
-    modeOfApply = "Online",
-    applyFrom = "2025-06-01",
-    applyTill = "2025-07-10",
-    uploadTime = "2025-05-15T10:30:00",
+    event,
+    serialNo,
+    // serialNo = 1,
+    // eventName = "Annual Tech Conference 2025",
+    // startDate = "2025-07-15",
+    // endDate = "2025-07-17",
+    // startTime = "09:00",
+    // endTime = "18:00",
+    // location = "Convention Center, New Delhi",
+    // description = "Join us for three days of cutting-edge technology discussions, networking opportunities, and hands-on workshops. This premier event brings together industry leaders, developers, and innovators from across the globe.",
+    // eventType = "Conference",
+    // criteria = "Open to all professionals with 2+ years experience in technology",
+    // modeOfApply = "Online",
+    // applyFrom = "2025-06-01",
+    // applyTill = "2025-07-10",
+    // uploadTime = "2025-05-15T10:30:00",
     onUpdate = () => { },
     onDelete = () => { },
     isAdmin = true
 }) => {
     const [showFullDescription, setShowFullDescription] = useState(false);
-
-    const formatDate = (dateStr) => {
-        return new Date(dateStr).toLocaleDateString('en-IN', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric'
-        });
-    };
-
-    const formatTime = (timeStr) => {
-        return new Date(`2000-01-01T${timeStr}`).toLocaleTimeString('en-IN', {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: true
-        });
-    };
+    const user = useSelector((state) => state.profile.user);
+    // console.log("USER : " , user)
+    const [isDelete, setIsDelete] = useState(false);
 
     const getEventTypeColor = (type) => {
         const colors = {
@@ -49,11 +39,52 @@ export const EventCard = ({
         return colors[type] || colors.default;
     };
 
+    function parseTime(timeStr) {
+        // Remove asterisks and extract time
+        const cleanTime = timeStr.replace(/\*/g, '');
+        const [time, period] = cleanTime.split(' ');
+        const [hours, minutes] = time.split(':');
+
+        let hour24 = parseInt(hours);
+
+        if (period === 'PM' && hour24 !== 12) {
+            hour24 += 12;
+        } else if (period === 'AM' && hour24 === 12) {
+            hour24 = 0;
+        }
+
+        // console.log("timeStr")
+
+        return hour24 * 60 + parseInt(minutes); // Convert to minutes for easy comparison
+    }
+    
+    function convertIn12Hr(timeStr) {
+        // Remove asterisks and extract time
+        if(!timeStr) return "";
+        // console.log("TIMEEEEE : ",  timeStr)
+        const cleanTime = timeStr.replace(/\*/g, '');
+        const [hours, minutes] = cleanTime.split(':');
+        let temp = "AM";
+
+        let hour12 = parseInt(hours);
+        if (hour12 >= 12) {
+            temp = "PM";
+            hour12 -= (hour12 > 12 ? 12 : 0);
+        } 
+
+        return `${hour12}:${minutes} ${temp}`; // Convert to minutes for easy comparison
+    }
+
+    
     const isApplicationOpen = () => {
-        const now = new Date();
-        const applyFromDate = new Date(applyFrom);
-        const applyTillDate = new Date(applyTill);
-        return now >= applyFromDate && now <= applyTillDate;
+        const now = new Date((new Date()).toDateString()).getTime();
+        const applyFromDate = new Date(event.applyFrom).getTime();
+        const applyTillDate = new Date(event.applyTill).getTime();
+
+        const time = parseTime((new Date()).toLocaleTimeString());
+        const applyEndTime = parseTime(event.endTime);
+      
+        return (now >= applyFromDate && now <= applyTillDate) || (now == applyTillDate && time <= applyEndTime);
     };
 
     const truncateDescription = (text, maxLength = 100) => {
@@ -63,7 +94,7 @@ export const EventCard = ({
 
     const getDaysUntilEvent = () => {
         const now = new Date();
-        const eventDate = new Date(startDate);
+        const eventDate = new Date(event.startDate);
         const diffTime = eventDate - now;
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         return diffDays;
@@ -71,7 +102,7 @@ export const EventCard = ({
 
     const getDaysUntilApplication = () => {
         const now = new Date();
-        const applyTillDate = new Date(applyTill);
+        const applyTillDate = new Date(event.applyTill);
         const diffTime = applyTillDate - now;
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         return diffDays;
@@ -81,12 +112,12 @@ export const EventCard = ({
     const daysUntilApplication = getDaysUntilApplication();
 
     return (
-        <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 overflow-hidden group">
+        <div className="bg-white rounded-2xl flex flex-col justify-between shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 overflow-hidden group">
             {/* Header with Event Type Badge */}
             <div className="relative">
-                <div className={`${getEventTypeColor(eventType)} px-6 py-4`}>
+                <div className={`${getEventTypeColor(event.eventType)} px-6 py-4`}>
                     <div className="flex justify-between items-center">
-                        <span className="text-sm font-bold uppercase tracking-wide">{eventType}</span>
+                        <span className="text-sm font-bold uppercase tracking-wide">{event.eventType}</span>
                         <span className="text-sm opacity-90">#{serialNo}</span>
                     </div>
                 </div>
@@ -100,7 +131,7 @@ export const EventCard = ({
             <div className="p-6">
                 {/* Event Title */}
                 <h3 className="text-xl font-bold text-gray-900 mb-4 leading-tight group-hover:text-blue-600 transition-colors">
-                    {eventName}
+                    {event.eventName}
                 </h3>
 
                 {/* Key Info Grid */}
@@ -108,34 +139,34 @@ export const EventCard = ({
                     {/* Date */}
                     <div className="bg-blue-50 rounded-lg p-3">
                         <div className="text-blue-600 text-xs font-semibold uppercase tracking-wide mb-1">📅 Date</div>
-                        <div className="text-sm font-bold text-gray-900">{formatDate(startDate)}</div>
-                        {startDate !== endDate && (
-                            <div className="text-xs text-gray-600">to {formatDate(endDate)}</div>
+                        <div className="text-sm font-bold text-gray-900">{event.startDate}</div>
+                        {event.startDate !== event.endDate && (
+                            <div className="text-xs text-gray-600">to {event.endDate}</div>
                         )}
                     </div>
 
                     {/* Time */}
                     <div className="bg-green-50 rounded-lg p-3">
                         <div className="text-green-600 text-xs font-semibold uppercase tracking-wide mb-1">🕒 Time</div>
-                        <div className="text-sm font-bold text-gray-900">{formatTime(startTime)}</div>
-                        <div className="text-xs text-gray-600">to {formatTime(endTime)}</div>
+                        <div className="text-sm font-bold text-gray-900">{convertIn12Hr(event.startTime)}</div>
+                        <div className="text-xs text-gray-600">to {convertIn12Hr(event.endTime)}</div>
                     </div>
                 </div>
 
                 {/* Location */}
                 <div className="bg-red-50 rounded-lg p-3 mb-4">
                     <div className="text-red-600 text-xs font-semibold uppercase tracking-wide mb-1">📍 Location</div>
-                    <div className="text-sm font-medium text-gray-900">{location}</div>
+                    <div className="text-sm font-medium text-gray-900">{event.location}</div>
                 </div>
 
                 {/* Description */}
                 <div className="mb-5">
                     <div className="text-gray-700 text-sm leading-relaxed">
-                        {showFullDescription ? description : truncateDescription(description)}
-                        {description.length > 100 && (
+                        {showFullDescription ? event.description : truncateDescription(event.description)}
+                        {event.description.length > 100 && (
                             <button
                                 onClick={() => setShowFullDescription(!showFullDescription)}
-                                className="text-blue-600 hover:text-blue-800 ml-2 font-semibold text-xs underline"
+                                className="text-blue-600 cursor-pointer hover:text-blue-800 ml-2 font-semibold text-xs underline"
                             >
                                 {showFullDescription ? 'Show Less' : 'Read More'}
                             </button>
@@ -158,15 +189,21 @@ export const EventCard = ({
                     <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
                             <span className="text-gray-600">Apply From:</span>
-                            <span className="font-semibold">{formatDate(applyFrom)}</span>
+                            <div className='flex gap-2'>
+                                <span className="font-semibold">{convertIn12Hr(event.startTimeToApply)}</span>
+                                <span className="font-semibold">{event.startDateToApply}</span>
+                            </div>
                         </div>
                         <div className="flex justify-between">
                             <span className="text-gray-600">Apply Till:</span>
-                            <span className="font-semibold">{formatDate(applyTill)}</span>
+                            <div className='flex gap-2'>
+                                <span className="font-semibold">{convertIn12Hr(event.endTimeToApply)}</span>
+                                <span className="font-semibold">{event.lastDateToApply}</span>
+                            </div>
                         </div>
                         <div className="flex justify-between">
                             <span className="text-gray-600">Mode:</span>
-                            <span className="font-semibold">🌐 {modeOfApply}</span>
+                            <span className="font-semibold">🌐 {event.modeOfApply}</span>
                         </div>
 
                         {isApplicationOpen() && daysUntilApplication > 0 && (
@@ -178,10 +215,10 @@ export const EventCard = ({
                         )}
                     </div>
 
-                    {criteria && (
+                    {event.criteria && (
                         <div className="mt-3 p-3 bg-purple-50 rounded-lg">
                             <div className="text-purple-600 text-xs font-semibold uppercase tracking-wide mb-1">👥 Eligibility</div>
-                            <div className="text-xs text-gray-700">{criteria}</div>
+                            <div className="text-xs text-gray-700">{event.criteria}</div>
                         </div>
                     )}
                 </div>
@@ -190,34 +227,40 @@ export const EventCard = ({
             {/* Footer */}
             <div className="px-6 py-4 bg-gray-50 border-t border-gray-100">
                 <div className="flex items-center justify-between">
-                    <div className="text-xs text-gray-500">
-                        📤 Uploaded: {new Date(uploadTime).toLocaleDateString('en-IN', {
-                            day: 'numeric',
-                            month: 'short',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        })}
+                    <div className="text-xs text-gray-500 flex flex-col">
+                        <span>📤 Uploaded: </span>
+                        <span>{
+                            event.uploadDate
+                        }</span>
                     </div>
 
                     <div className="flex items-center gap-2">
-                        {isApplicationOpen() && (
-                            <button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-2 rounded-full text-sm font-bold transition-all duration-200 transform hover:scale-105 shadow-lg">
+                        {(!user || user.role !== "Admin") && isApplicationOpen() && (
+                            <button className=" cursor-pointer bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-4 rounded-full text-sm font-bold transition-all duration-200 transform hover:scale-105 shadow-lg">
                                 🚀 Apply Now
                             </button>
                         )}
 
-                        {isAdmin && (
+                        {(!user || user.role !== "Admin") &&
+                            !isApplicationOpen() && (
+                                <button className=" cursor-pointer bg-gradient-to-r from-gray-600 to-gray-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-4 rounded-full text-sm font-bold transition-all duration-200 transform hover:scale-105 shadow-lg">
+                                    🚀 Form Closed
+                                </button>
+                            )
+                        }
+
+                        {user && user.role === "Admin" && (
                             <div className="flex items-center gap-1 ml-3">
                                 <button
                                     onClick={onUpdate}
-                                    className="px-3 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 text-sm font-semibold border border-gray-200 hover:border-blue-200"
+                                    className="px-3 py-2 text-gray-600 cursor-pointer hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 text-sm font-semibold border border-gray-200 hover:border-blue-200"
                                     title="Update Event"
                                 >
                                     ✏️ Edit
                                 </button>
                                 <button
                                     onClick={onDelete}
-                                    className="px-3 py-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 text-sm font-semibold border border-gray-200 hover:border-red-200"
+                                    className="px-3 py-2 cursor-pointer text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 text-sm font-semibold border border-gray-200 hover:border-red-200"
                                     title="Delete Event"
                                 >
                                     🗑️ Delete

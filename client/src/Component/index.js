@@ -1,6 +1,25 @@
-import { BannerSlider ,Card } from "./Home"
-import { Navbar ,CTAButton } from "./Common"
-import { SignIn } from "./Auth" 
+import { BannerSlider, Card } from "./Home";
+import { Navbar, CTAButton, FileUpload, Footer ,DropDown , Logo} from "./Common";
+import { SignIn, SignUp, VerifyEmail } from "./Auth";
+import { AddEvent, AlumniTable ,EventCard} from "./Admin"
+import { AddJob } from "./Job"
 
 
-export {BannerSlider , Navbar , CTAButton , Card , SignIn}
+
+export {
+  BannerSlider,
+  Navbar,
+  CTAButton,
+  Card,
+  SignIn,
+  SignUp,
+  FileUpload,
+  VerifyEmail,
+  Footer,
+  AddEvent,
+  AlumniTable,
+  EventCard,
+  DropDown,
+  Logo,
+  AddJob
+};

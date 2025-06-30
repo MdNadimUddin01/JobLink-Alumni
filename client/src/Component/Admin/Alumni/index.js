@@ -1,0 +1,1 @@
+export {AlumniTable} from "./AlumniTable"
