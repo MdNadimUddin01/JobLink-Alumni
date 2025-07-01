@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const eventSchema = mongoose.Schema({
-
   eventName: {
     type: String,
     required: true,
@@ -50,6 +49,14 @@ const eventSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  startTimeToApply: {
+    type: String,
+    required: true,
+  },
+  endTimeToApply: {
+    type: String,
+    required: true,
+  },
   uploadDate: {
     type: String,
     required: true,
@@ -62,9 +69,8 @@ const eventSchema = mongoose.Schema({
     type: Boolean,
     default: true,
   },
-  
 });
 
-const EventModel = mongoose.model("EventModel", eventSchema, "Event");
+const EventModel = mongoose.model("EventSchema", eventSchema, "Event");
 
 export { EventModel };

@@ -1,14 +1,13 @@
 import mongoose from "mongoose";
 
 const alumniSchema = mongoose.Schema({
-  useName: {
+  userName: {
     type: String,
     required: true,
   },
   alumniId: {
     type: mongoose.Schema.ObjectId,
-    // refrence :[{type:m}]ref
-    ref: "User",
+    ref: "UserSchema",
   },
   contact: {
     type: String,
@@ -70,6 +69,6 @@ const alumniSchema = mongoose.Schema({
   },
 });
 
-const AlumniModel = mongoose.model("AlumniModel", alumniSchema, "Alumni");
+const AlumniModel = mongoose.model("AlumniSchema", alumniSchema, "Alumni");
 
 export { AlumniModel };

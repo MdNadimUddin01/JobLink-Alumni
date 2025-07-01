@@ -1,13 +1,14 @@
 import mongoose from "mongoose"
 
 const jobSchema = mongoose.Schema({
+  
   jobId: {
     type: String,
     required: true,
   },
   alumniId: {
     type: mongoose.Schema.ObjectId,
-    ref: "User",
+    ref: "UserSchema",
   },
   post: {
     type: String,
@@ -51,23 +52,28 @@ const jobSchema = mongoose.Schema({
   },
   jobType: {
     type: String,
-    enum:["Internship" , "Full Time" , "Part Time"],
-    default : "Internship",
+    enum: ["Internship", "Full Time", "Part Time"],
+    default: "Internship",
   },
   postDate: {
     type: String,
-    default: (new Date()).toDateString(),
+    default: new Date().toDateString(),
   },
   postTime: {
     type: String,
-    default: (new Date()).toLocaleTimeString(),
+    default: new Date().toLocaleTimeString(),
   },
   status: {
     type: Boolean,
     required: true,
   },
+  referralAvailable: {
+    type: String,
+    required: true,
+  }
+
 });
 
-const JobModel = mongoose.model("JobModel", jobSchema, "Job");
+const JobModel = mongoose.model("JobSchema", jobSchema, "Job");
 
 export {JobModel}
