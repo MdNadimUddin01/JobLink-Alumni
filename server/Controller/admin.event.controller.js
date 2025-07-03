@@ -5,6 +5,8 @@ export const adminAddEventConroller = async (req, res) => {
   try {
     const { event } = req.body;
 
+    console.log(event)
+
     if (!event) {
       return res.status(statusCode.REQUIRED).send({
         message: message.ALL_FIELD_REQUIRED,
@@ -20,37 +22,25 @@ export const adminAddEventConroller = async (req, res) => {
     const addEventData = new EventModel(event);
     await addEventData.save();
 
+    console.log("addEventData : " , addEventData);
+
     return res.status(statusCode.SUCCESS).send({
       message: `Event is ${message.SUCCESSFULLY_ADDED}`,
     });
   } catch (error) {
+    console.log("Error occur in add event controller : " , error)
     return res.status(statusCode.ERROR).send({
       message: message.EVENT_NOT_ADDED,
     });
   }
 };
 
-export const getAllEvent = async (req, res) => {
-  try {
-    const eventData = await EventModel.find({ status: true });
-
-    return res.status(statusCode.SUCCESS).send({
-      events: eventData,
-      message: `Events ${message.LIST_FETCHED_SUCCESSFULLY}`,
-    });
-  } catch (error) {
-    console.log("ERROR WHILE FETCHING EVENT : ", error.message);
-    return res.status(statusCode.ERROR).send({
-      message: message.EVENT_LIST_ERROR,
-    });
-  }
-};
 
 export const adminDeleteEventcontroller = async (req, res) => {
   try {
-    const { eventId } = req.params;
+    const { eventId } = req.body;
     // console.log(req);
-    // console.log(eventId);
+    console.log(eventId);
     const updateStaus = {
       $set: {
         status: false,
@@ -61,6 +51,10 @@ export const adminDeleteEventcontroller = async (req, res) => {
       { _id: eventId },
       updateStaus
     );
+
+    const updatedVenet = await EventModel.findOne({_id : eventId})
+
+    console.log(updatedVenet);
 
     return res.status(statusCode.SUCCESS).send({
       message: message.EVENT_DELETED,

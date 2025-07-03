@@ -34,7 +34,7 @@ export const getAllEventData = async () => {
 
         result = res.data.events;
 
-        console.log(res);
+        // console.log(res);
     } catch (error) {
         console.log(error)
     }
@@ -45,7 +45,7 @@ export const getAllEventData = async () => {
 export const deleteEventData = async (eventId) => {
     
     try {
-        console.log("eventId : " , eventId)
+        // console.log("eventId : " , eventId)
         const res = await apiCall("POST", eventEndpoints.DELETE_EVENT, { eventId });
 
         if (res.status !== 200) {

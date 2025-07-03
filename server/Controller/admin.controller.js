@@ -44,6 +44,7 @@ export const adminSignUpController = async (req, res) => {
 export const adminVerifyAlumni = async (req, res) => {
   
   try {
+    
     const { alumniId } = req.body;
 
     const status = {
@@ -67,3 +68,33 @@ export const adminVerifyAlumni = async (req, res) => {
     })
   }
 }
+
+
+export const getAlumniData = async (req, res) => {
+  try {
+    const alumniData = await AlumniModel.find({}).populate("alumniId");
+    // console.log("alumniData : " ,alumniData);
+
+    const data = alumniData.map((data) => {
+
+      const alumniId = data.alumniId
+      data.alumniId = alumniId._id
+      
+      return { ...data._doc, email: alumniId.email };
+    });
+
+    // console.log(data)
+
+
+    return res.status(statusCode.SUCCESS).send({
+      message: message.ALUMNI_DATA_FETCHED,
+      alumniData : data
+    });
+    // return re;
+  } catch (error) {
+    console.log("Error occur While fetching alumni data list" , error);
+    return res.status(statusCode.ERROR).send({
+      message: message.SOMETHING_WENT_WRONG,
+    });
+  }
+};

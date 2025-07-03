@@ -3,8 +3,7 @@ import { apiCall } from "../apiConnector";
 import { endpoints } from "../../Utils/api.js";
 
 export function loginUser(data) {
-
-  return async (dispatch , navigate) => {
+  return async (dispatch, navigate) => {
     dispatch(setLoading(true));
     try {
       const res = await apiCall("POST", endpoints.LOGIN, data);
@@ -18,21 +17,29 @@ export function loginUser(data) {
       navigate("/");
       localStorage.setItem("user", JSON.stringify(res.data.user));
       dispatch(setUser(res.data.user));
-
     } catch (error) {
-      console.log("Login Api Error" , error);
+      console.log("Login Api Error", error);
     }
 
     dispatch(setLoading(false));
   };
-
 }
 
-
 export function logoutUser(dispatch, navigate) {
-  
   localStorage.removeItem("user");
   dispatch(setUser(null));
   navigate("/");
-  
+}
+
+export async function getAlumni(alumniId) {
+  let data = {};
+
+  try {
+    const res = await apiCall("POST", endpoints.ALUMNI_DATA, { alumniId });
+    data = res.data.alumniData;
+  } catch (error) {
+    console.log(error);
+  }
+
+  return data;
 }

@@ -16,3 +16,147 @@ export const addJobPost = async (jobData, navigate) => {
         console.log(error)
     }
 }
+
+export const viewAllJobData = async () => {
+    
+    let result = [];
+
+    try {
+        
+        const res = await apiCall("GET", jobEndPoints.VIEW_ALL_JOB);
+
+        if (res.status !== 200) {
+            return new Error("Fetching job data failed");
+        }
+
+        // console.log(res);
+        result = res.data.jobData;
+
+
+    } catch (error) {
+        console.log(error);
+    }
+
+    return result;
+}
+
+export const viewJobData = async (jobId) => {
+
+    let result = {}
+    
+    try {
+        const res = await apiCall("POST", jobEndPoints.VIEW_JOB_DATA, { jobId });
+
+        if (res.status !== 200) {
+          throw new Error("Fetching job data failed");
+        }
+
+        result = res.data.jobData
+
+        console.log("res : " , res)
+    } catch (error) {
+        console.log(error)
+    }
+
+    return {
+      jobId: result.jobId ?? "",
+      post:  result.post ?? "",
+      companyName: result.companyName ?? "",
+      noOfVacancy: result.noOfVacancy ?? "",
+      salary: result.salary ?? "",
+      location: result.location ??  "",
+      bond: result.bond ?? "No bound",
+      timings: result.timings ?? "",
+      applystartDate: result.applystartDate ?? "",
+      applyEndDate: result.applyEndDate ?? "",
+      requirement: result.requirement ?? "",
+      jobType: result.jobType ?? "Internship",
+      status: result.status ?? true,
+      referralAvailable: result.referralAvailable ?? "No",
+    };
+}
+
+export const updateJobData = async (job, jobId , navigate) => {
+    
+    try {
+        
+        const res = await apiCall("POST", jobEndPoints.UPDATE_JOB_POST , {job , jobId});
+
+        if (res.status !== 200) {
+          throw new Error("Fetching job data failed");
+        }
+    
+    } catch (error) {
+        console.log(error)
+    }
+
+    navigate("/alumni/viewMyJob");
+}
+export const viewAlumniJobData = async () => {
+    
+    let result = [];
+
+    try {
+      const res = await apiCall("GET", jobEndPoints.VIEW_MY_JOBS);
+
+      if (res.status !== 200) {
+        throw new Error("Fetching job data failed");
+      }
+
+    //   console.log(res);
+      result = res.data.jobData;
+    } catch (error) {
+      console.log(error);
+    }
+
+    return result;
+}
+
+export const deleteJobPost = async (jobId) => {
+
+    
+    try {
+        const res = await apiCall("POST", jobEndPoints.DELETE_JOB, { jobId });
+
+        if (res.status !== 200) {
+            throw Error("JOb deletion failed");
+        }
+
+        // console.log("res : " , res)
+
+    } catch (error) {
+        console.log(error)
+    }
+
+    
+}
+
+export const removeJobPost = async (jobId) => {
+    
+    try {
+        const res = await apiCall("POST", jobEndPoints.REMOVE_JOB_POST, { jobId });
+        console.log(res);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const adminViewJobs = async () => {
+    
+    let result = [];
+
+    try {
+      const res = await apiCall("GET", jobEndPoints.ADMIN_VIEW_JOBS);
+
+      if (res.status !== 200) {
+        return new Error("Fetching job data failed");
+      }
+
+      result = res.data.jobData;
+    } catch (error) {
+      console.log(error);
+    }
+
+    return result;
+
+}

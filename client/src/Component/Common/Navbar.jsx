@@ -8,7 +8,7 @@ import { logoutUser } from '../../Services/apiService'
 function Navbar() {
 
     const { user } = useSelector((state) => state.profile);
-    console.log(user);
+    // console.log(user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -31,7 +31,7 @@ function Navbar() {
             ]
         },
         {
-            path: "/admin/Jobs",
+            path: "/Jobs",
             label: "Jobs"
         },
         {
@@ -91,7 +91,7 @@ function Navbar() {
 
     const handleLogout = async () => {
 
-        console.log("Logout")
+        // console.log("Logout")
         logoutUser(dispatch, navigate);
 
     }
