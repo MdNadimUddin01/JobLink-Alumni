@@ -65,7 +65,7 @@ export const logincontroller = async (req, res) => {
     const token = jwt.sign(payload, process.env.JWT_SECRET);
 
     return res
-      .cookie("token", token, { maxAge: 3 * 24 * 60 * 60, httpOnly: true })
+      .cookie("token", token, { maxAge: 3 * 24 * 60 * 60*1000 , httpOnly: true })
       .send({
         message: message.ACCOUNT_LOGIN_SUCCESSFULL,
         user: userInfo,

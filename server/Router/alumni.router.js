@@ -1,6 +1,12 @@
-import { alumniSignupController } from "../Controller/index.js";
+import {
+  alumniEmailVerify,
+  alumniSignupController,
+  getAlumniInfo,
+} from "../Controller/index.js";
 
 export const alumniRouter = (router) => {
-    console.log("ALUMNI")
   router.route("/alumni/signUp").post(alumniSignupController);
+  router.route("/alumni/verifyEmail").post(alumniEmailVerify);
+  router.route("/getAlumniData").post(getAlumniInfo)
+  // router.route("/");
 };

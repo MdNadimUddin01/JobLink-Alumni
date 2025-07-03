@@ -19,13 +19,28 @@ export const message = {
   EVENT_UPDATED: "Event Updation Successfull",
   MAIL_SENDING_ERROR: "Error While Sending mail",
   PROFILE_UPLOAD_ERROR: "Error While Uploading Profile Pic",
-  WAIT_FOR_ADMIN_APPROVAL: "Wait for Admin Approval till that you need to verify yourself on mail",
+  WAIT_FOR_ADMIN_APPROVAL:
+    "Wait for Admin Approval till that you need to verify yourself on mail",
   MAIL_VERIFYING_ERROR: "Error occur While Verifying mail",
   MAIL_VERIFICATION_SUCCESSFULL: "Mail Verification successs full",
   ADMIN_VERIFICATION_SUCCESSFULL: "Admin Verification successfull",
-  ACCOUNT_CLOSED: "Your Account is closed If you want to optn please contact Admin",
+  ACCOUNT_CLOSED:
+    "Your Account is closed If you want to optn please contact Admin",
   JOB_ADDITION_SUCCESSFULL: "Job Posting Successfull",
-  JOB_ADMIN_VIEW_SUCCESS : "JOb fetched successfully",
+  JOB_ADMIN_VIEW_SUCCESS: "JOb fetched successfully",
+  FORUM_ADDED: "Forum added successfully",
+  USER_NOT_FOUND: "Your Account doesn't  exist signup your account",
+  ALUMNI_DATA_FETCHED: "Alumni data fetched successfully",
+  ALUMNI_JOB_DATA_FETCHED: "Your job is successfully fetched",
+  ALL_JOB_DATA_FETCHED: "All Job data fetched Successfull",
+  JOB_DELETION_SUCCESSFULL: "Job deleted successfully",
+  ALUMNI_NOT_FOUND: "Alumni Not Found",
+  ALUMNI_DATA_FETCHED: "Alumni data fetched",
+  UNAUTHORIZED: "Reject due to UnAuthorized Access",
+  JOB_REMOVED_SUCCESSFULLY: "Job Removed successfully",
+  JOB_DATA_FETCHED: "Job Data Fethced",
+  JOB_UPDATED_SUCCESSFULLY: "Job Updated Successfully",
+  JOB_NOT_FOUND : "Job Not Found"
 };
 
 export const statusCode = {

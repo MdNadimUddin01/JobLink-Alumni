@@ -1,26 +1,20 @@
 import nodemailer from "nodemailer";
 
-const mailer = function (email, callback) {
+const mailer = function (email, subjectMail , htmlCode ,callback) {
     const transport = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-            user: '<email>',
-            pass: "<password>"
-        }
+      service: "gmail",
+      auth: {
+        user: "mdnadimuddin5656@gmail.com",
+        pass: "bvdr sldr mfnz toxz",
+      },
     });
 
     const mailOption = {
-        from: "<email_id>",
-        to: email,
-        subject : "Hello Alumni Its a Verification Mail",
-        html: `Hello ${email} , this is verification mail of Alumni Tracker System. Please Click on the below link to verify Yourself.
-        <br>
-        <form action='' method="post">
-            <input type="hidden" name="email" id="email" value='${email}'>
-            <button>Click Here to Verify</button> 
-        </form>
-        `
-    }
+      from: "<email_id>",
+      to: email,
+      subject: subjectMail,
+      html: htmlCode,
+    };
 
     transport.sendMail(mailOption, (error, info) => {
         if (error) {
