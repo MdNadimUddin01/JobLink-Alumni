@@ -20,7 +20,7 @@ export const Event = () => {
 
     const deleteEvent = async (eventId) => {
         await deleteEventData(eventId);
-        console.log("Deleted");
+        // console.log("Deleted");
         loadEvent();
     }
     // const sampleEvents = [

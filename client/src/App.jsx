@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import { Event, Home, UserOutlet } from "./Pages"
+import { Event, Home, UserOutlet, ViewAllJob } from "./Pages"
 import { AddEvent, AddJob, AlumniTable, SignIn, SignUp, VerifyEmail } from "./Component"
 
 
@@ -30,7 +30,7 @@ function App() {
         },
         {
           path: "/jobs",
-          element:<></>
+          element: <ViewAllJob myjob={false}/>
         },
 
 
@@ -48,9 +48,12 @@ function App() {
         {
 
           path: "/alumni/viewMyJob",
-          element:<>View My Job</>
+          element:<ViewAllJob myjob={true}/>
         },
-
+        {
+          path: "/alumni/updateJob/:jobId",
+          element:<AddJob/>
+        },
 
 
         //------------------------------------------------ Admin ----------------------------------------

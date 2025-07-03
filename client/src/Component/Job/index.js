@@ -1,1 +1,2 @@
-export {AddJob} from "./AddJob"
+export { AddJob } from "./AddJob"
+export {JobCard} from "./JobCard"

@@ -2,7 +2,7 @@ import { BannerSlider, Card } from "./Home";
 import { Navbar, CTAButton, FileUpload, Footer ,DropDown , Logo} from "./Common";
 import { SignIn, SignUp, VerifyEmail } from "./Auth";
 import { AddEvent, AlumniTable ,EventCard} from "./Admin"
-import { AddJob } from "./Job"
+import { AddJob  ,JobCard} from "./Job"
 
 
 
@@ -21,5 +21,6 @@ export {
   EventCard,
   DropDown,
   Logo,
-  AddJob
+  AddJob,
+  JobCard
 };
