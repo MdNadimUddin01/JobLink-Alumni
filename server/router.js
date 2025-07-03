@@ -1,14 +1,17 @@
 import {
+  adminEventRouter,
   adminRouter,
+  alumniJobRouter,
   alumniRouter,
-  eventRouter,
+  userEventRouter,
   userRouter,
 } from "./Router/index.js";
 
 export const RouterA = (router) => {
-  // console.log("Router is here");
   adminRouter(router);
   userRouter(router);
   alumniRouter(router);
-  eventRouter(router);
+  adminEventRouter(router);
+  userEventRouter(router);
+  alumniJobRouter(router);
 };

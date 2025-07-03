@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 dotenv.config();
 import { connectDb } from "./Connection/index.js";
 import cors from "cors";
+import fileUpload from "express-fileupload";
 
 const app = express();
 const router = Router();
@@ -16,9 +17,14 @@ app.use(express.json()); //used for body parser -> handling data in json format
 app.use(express.static("public")); // // Serve static files from the "public" folder
 // res.render() is a method in Express.js used to render dynamic HTML pages using a template engine (like EJS, Pug, Handlebars, etc.).
 app.use(cookieParser());
+app.use(cors({ origin: "http://localhost:5173",credentials:true }));
 app.use(
-  cors()
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp",
+  })
 );
+
 
 app.use("/api", router);
 

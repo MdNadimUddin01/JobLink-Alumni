@@ -4,7 +4,6 @@ const jobSchema = mongoose.Schema({
   
   jobId: {
     type: String,
-    required: true,
   },
   alumniId: {
     type: mongoose.Schema.ObjectId,
@@ -46,7 +45,7 @@ const jobSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  experience: {
+  requirement: {
     type: String,
     required: true,
   },
@@ -70,7 +69,8 @@ const jobSchema = mongoose.Schema({
   referralAvailable: {
     type: String,
     required: true,
-  }
+  },
+  
 
 });
 
