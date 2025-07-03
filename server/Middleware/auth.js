@@ -4,7 +4,8 @@ import { message, statusCode } from "../Utils/index.js";
 export const getAuth = async (req, res, next) => {
   try {
 
-    const token = req.headers["authorization"]?.split(" ")[1];
+    const token = req.cookies.token || req.headers["authorization"]?.split(" ")[1];
+    console.log("token : " , token)
     const payload = jwt.verify(token, process.env.JWT_SECRET);
 
     req.userId = payload.id;
@@ -12,7 +13,7 @@ export const getAuth = async (req, res, next) => {
     
     next();
   } catch (error) {
-    console.log(error.message);
+    console.log(error.message , " : " , error);
     res.send("Error");
   }
 };
