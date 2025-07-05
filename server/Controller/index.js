@@ -20,7 +20,7 @@ export {
 
 export { getAllEvent } from "./user.event.controller.js";
 
-export { alumniAddForum } from "./alumni.forum.controller.js";
+export { alumniAddForum } from "./forum.controller.js";
 
 export {
   createJobPost,

@@ -28,7 +28,7 @@ export const message = {
     "Your Account is closed If you want to optn please contact Admin",
   JOB_ADDITION_SUCCESSFULL: "Job Posting Successfull",
   JOB_ADMIN_VIEW_SUCCESS: "JOb fetched successfully",
-  FORUM_ADDED: "Forum added successfully",
+
   USER_NOT_FOUND: "Your Account doesn't  exist signup your account",
   ALUMNI_DATA_FETCHED: "Alumni data fetched successfully",
   ALUMNI_JOB_DATA_FETCHED: "Your job is successfully fetched",
@@ -40,7 +40,13 @@ export const message = {
   JOB_REMOVED_SUCCESSFULLY: "Job Removed successfully",
   JOB_DATA_FETCHED: "Job Data Fethced",
   JOB_UPDATED_SUCCESSFULLY: "Job Updated Successfully",
-  JOB_NOT_FOUND : "Job Not Found"
+  JOB_NOT_FOUND: "Job Not Found",
+
+  FORUM_ADDED: "Forum added successfully",
+  ALUMNI_GET_MY_FORUM_SUCCESS: "Froum data fetched",
+  FORUM_NOT_FOUND: "Forum Not found",
+  FORUM_UPDATE_SUCCESSFULL: "Forum Updated Successfull",
+  FORUM_REMOVE_SUCCESSFULL : "Forum Remove Successfull"
 };
 
 export const statusCode = {
