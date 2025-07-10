@@ -1,6 +1,6 @@
 import React from 'react'
 import CTAButton from './CTAButton'
-import { Link, NavLink, useNavigate } from 'react-router'
+import { data, Link, NavLink, useNavigate } from 'react-router'
 import { DropDown, Logo } from './'
 import { useDispatch, useSelector } from "react-redux"
 import { logoutUser } from '../../Services/apiService'
@@ -39,7 +39,7 @@ function Navbar() {
             label: "Alumni"
         },
         {
-            path: "/admin/forums",
+            path: "/forums",
             label: "Forums"
         },
         {
@@ -77,7 +77,26 @@ function Navbar() {
         },
         {
             path: "/forums",
-            label: "Forums"
+            label: "Forums",
+            data: [
+                {
+                    path: "/forums",
+                    label: "View All Forums"
+                },
+                {
+                    path: "/alumni/viewMyForum",
+                    label: "My forums"
+                },
+                {
+                    path: "/alumni/viewJoinedForum",
+                    label: "Joined Forum"
+                },
+                {
+                    path: "/alumni/addForum",
+                    label: "Add Forum"
+                }
+
+            ]
         },
         {
             path: "/faqs",
@@ -113,7 +132,7 @@ function Navbar() {
 
                     {(!user || user.role === "Alumni") && (
                         alumniList.map((alumniLi) => (
-                            alumniLi.label === "Jobs" && user ? <li key={alumniLi.label}><DropDown title={"Jobs"} dataArray={alumniLi.data} /></li> : <li key={alumniLi.path}><NavLink to={alumniLi.path} className={({ isActive }) => `${isActive ? "text-purple-500" : "text-gray-700"}`}>{alumniLi.label}</NavLink></li>
+                            alumniLi?.data != null && user ? <li key={alumniLi.label}><DropDown title={alumniLi.label} dataArray={alumniLi.data} /></li> : <li key={alumniLi.path}><NavLink to={alumniLi.path} className={({ isActive }) => `${isActive ? "text-purple-500" : "text-gray-700"}`}>{alumniLi.label}</NavLink></li>
                         ))
                     )
                     }
@@ -122,7 +141,7 @@ function Navbar() {
                     {
                         user && user.role === "Admin" &&
                         adminList.map((adminLi) =>
-                            adminLi.label === "Events" ? <li key={adminLi.label}><DropDown title={"Events"} dataArray={adminLi.data} /></li> : <li key={adminLi.label}><NavLink to={adminLi.path} className={({ isActive }) => `${isActive ? "text-purple-500" : "text-gray-700"}`}>{adminLi.label}</NavLink></li>
+                            adminLi.label === "Events" ? <li key={adminLi.label}><DropDown title={adminLi.label} dataArray={adminLi.data} /></li> : <li key={adminLi.label}><NavLink to={adminLi.path} className={({ isActive }) => `${isActive ? "text-purple-500" : "text-gray-700"}`}>{adminLi.label}</NavLink></li>
                         )
                     }
                     {/* {

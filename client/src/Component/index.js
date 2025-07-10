@@ -3,8 +3,7 @@ import { Navbar, CTAButton, FileUpload, Footer ,DropDown , Logo} from "./Common"
 import { SignIn, SignUp, VerifyEmail } from "./Auth";
 import { AddEvent, AlumniTable ,EventCard} from "./Admin"
 import { AddJob  ,JobCard} from "./Job"
-
-
+import {AddForum  , ForumCard} from "./Forum"
 
 export {
   BannerSlider,
@@ -22,5 +21,8 @@ export {
   DropDown,
   Logo,
   AddJob,
-  JobCard
+  JobCard,
+  
+  AddForum,
+  ForumCard
 };

@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import { Event, Home, UserOutlet, ViewAllJob } from "./Pages"
-import { AddEvent, AddJob, AlumniTable, SignIn, SignUp, VerifyEmail } from "./Component"
+import { Event, Home, UserOutlet, ViewAllJob ,ViewAllForum } from "./Pages"
+import { AddEvent, AddForum, AddJob, AlumniTable, SignIn, SignUp, VerifyEmail } from "./Component"
 
 
 function App() {
@@ -28,6 +28,7 @@ function App() {
           path: "/events",
           element: <Event />
         },
+        // ------------------------------ job ------------------------------
         {
           path: "/jobs",
           element: <ViewAllJob myjob={false}/>
@@ -41,6 +42,7 @@ function App() {
           element:<VerifyEmail/>
         },
 
+            // ------------------------------- JOB -------------------------------
         {
           path: "/alumni/addJobPost",
           element: <AddJob/>
@@ -54,7 +56,30 @@ function App() {
           path: "/alumni/updateJob/:jobId",
           element:<AddJob/>
         },
+       
 
+        // --------------------------------- FORUM ------------------------------------
+          
+        {
+          path: "/alumni/addForum",
+          element : <AddForum/>
+        },
+        {
+          path: "forums",
+          element: <ViewAllForum allForm={true} />
+        },
+        {
+          path: "/alumni/viewMyForum",
+          element: <ViewAllForum myform={true} />
+        },
+        {
+          path: "/alumni/viewJoinedForum",
+          element: <ViewAllForum joinedForm={true} />
+        },
+        {
+          path: "/alumni/updateForum/:forumId",
+          element: <AddForum />
+        },
 
         //------------------------------------------------ Admin ----------------------------------------
         {
@@ -69,7 +94,11 @@ function App() {
         {
           path: "/admin/addEvent",
           element:<AddEvent/>
-        }
+        },
+        // {
+        //   path: "/admin/forums",
+        //   element: <ViewAllForum adminForm={true}/>
+        // }
 
       ]
     }

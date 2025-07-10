@@ -1,6 +1,6 @@
 import {Home} from "./Home"
 import {UserOutlet} from "./UserOutlet"
 import { Event } from "./Admin"
-import {ViewAllJob} from "./Common"
+import {ViewAllJob ,ViewAllForum} from "./Common"
 
-export {Home , UserOutlet , Event , ViewAllJob}
+export {Home , UserOutlet , Event , ViewAllJob ,ViewAllForum}
