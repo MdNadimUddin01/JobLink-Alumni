@@ -13,7 +13,10 @@ export function UserOutlet() {
             <div className='w-full'>
                 <Footer />
             </div>
+
         </div>
+
     )
+    
 }
 

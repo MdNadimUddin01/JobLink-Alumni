@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { profileReducer } from "../Slices";
-
+import { profileReducer ,forumReducer} from "../Slices";
 
 
 export const store = configureStore({
   reducer: {
-    profile : profileReducer
+    profile: profileReducer,
+    forum : forumReducer
   }
 })

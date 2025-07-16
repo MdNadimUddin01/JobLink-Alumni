@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { adminGetAllForum, alumniViewForum, getAllForum, getAllJoinedForum } from '../../Services/apiService';
-import { ForumCard } from '../../Component';
-import { useSelector } from 'react-redux';
+import { ForumCard, Title } from '../../Component';
+import { useDispatch, useSelector } from 'react-redux';
 // import { ForumCard } from './ForumCard';
 
 const ViewAllForum = ({ myform, joinedForm, allForm }) => {
@@ -11,6 +11,7 @@ const ViewAllForum = ({ myform, joinedForm, allForm }) => {
 
     const [forums, setForums] = useState([]);
     const { alumniMyForum } = useSelector(state => state.forum);
+    const dispatch = useDispatch();
 
     const loadAllFormData = async () => {
         const result = await getAllForum();
@@ -27,7 +28,7 @@ const ViewAllForum = ({ myform, joinedForm, allForm }) => {
     }
 
     const getJoinedForm = async () => {
-        const alumniJoinedForum = await getAllJoinedForum()
+        const alumniJoinedForum = await getAllJoinedForum(dispatch)
         setForums(alumniJoinedForum)
     }
 
@@ -86,25 +87,33 @@ const ViewAllForum = ({ myform, joinedForm, allForm }) => {
     return (
         <div className="min-h-screen mx-auto container bg-gradient-to-br from-slate-50 to-slate-100 py-4">
 
-            {
-                myform  && <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-purple-600  text-center mb-6 px-4">
-                    My Forum</h1>
-            }
+            <div className="text-center">
+                <div className="relative inline-block mb-4">
+                    {/* <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur-xl animate-pulse"></div> */}
+                    <div className="relative w-24 h-24 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-2xl">
+                        <span className="text-4xl animate-bounce">🚀</span>
+                    </div>
+                </div>
 
-            {
-                joinedForm && <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-purple-600  text-center mb-6 px-4">
-                    Joined Forum</h1>
-            }
+                {myform && <Title title1={"My"} title2={"Forum"} />}
+                
+                {joinedForm && <Title title1={"Joined"} title2={"Forum"} />}
+                
+                {allForm && (!user || user.role !== "Admin") && <Title title1={"All"} title2={"Forum"} />}
 
-            {
-                allForm && (!user || user.role !== "Admin") && <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-purple-600  text-center mb-6 px-4">
-                    All Forum</h1>
-            }
+                {adminForm && <Title title1={"Admin"} title2={"Forum"} />}
 
-            {
-                adminForm && <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-purple-600  text-center mb-6 px-4">
-                    Admin Forum</h1>
-            }
+                <p className="text-xl lg:text-2xl text-black/80 font-light max-w-3xl mx-auto leading-relaxed mb-8">
+                    Unlock exclusive opportunities curated by our elite alumni network.
+                    <span className="block mt-2 text-black/60">Your next big break is just one click away.</span>
+                </p>
+
+                <div className="flex justify-center mb-6">
+                    <div className="w-32 h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 rounded-full animate-pulse"></div>
+                </div>
+            </div>
+            
+            
             <div className=" mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
                 {/* Search and Filter Bar */}
                 <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row gap-3 sm:gap-4">

@@ -1,4 +1,6 @@
-import profileReducer , {setLoading ,setToken ,setUser} from "./profileSlice.js"
+import profileReducer , {setLoading ,setUser} from "./profileSlice.js"
+import forumReducer, { setMyForm , setJoinedForum} from "./forumSlice.js"
 
+export { profileReducer, setLoading, setUser }
 
-export {profileReducer , setLoading , setToken ,setUser}
+export {forumReducer , setJoinedForum , setMyForm}
