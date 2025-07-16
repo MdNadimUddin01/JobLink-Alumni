@@ -28,3 +28,23 @@ export const jobEndPoints = {
   VIEW_JOB_DATA: BASE_URL + "/viewJob",
   UPDATE_JOB_POST: BASE_URL + "/alumni/updateJob",
 };
+
+
+export const forumEndpoints = {
+  ADD_FORUM: BASE_URL + "/alumni/addForum",
+  VIEW_ALUMNI_FORUM: BASE_URL + "/alumni/viewMyForum",
+  ALUMNI_UPDATE_FORUM: BASE_URL + "/alumni/updateForum",
+  ALUMNI_GET_ALL_FORUM: BASE_URL + "/alumni/getAllForum",
+
+  ALUMNI_JOIN_FORUM: BASE_URL + "/alumni/joinForum",
+  ALUMNI_GET_ALL_JOINED_FORUM: BASE_URL + "/alumni/getAllJoinedForum",
+  ALUMNI_GET_FORUM: BASE_URL + "/alumni/getForum",
+  ALUMNI_DELETE_FORUM: BASE_URL + "/alumni/deleteForum",
+
+  ADMIN_GET_ALL_FORUM: BASE_URL + "/admin/getAllForum",
+  ADMIN_REMOVE_FORUM: BASE_URL + "/admin/removeForum",
+
+  GET_FORUM_CHAT: BASE_URL + "/alumni/getAllForumChat",
+  SEND_FORUM_CHAT: BASE_URL + "/alumni/sendChat",
+  
+};
