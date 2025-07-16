@@ -3,7 +3,7 @@ import { Navbar, CTAButton, FileUpload, Footer ,DropDown , Logo} from "./Common"
 import { SignIn, SignUp, VerifyEmail } from "./Auth";
 import { AddEvent, AlumniTable ,EventCard} from "./Admin"
 import { AddJob  ,JobCard} from "./Job"
-import {AddForum  , ForumCard} from "./Forum"
+import {AddForum  , ForumCard , Title} from "./Forum"
 
 export {
   BannerSlider,
@@ -24,5 +24,6 @@ export {
   JobCard,
   
   AddForum,
-  ForumCard
+  ForumCard,
+  Title
 };

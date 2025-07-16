@@ -45,100 +45,201 @@ function ForumCard({ forum, joinedForm, adminForm, myform, allForm, forumData })
     }
 
     return (
-        <div
-            key={forum.id}
-            className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-pointer group"
-        >
-
-            <div className={`${categoryColor[forum.category]} p-4 sm:p-6 rounded-t-xl relative overflow-hidden`}>
-                <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-                <div className="relative z-10">
-                    <div className="flex items-center justify-between mb-2">
-                        <span className="text-2xl sm:text-3xl lg:text-4xl">{categoryIcons[forum.category]}</span>
-                        <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-lg">→</span>
+        <div className="bg-white rounded-2xl flex flex-col justify-between shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 overflow-hidden group">
+            {/* Header with Category Badge */}
+            <div className="relative">
+                <div className={`${categoryColor[forum.category]} px-6 py-4`}>
+                    <div className="flex justify-between items-center">
+                        <span className="text-sm font-bold uppercase tracking-wide text-white">{forum.category}</span>
+                        <span className="text-sm opacity-90 text-white">#{forum.id}</span>
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-white mb-1 leading-tight">{forum.forumTopic}</h3>
-                    <p className="text-white/90 text-xs sm:text-sm line-clamp-2 leading-relaxed">{forum.description}</p>
+                </div>
+                {forum.status && (
+                    <div className="absolute top-2 right-2 bg-white text-gray-800 px-2 py-1 rounded-full text-xs font-bold shadow-lg">
+                        Active
+                    </div>
+                )}
+            </div>
+
+            <div className="p-6">
+                {/* Forum Title */}
+                <h3 className="text-xl font-bold text-gray-900 mb-4 leading-tight group-hover:text-blue-600 transition-colors">
+                    {forum.forumTopic}
+                </h3>
+
+                {/* Key Info Grid */}
+                {/* <div className="grid grid-cols-2 gap-4 mb-5">
+                    {forum.startDate && (
+                        <div className="bg-blue-50 rounded-lg p-3">
+                            <div className="text-blue-600 text-xs font-semibold uppercase tracking-wide mb-1">📅 Start Date</div>
+                            <div className="text-sm font-bold text-gray-900">
+                                {new Date(forum.startDate).toLocaleDateString('en-US', {
+                                    month: 'short',
+                                    day: 'numeric',
+                                    year: 'numeric'
+                                })}
+                            </div>
+                        </div>
+                    )}
+
+                    {forum.startTime && (
+                        <div className="bg-green-50 rounded-lg p-3">
+                            <div className="text-green-600 text-xs font-semibold uppercase tracking-wide mb-1">🕒 Start Time</div>
+                            <div className="text-sm font-bold text-gray-900">{forum.startTime}</div>
+                        </div>
+                    )}
+
+                    {forum.members && (
+                        <div className="bg-purple-50 rounded-lg p-3">
+                            <div className="text-purple-600 text-xs font-semibold uppercase tracking-wide mb-1">👥 Members</div>
+                            <div className="text-sm font-bold text-gray-900">{forum.members.toLocaleString()}</div>
+                        </div>
+                    )}
+
+                    {forum.posts && (
+                        <div className="bg-orange-50 rounded-lg p-3">
+                            <div className="text-orange-600 text-xs font-semibold uppercase tracking-wide mb-1">💬 Posts</div>
+                            <div className="text-sm font-bold text-gray-900">{forum.posts.toLocaleString()}</div>
+                        </div>
+                    )}
+                </div> */}
+
+                {/* Category Info */}
+                <div className="bg-red-50 rounded-lg p-3 mb-4">
+                    <div className="text-red-600 text-xs font-semibold uppercase tracking-wide mb-1">📍 Description</div>
+                    <div className="text-sm font-medium text-gray-900 flex items-center gap-2">
+                        <span className="text-lg">{categoryIcons[forum.category]}</span>
+                        {forum.description}
+                    </div>
+                </div>
+
+                {/* Description */}
+                <div className="mb-5">
+                    <div className="text-gray-700 text-sm leading-relaxed">
+                        
+                    </div>
+                </div>
+
+                {/* Forum Activity Section */}
+                <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 mb-4">
+                    <div className="flex justify-between items-center mb-3">
+                        <div className="text-sm font-bold text-gray-700">🎯 Forum Status</div>
+                        <div className={`px-3 py-1 rounded-full text-xs font-bold ${forum.status
+                            ? 'bg-green-100 text-green-800 border border-green-200'
+                            : 'bg-red-100 text-red-800 border border-red-200'
+                            }`}>
+                            {forum.status ? '✅ ACTIVE' : '❌ INACTIVE'}
+                        </div>
+                    </div>
+
+                    <div className="space-y-2 text-sm">
+                        {forum.startDate && (
+                            <div className="flex justify-between">
+                                <span className="text-gray-600">Start Date:</span>
+                                <span className="font-semibold">
+                                    {new Date(forum.startDate).toLocaleDateString('en-US', {
+                                        month: 'short',
+                                        day: 'numeric',
+                                        year: 'numeric'
+                                    })}
+                                </span>
+                            </div>
+                        )}
+                        {forum.startTime && (
+                            <div className="flex justify-between">
+                                <span className="text-gray-600">Start Time:</span>
+                                <span className="font-semibold">{forum.startTime}</span>
+                            </div>
+                        )}
+                        {/* {forum.lastActivity && (
+                            <div className="flex justify-between">
+                                <span className="text-gray-600">Last Activity:</span>
+                                <span className="font-semibold">🕐 {forum.lastActivity}</span>
+                            </div>
+                        )} */}
+                    </div>
+
+                    {/* {forum.members && forum.members > 0 && (
+                        <div className="mt-3 p-3 bg-purple-50 rounded-lg">
+                            <div className="text-purple-600 text-xs font-semibold uppercase tracking-wide mb-1">👥 Community</div>
+                            <div className="text-xs text-gray-700">{forum.members} members actively participating</div>
+                        </div>
+                    )} */}
                 </div>
             </div>
 
-            {/* Forum Stats */}
-            <div className="p-4 sm:p-6">
-                {/* <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-3 sm:mb-4">
-                    <div className="text-center">
-                        <div className="flex items-center justify-center mb-1">
-                            <span className="text-slate-400 text-sm">👥</span>
-                        </div>
-                        <p className="text-xs sm:text-sm font-semibold text-slate-700">{forum.members.toLocaleString()}</p>
-                        <p className="text-xs text-slate-500">Members</p>
+            {/* Footer */}
+            <div className="px-6 py-4 bg-gray-50 border-t border-gray-100">
+                <div className="flex items-center justify-between">
+                    <div className="text-xs text-gray-500 flex flex-col">
+                        <span>📤 Created: </span>
+                        <span>{forum.startDate || 'Recently'}</span>
                     </div>
-                    <div className="text-center">
-                        <div className="flex items-center justify-center mb-1">
-                            <span className="text-slate-400 text-sm">💬</span>
-                        </div>
-                        <p className="text-xs sm:text-sm font-semibold text-slate-700">{forum.posts.toLocaleString()}</p>
-                        <p className="text-xs text-slate-500">Posts</p>
+
+                    <div className="flex items-center gap-2">
+                        {/* All Forms - Join Button */}
+                        {allForm && forum.status && (
+                            <button
+                                onClick={handleJoinForm}
+                                className="cursor-pointer bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-4 rounded-full text-sm font-bold transition-all duration-200 transform hover:scale-105 shadow-lg"
+                            >
+                                🚀 Join Forum
+                            </button>
+                        )}
+
+                        {allForm && !forum.status && (
+                            <button
+                                className="cursor-pointer bg-gradient-to-r from-gray-600 to-gray-700 text-white px-6 py-4 rounded-full text-sm font-bold transition-all duration-200 transform hover:scale-105 shadow-lg"
+                                disabled
+                            >
+                                🚀 Forum Closed
+                            </button>
+                        )}
+
+                        {/* Joined Forms - View Button */}
+                        {joinedForm && (
+                            <Link
+                                to={"/forumChat/" + forum._id}
+                                className="cursor-pointer bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-4 rounded-full text-sm font-bold transition-all duration-200 transform hover:scale-105 shadow-lg"
+                            >
+                                🔍 View Forum
+                            </Link>
+                        )}
+
+                        {/* My Forms - Edit and Delete */}
+                        {myform && (
+                            <div className="flex items-center gap-1 ml-3">
+                                <Link
+                                    to={"/alumni/updateForum/" + forum._id}
+                                    className="px-3 py-2 text-gray-600 cursor-pointer hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 text-sm font-semibold border border-gray-200 hover:border-blue-200"
+                                    title="Update Forum"
+                                >
+                                    ✏️ Edit
+                                </Link>
+                                <button
+                                    onClick={handleDelete}
+                                    className="px-3 py-2 cursor-pointer text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 text-sm font-semibold border border-gray-200 hover:border-red-200"
+                                    title="Delete Forum"
+                                >
+                                    🗑️ Delete
+                                </button>
+                            </div>
+                        )}
+
+                        {/* Admin Forms */}
+                        {adminForm && forum.status &&(
+                            <div className="flex items-center gap-1 ml-3">
+                                <button
+                                    onClick={handleAdminDelete}
+                                    className="px-3 py-2 cursor-pointer text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 text-sm font-semibold border border-gray-200 hover:border-red-200"
+                                
+                                >
+                                    🗑️ Remove
+                                </button>
+                            </div>
+                        )}
                     </div>
-                    <div className="text-center">
-                        <div className="flex items-center justify-center mb-1">
-                            <span className="text-slate-400 text-sm">🕐</span>
-                        </div>
-                        <p className="text-xs sm:text-sm font-semibold text-slate-700">{forum.lastActivity}</p>
-                        <p className="text-xs text-slate-500">Last Activity</p>
-                    </div>
-                </div> */}
-
-                {/* Action Button */}
-                <div className='flex sm:flex-row flex-col gap-2'>
-                    {allForm && <button onClick={handleJoinForm} className="w-full border border-gray-200 cursor-pointer bg-slate-50 hover:bg-slate-100 text-slate-700 font-medium py-2.5 sm:py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2 text-sm sm:text-base">
-                        <span>Join Forum</span>
-                        <span className="text-sm">→</span>
-                    </button>}
-
-                    {
-                        adminForm && forum.status && <button
-                            onClick={handleAdminDelete}
-                            className="px-3 py-3 sm:py-4  h-full w-full cursor-pointer text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg   flex items-center justify-center space-x-2 sm:text-basetransition-all duration-200 text-sm font-semibold border border-gray-200 hover:border-red-200"
-                            title="Delete Event"
-                        >
-                            🗑️ Delete
-                        </button>
-                    }
-
-                    {
-                        adminForm && !forum.status && <button
-                            onClick={handleAdminDelete}
-                            className="px-3 py-3 sm:py-4 bg-red-500  h-full w-full cursor-pointer text-white   rounded-lg   flex items-center justify-center space-x-2 sm:text-basetransition-all duration-200 text-sm font-semibold border border-gray-200 "
-                            title="Delete Event"
-                        >
-                            🗑️ Deleted
-                        </button>
-                    }
                 </div>
-
-                {joinedForm && <button onClick={handleJoinForm} className="w-full cursor-pointer bg-slate-50 hover:bg-slate-100 text-slate-700 font-medium py-2.5 sm:py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2 text-sm sm:text-base">
-                    <span>View Forum</span>
-                    <span className="text-sm">→</span>
-                </button>}
-
-                {
-                    myform && <div className="flex items-center justify-end gap-4 ml-3">
-                        <Link
-                            to={"/alumni/updateForum/" + forum._id}
-                            className="px-3 py-2 text-gray-600 cursor-pointer hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 text-sm font-semibold border border-gray-200 hover:border-blue-200"
-                            title="Update Event"
-                        >
-                            ✏️ Edit
-                        </Link>
-                        <button
-                            onClick={handleDelete}
-                            className="px-3 py-2 cursor-pointer text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 text-sm font-semibold border border-gray-200 hover:border-red-200"
-                            title="Delete Event"
-                        >
-                            🗑️ Delete
-                        </button>
-                    </div>
-                }
             </div>
         </div>
     )

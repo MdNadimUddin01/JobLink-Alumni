@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import { Event, Home, UserOutlet, ViewAllJob ,ViewAllForum } from "./Pages"
+import { Event, Home, UserOutlet, ViewAllJob ,ViewAllForum, ForumChat } from "./Pages"
 import { AddEvent, AddForum, AddJob, AlumniTable, SignIn, SignUp, VerifyEmail } from "./Component"
 
 
@@ -34,8 +34,15 @@ function App() {
           element: <ViewAllJob myjob={false}/>
         },
 
+        // ------------------------------ Forum Chat --------------------------------
 
-        // -------------------------------------------- Alumin --------------------------------------------------
+        {
+          path: "/forumChat/:forumId",
+          element : <ForumChat/>
+        },
+
+
+        // -------------------------------------------- Alumni --------------------------------------------------
 
         {
           path: "alumni/verifyEmail",
