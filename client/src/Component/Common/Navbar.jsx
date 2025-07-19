@@ -124,7 +124,7 @@ function Navbar() {
                 <div className='flex gap-2 justify-center items-center'>
                     <Logo property={'w-10 h-10 text-md'} />
                     <div className='text-xl'>
-                        Alumini Tacker
+                        JobLink Alumni
                     </div>
                 </div>
 
