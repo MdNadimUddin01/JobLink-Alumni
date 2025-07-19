@@ -13,13 +13,25 @@ const forumSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  category: {
+    type: String,
+    enum: [
+      "All Forums",
+      "General",
+      "Support",
+      "Gaming",
+      "Education",
+      "Creative",
+      "Career",
+    ],
+  },
   startDate: {
     type: String,
-    default: new Date().toDateString(),
+    default: (new Date()).toDateString(),
   },
   startTime: {
     type: String,
-    default: new Date().toLocaleTimeString,
+    default: (new Date()).toLocaleTimeString(),
   },
   status: {
     type: Boolean,

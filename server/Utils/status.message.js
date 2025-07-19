@@ -46,7 +46,14 @@ export const message = {
   ALUMNI_GET_MY_FORUM_SUCCESS: "Froum data fetched",
   FORUM_NOT_FOUND: "Forum Not found",
   FORUM_UPDATE_SUCCESSFULL: "Forum Updated Successfull",
-  FORUM_REMOVE_SUCCESSFULL : "Forum Remove Successfull"
+  FORUM_REMOVE_SUCCESSFULL: "Forum Remove Successfull",
+  FORUM_ALREADY_JOINED: "Already joined in forum",
+  FORUM_JOINED: "You are Joined in the Forum",
+  FORUM_DELETED: "Forum deleted successfull",
+  FORUM_DATA_FETCHED: "Forum data fetched",
+  
+  FORUM_CHAT_SEND: "Message Sent",
+  FORUM_CHAT_FETHCED : "Forum chat fetched successfull"
 };
 
 export const statusCode = {

@@ -121,7 +121,7 @@ export const deleteJobPost = async (jobId) => {
         if (res.status !== 200) {
             throw Error("JOb deletion failed");
         }
-
+        
         // console.log("res : " , res)
 
     } catch (error) {

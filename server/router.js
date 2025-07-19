@@ -3,6 +3,7 @@ import {
   adminRouter,
   alumniJobRouter,
   alumniRouter,
+  forumRouter,
   userEventRouter,
   userRouter,
 } from "./Router/index.js";
@@ -14,4 +15,5 @@ export const RouterA = (router) => {
   adminEventRouter(router);
   userEventRouter(router);
   alumniJobRouter(router);
+  forumRouter(router);
 };

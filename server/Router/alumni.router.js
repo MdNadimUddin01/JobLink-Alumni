@@ -8,5 +8,4 @@ export const alumniRouter = (router) => {
   router.route("/alumni/signUp").post(alumniSignupController);
   router.route("/alumni/verifyEmail").post(alumniEmailVerify);
   router.route("/getAlumniData").post(getAlumniInfo)
-  // router.route("/");
 };

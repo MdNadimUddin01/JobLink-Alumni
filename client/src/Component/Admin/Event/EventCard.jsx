@@ -4,20 +4,6 @@ import { useSelector } from 'react-redux';
 export const EventCard = ({
     event,
     serialNo,
-    // serialNo = 1,
-    // eventName = "Annual Tech Conference 2025",
-    // startDate = "2025-07-15",
-    // endDate = "2025-07-17",
-    // startTime = "09:00",
-    // endTime = "18:00",
-    // location = "Convention Center, New Delhi",
-    // description = "Join us for three days of cutting-edge technology discussions, networking opportunities, and hands-on workshops. This premier event brings together industry leaders, developers, and innovators from across the globe.",
-    // eventType = "Conference",
-    // criteria = "Open to all professionals with 2+ years experience in technology",
-    // modeOfApply = "Online",
-    // applyFrom = "2025-06-01",
-    // applyTill = "2025-07-10",
-    // uploadTime = "2025-05-15T10:30:00",
     onUpdate = () => { },
     onDelete = () => { },
     isAdmin = true
@@ -25,7 +11,6 @@ export const EventCard = ({
     const [showFullDescription, setShowFullDescription] = useState(false);
     const user = useSelector((state) => state.profile.user);
     // console.log("USER : " , user)
-    const [isDelete, setIsDelete] = useState(false);
 
     const getEventTypeColor = (type) => {
         const colors = {
@@ -75,7 +60,6 @@ export const EventCard = ({
         return `${hour12}:${minutes} ${temp}`; // Convert to minutes for easy comparison
     }
 
-    
     const isApplicationOpen = () => {
         const now = new Date((new Date()).toDateString()).getTime();
         const applyFromDate = new Date(event.applyFrom).getTime();
@@ -113,11 +97,11 @@ export const EventCard = ({
 
     return (
         <div className="bg-white rounded-2xl flex flex-col justify-between shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 overflow-hidden group">
-            {/* Header with Event Type Badge */}
+
             <div className="relative">
-                <div className={`${getEventTypeColor(event.eventType)} px-6 py-4`}>
+                <div className={`${getEventTypeColor(event.typeOfEvent)} px-6 py-4`}>
                     <div className="flex justify-between items-center">
-                        <span className="text-sm font-bold uppercase tracking-wide">{event.eventType}</span>
+                        <span className="text-sm font-bold uppercase tracking-wide">{event.typeOfEvent}</span>
                         <span className="text-sm opacity-90">#{serialNo}</span>
                     </div>
                 </div>
@@ -129,14 +113,12 @@ export const EventCard = ({
             </div>
 
             <div className="p-6">
-                {/* Event Title */}
+
                 <h3 className="text-xl font-bold text-gray-900 mb-4 leading-tight group-hover:text-blue-600 transition-colors">
                     {event.eventName}
                 </h3>
 
-                {/* Key Info Grid */}
                 <div className="grid grid-cols-2 gap-4 mb-5">
-                    {/* Date */}
                     <div className="bg-blue-50 rounded-lg p-3">
                         <div className="text-blue-600 text-xs font-semibold uppercase tracking-wide mb-1">📅 Date</div>
                         <div className="text-sm font-bold text-gray-900">{event.startDate}</div>
@@ -145,7 +127,6 @@ export const EventCard = ({
                         )}
                     </div>
 
-                    {/* Time */}
                     <div className="bg-green-50 rounded-lg p-3">
                         <div className="text-green-600 text-xs font-semibold uppercase tracking-wide mb-1">🕒 Time</div>
                         <div className="text-sm font-bold text-gray-900">{convertIn12Hr(event.startTime)}</div>
@@ -153,13 +134,11 @@ export const EventCard = ({
                     </div>
                 </div>
 
-                {/* Location */}
                 <div className="bg-red-50 rounded-lg p-3 mb-4">
                     <div className="text-red-600 text-xs font-semibold uppercase tracking-wide mb-1">📍 Location</div>
                     <div className="text-sm font-medium text-gray-900">{event.location}</div>
                 </div>
 
-                {/* Description */}
                 <div className="mb-5">
                     <div className="text-gray-700 text-sm leading-relaxed">
                         {showFullDescription ? event.description : truncateDescription(event.description)}
@@ -174,7 +153,6 @@ export const EventCard = ({
                     </div>
                 </div>
 
-                {/* Application Section */}
                 <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 mb-4">
                     <div className="flex justify-between items-center mb-3">
                         <div className="text-sm font-bold text-gray-700">🎯 Application</div>
@@ -224,7 +202,6 @@ export const EventCard = ({
                 </div>
             </div>
 
-            {/* Footer */}
             <div className="px-6 py-4 bg-gray-50 border-t border-gray-100">
                 <div className="flex items-center justify-between">
                     <div className="text-xs text-gray-500 flex flex-col">

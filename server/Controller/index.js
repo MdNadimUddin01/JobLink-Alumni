@@ -20,7 +20,6 @@ export {
 
 export { getAllEvent } from "./user.event.controller.js";
 
-export { alumniAddForum } from "./forum.controller.js";
 
 export {
   createJobPost,
@@ -32,3 +31,18 @@ export {
   viewJobData,
   updateJobPost,
 } from "./job.controller.js";
+
+export {
+  adminRemoveForum,
+  alumniAddForum,
+  alumniForumList,
+  alumniUpdateForum,
+  forumChat,
+  getAdminForumList,
+  getAllForumList,
+  joinForum,
+  getJoinedForum,
+  deleteForum,
+  getForum,
+  getAllForumChat
+} from "./forum.controller.js";
