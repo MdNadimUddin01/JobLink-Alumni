@@ -17,7 +17,7 @@ export const adminAddEventConroller = async (req, res) => {
     event.uploadDate = date.toDateString();
     event.uploadTime = date.toLocaleTimeString();
 
-    console.log("event : ", event);
+    // console.log("event : ", event);
 
     const addEventData = new EventModel(event);
     await addEventData.save();

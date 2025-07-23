@@ -4,6 +4,15 @@ import { message, statusCode } from "../Utils/index.js";
 export const getAuth = async (req, res, next) => {
   try {
 
+    if (!req?.cookies?.token) {
+
+      return res.status(440).send({
+        message: "Please Login First",
+        redirectTo: process.env.FRONT_END_URL + "/signIn",
+      });
+
+    }
+
     const token = req.cookies.token || req.headers["authorization"]?.split(" ")[1];
     console.log("token : " , token)
     const payload = jwt.verify(token, process.env.JWT_SECRET);
@@ -16,6 +25,7 @@ export const getAuth = async (req, res, next) => {
     console.log(error.message , " : " , error);
     res.send("Error");
   }
+
 };
 
 export const verifyAdmin = async (req, res, next) => {

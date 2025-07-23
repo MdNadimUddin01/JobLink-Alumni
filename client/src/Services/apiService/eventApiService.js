@@ -17,6 +17,11 @@ export const addEvent = async (eventData , navigate) => {
 
     } catch (error) {
         console.log(error);
+        if (error.status === 440) {
+          localStorage.clear();
+          const { redirectTo } = error.response.data;
+          window.location.href = redirectTo;
+        }
     }
 
 };
@@ -36,7 +41,12 @@ export const getAllEventData = async () => {
 
         // console.log(res);
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        if (error.status === 440) {
+          localStorage.clear();
+          const { redirectTo } = error.response.data;
+          window.location.href = redirectTo;
+        }
     }
 
     return result;
@@ -55,5 +65,10 @@ export const deleteEventData = async (eventId) => {
         
     } catch (error) {
         console.log(error);
+        if (error.status === 440) {
+          localStorage.clear();
+          const { redirectTo } = error.response.data;
+          window.location.href = redirectTo;
+        }
     }
 }

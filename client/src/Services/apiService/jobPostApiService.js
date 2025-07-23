@@ -13,7 +13,12 @@ export const addJobPost = async (jobData, navigate) => {
         navigate("/alumni/viewMyJob");
 
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        if (error.status === 440) {
+          localStorage.clear();
+          const { redirectTo } = error.response.data;
+          window.location.href = redirectTo;
+        }
     }
 }
 
@@ -35,6 +40,11 @@ export const viewAllJobData = async () => {
 
     } catch (error) {
         console.log(error);
+        if (error.status === 440) {
+          localStorage.clear();
+          const { redirectTo } = error.response.data;
+          window.location.href = redirectTo;
+        }
     }
 
     return result;
@@ -55,7 +65,12 @@ export const viewJobData = async (jobId) => {
 
         console.log("res : " , res)
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        if (error.status === 440) {
+          localStorage.clear();
+          const { redirectTo } = error.response.data;
+          window.location.href = redirectTo;
+        }
     }
 
     return {
@@ -87,11 +102,17 @@ export const updateJobData = async (job, jobId , navigate) => {
         }
     
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        if (error.status === 440) {
+          localStorage.clear();
+          const { redirectTo } = error.response.data;
+          window.location.href = redirectTo;
+        }
     }
 
     navigate("/alumni/viewMyJob");
 }
+
 export const viewAlumniJobData = async () => {
     
     let result = [];
@@ -106,7 +127,12 @@ export const viewAlumniJobData = async () => {
     //   console.log(res);
       result = res.data.jobData;
     } catch (error) {
-      console.log(error);
+        console.log(error);
+        if (error.status === 440) {
+          localStorage.clear();
+          const { redirectTo } = error.response.data;
+          window.location.href = redirectTo;
+        }
     }
 
     return result;
@@ -125,7 +151,12 @@ export const deleteJobPost = async (jobId) => {
         // console.log("res : " , res)
 
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        if (error.status === 440) {
+          localStorage.clear();
+          const { redirectTo } = error.response.data;
+          window.location.href = redirectTo;
+        }
     }
 
     
@@ -138,6 +169,11 @@ export const removeJobPost = async (jobId) => {
         console.log(res);
     } catch (error) {
         console.log(error);
+        if (error.status === 440) {
+          localStorage.clear();
+          const { redirectTo } = error.response.data;
+          window.location.href = redirectTo;
+        }
     }
 }
 
@@ -154,7 +190,12 @@ export const adminViewJobs = async () => {
 
       result = res.data.jobData;
     } catch (error) {
-      console.log(error);
+        console.log(error);
+        if (error.status === 440) {
+          localStorage.clear();
+          const { redirectTo } = error.response.data;
+          window.location.href = redirectTo;
+        }
     }
 
     return result;

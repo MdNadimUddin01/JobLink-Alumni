@@ -20,4 +20,5 @@ export const adminEventRouter = (router) => {
   router
     .route("/admin/updateEvent/:eventId")
     .put(getAuth, verifyAdmin, adminUpdateEventController);
+  
 };

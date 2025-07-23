@@ -65,8 +65,10 @@ export const alumniUpdateForum = async (req, res) => {
 export const getForum = async (req, res) => {
   try {
     const { forumId } = req.body;
+    // console.log("FORUM ID : ", forumId);
 
     const forumData = await ForumModel.findOne({ _id: forumId });
+    // console.log("FORUM DATA : " , forumData)
 
     return res.status(statusCode.SUCCESS).send({
       message: message.FORUM_DATA_FETCHED,
@@ -186,6 +188,27 @@ export const joinForum = async (req, res) => {
   }
 };
 
+// export const joinForum = async (forumId , alumniId) => {
+//   try {
+    
+//         const existingJoin = await ForumMemberModel.findOne({ forumId, alumniId });
+    
+//         if (existingJoin) {
+//           return;
+//         }
+    
+//         const joinData = new ForumMemberModel({ forumId, alumniId });
+//         joinData.save();
+    
+        
+//       } catch (error) {
+//         console.log("Error in alumniJoinForum : ", error);
+//         return res.status(statusCode.ERROR).send({
+//           message: message.SOMETHING_WENT_WRONG,
+//         });
+//       }
+// }
+
 export const deleteForum = async (req, res) => {
   try {
     const { forumId } = req.body;
@@ -251,7 +274,7 @@ export const forumChat = async (req, res) => {
       forumId,
       message,
       alumniId,
-      alumniName: alumniDetails.userName,
+      alumniName: alumniDetails?.userName ?? "Admin",
     });
 
     forumChatData.save();

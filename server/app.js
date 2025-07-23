@@ -6,10 +6,22 @@ dotenv.config();
 import { connectDb } from "./Connection/index.js";
 import cors from "cors";
 import fileUpload from "express-fileupload";
+import {createServer} from "http"
+import { Server } from "socket.io"
+import { chatDataSocket } from "./Sockets/chatSocket.js";
+
 
 const app = express();
 const router = Router();
+const server = createServer(app);
 const port = process.env.PORT;
+const socket = new Server(server, {
+  cors: {
+    origin: process.env.FRONT_END_URL,
+    methods: ["GET", "POST"],
+    credentials: true
+  },
+});
 
 connectDb();
 app.use(express.urlencoded({ extended: true })); // handling data from form
@@ -28,7 +40,9 @@ app.use(
 
 app.use("/api", router);
 
-app.listen(port, () => {
+
+// you should NOT use app.listen(...) when you're using createServer(app) and Socket.IO together.
+server.listen(port, () => {
   console.log(`app is listening at ${port}`);
 });
 
@@ -41,3 +55,4 @@ app.get("/", (req, res) => {
 });
 
 RouterA(router);
+chatDataSocket(socket);

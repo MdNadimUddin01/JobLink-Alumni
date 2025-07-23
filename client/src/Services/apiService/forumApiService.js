@@ -15,6 +15,11 @@ export const alumniAddForum = async (forum, navigate) => {
     navigate("/alumni/viewMyForum");
   } catch (error) {
     console.log("error : ", error);
+    if (error.status === 440) {
+      localStorage.clear();
+      const { redirectTo } = error.response.data;
+      window.location.href = redirectTo;
+    }
   }
 };
 
@@ -35,13 +40,17 @@ export const alumniViewForum = async (dispatch) => {
 
   } catch (error) {
     console.log("Error : ", error);
+    if (error.status === 440) {
+      localStorage.clear();
+      const { redirectTo } = error.response.data;
+      window.location.href = redirectTo;
+    }
   }
 
   return result;
 };
 
 export const getForumData = async (forumId) => {
-
 
   let result = {};
   try {
@@ -55,8 +64,13 @@ export const getForumData = async (forumId) => {
     result = res.data.forumData
   } catch (error) {
     console.log(error)
+    if (error.status === 440) {
+      localStorage.clear();
+      const { redirectTo } = error.response.data;
+      window.location.href = redirectTo;
+    }
   }
-  console.log("RES : ", result);
+  // console.log("RES : ", result);
 
   return result
 }
@@ -77,6 +91,11 @@ export const alumniUpdateForum = async (forum, forumId, navigate) => {
       
   } catch (error) {
     console.log(error);
+    if (error.status === 440) {
+      localStorage.clear();
+      const { redirectTo } = error.response.data;
+      window.location.href = redirectTo;
+    }
   }
 };
 
@@ -88,13 +107,19 @@ export const getAllForum = async () => {
     if (res.status !== 200) {
       throw new Error("Alumni Data fetch Failed");
     }
+
     // console.log("RES : ", res);
     result = res.data.forumData;
   } catch (error) {
     console.log(error);
+    if (error.status === 440) {
+      localStorage.clear();
+      const { redirectTo } = error.response.data;
+      window.location.href = redirectTo;
+    }
   }
 
-  console.log('res ' , result)
+  // console.log('res ' , result)
   return result;
 };
 
@@ -114,7 +139,12 @@ export const alumniJoinForum = async (forumId, navigate) => {
     navigate("/alumni/viewJoinedForum");
       
   } catch (error) {
-    console.log(error);
+      console.log(error);
+      if (error.status === 440) {
+        localStorage.clear();
+        const { redirectTo } = error.response.data;
+        window.location.href = redirectTo;
+      }
     }
     
 };
@@ -135,6 +165,11 @@ export const getAllJoinedForum = async (dispatch) => {
     dispatch(setJoinedForum(result));
   } catch (error) {
     console.log(error);
+    if (error.status === 440) {
+      localStorage.clear();
+      const { redirectTo } = error.response.data;
+      window.location.href = redirectTo;
+    }
   }
     
     return result;
@@ -145,18 +180,25 @@ export const adminGetAllForum = async () => {
 
   try {
     const res = await apiCall("GET", forumEndpoints.ADMIN_GET_ALL_FORUM);
-
+    console.log("RESPONSE : ", res);
     if (res.status !== 200) {
       throw new Error("Admin Data fetch Failed");
     }
 
     result = res.data.forumData ?? [];
-    console.log("RESPONSE : " , res)
+    
   } catch (error) {
+
+    
     console.log(error);
+    if (error.status === 440) {
+      localStorage.clear();
+      const {redirectTo} = error.response.data
+      window.location.href = redirectTo
+    }
   }
 
-  console.log("RESULT : A ", result)
+  // console.log("RESULT : A ", result)
 
   return result;
 };
@@ -172,6 +214,11 @@ export const adminRemoveForum = async (forumId) => {
     }
   } catch (error) {
     console.log(error);
+    if (error.status === 440) {
+      localStorage.clear();
+      const { redirectTo } = error.response.data;
+      window.location.href = redirectTo;
+    }
   }
 };
 
@@ -193,6 +240,11 @@ export const alumniDeleteForum = async (forumId) => {
     // navigate("/forums");
   } catch (error) {
     console.log(error);
+    if (error.status === 440) {
+      localStorage.clear();
+      const { redirectTo } = error.response.data;
+      window.location.href = redirectTo;
+    }
   }
 };
 
@@ -209,6 +261,11 @@ export const getAllForumChat = async (forumId) => {
 
   } catch (error) {
     console.log(error)
+    if (error.status === 440) {
+      localStorage.clear();
+      const { redirectTo } = error.response.data;
+      window.location.href = redirectTo;
+    }
   }
 
   return result;
@@ -228,6 +285,11 @@ export const sendMessage = async (forumId, message) => {
 
   } catch (error) {
     console.log(error);
+    if (error.status === 440) {
+      localStorage.clear();
+      const { redirectTo } = error.response.data;
+      window.location.href = redirectTo;
+    }
   }
 
 }

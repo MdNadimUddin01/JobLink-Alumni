@@ -39,6 +39,11 @@ export async function getAlumni(alumniId) {
     data = res.data.alumniData;
   } catch (error) {
     console.log(error);
+    if (error.status === 440) {
+      localStorage.clear();
+      const { redirectTo } = error.response.data;
+      window.location.href = redirectTo;
+    }
   }
 
   return data;

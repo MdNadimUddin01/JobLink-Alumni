@@ -16,7 +16,12 @@ export const getAlumniData = async () => {
         result = res.data.alumniData;
 
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        if (error.status === 440) {
+          localStorage.clear();
+          const { redirectTo } = error.response.data;
+          window.location.href = redirectTo;
+        }
     }
 
     return result
@@ -36,7 +41,12 @@ export const verifyAlumniEmail = async (alumniId) => {
 
 
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        if (error.status === 440) {
+          localStorage.clear();
+          const { redirectTo } = error.response.data;
+          window.location.href = redirectTo;
+        }
     }
 
 }
