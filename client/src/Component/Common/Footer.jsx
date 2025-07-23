@@ -4,7 +4,9 @@ import { Logo } from './'
 export function Footer() {
     return (
         <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-10 text-center border-t border-gray-200">
-            <Logo property={"w-15 h-15 mb-5"}/>
+            <div className='text-center w-full flex items-center justify-center'>
+                <Logo property={'w-10 h-10 text-md mb-5'} />
+            </div>
             <h3 className="text-gray-800 text-xl font-bold mb-2">JobLink Alumni</h3>
             <p className="text-gray-600 text-sm mb-5">Connecting graduates, building networks, creating opportunities</p>
 

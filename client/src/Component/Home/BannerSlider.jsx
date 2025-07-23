@@ -1,22 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
-import alumuni from "../../assets/Slider/alumini.jpg"
-import collegeGraduates from "../../assets/Slider/collegeGraduates.jpg"
-import unstop from "../../assets/Slider/unstop.png"
 
+import firstBannerImage from "../../assets/Slider/firstBannerImage.png"
+import secondBannerImage from "../../assets/Slider/secondBannerImage.jpg"
+import thirdBannerImage from "../../assets/Slider/thirdBannerImage.jpg"
 
-
-
-// import React from 'react';
-// import Slider from 'react-slick';
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
 
 function BannerSlider() {
 
-    const data = [unstop,
-        collegeGraduates,
-        alumuni];
+    const data = [firstBannerImage, secondBannerImage, thirdBannerImage];
     const [currentIndex, setCurrentIndex] = useState(0);
 
 
@@ -104,4 +96,3 @@ function BannerSlider() {
 }
 
 export default BannerSlider;
-  
