@@ -4,6 +4,7 @@ import { data, Link, NavLink, useNavigate } from 'react-router'
 import { DropDown, Logo } from './'
 import { useDispatch, useSelector } from "react-redux"
 import { logoutUser } from '../../Services/apiService'
+import SideBar from './SideBar'
 
 function Navbar() {
 
@@ -110,15 +111,12 @@ function Navbar() {
     ]
 
     const handleLogout = async () => {
-
-        // console.log("Logout")
         logoutUser(dispatch, navigate);
-
     }
 
 
     return (
-        <div className='w-full py-4  bg-gradient-to-b from-gray-50 to-gray-50 border-b border-gray-200'>
+        <div className='w-full relative py-4  bg-gradient-to-b from-gray-50 to-gray-50 border-b border-gray-200'>
 
             <div className='container max-[650px]:px-4 mx-auto flex justify-between items-center font-medium'>
 
@@ -145,6 +143,8 @@ function Navbar() {
                             adminLi.label === "Events" ? <li key={adminLi.label}><DropDown title={adminLi.label} dataArray={adminLi.data} /></li> : <li key={adminLi.label}><NavLink to={adminLi.path} className={({ isActive }) => `${isActive ? "text-purple-500" : "text-gray-700"}`}>{adminLi.label}</NavLink></li>
                         )
                     }
+
+                    
                    
                 </ul>
 
@@ -166,6 +166,7 @@ function Navbar() {
                     </Link>
                 </div>}
 
+
                 <button
                     className="max-[900px]:flex hidden"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -177,7 +178,13 @@ function Navbar() {
                     )}
                 </button>
 
+                
+
             </div>
+
+            {
+                isMenuOpen && <SideBar setIsMenuOpen={setIsMenuOpen} adminList={adminList} alumniList={alumniList} user={user}/>
+            }
 
 
         </div>
