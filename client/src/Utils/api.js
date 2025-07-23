@@ -1,5 +1,4 @@
-const BASE_URL = "http://localhost:3000/api";
-// const BASE_URL = "https://joblink-alumni-l25v.onrender.com/api";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const eventEndpoints = {
   ADD_EVENT: BASE_URL + "/admin/addEvent",

@@ -127,7 +127,7 @@ function Navbar() {
                     </div>
                 </div>
 
-                <ul className='hidden min-[900px]:flex min-[1100px]:space-x-8 gap-4  items-center text-gray-600 font-medium'>
+                <ul className='hidden min-[900px]:flex min-[1100px]:space-x-6 gap-4  items-center text-gray-600 font-medium'>
 
                     {(!user || user.role === "Alumni") && (
                         alumniList.map((alumniLi) => (

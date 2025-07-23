@@ -166,7 +166,6 @@ export const removeJobPost = async (jobId) => {
     
     try {
         const res = await apiCall("POST", jobEndPoints.REMOVE_JOB_POST, { jobId });
-        console.log(res);
     } catch (error) {
         console.log(error);
         if (error.status === 440) {

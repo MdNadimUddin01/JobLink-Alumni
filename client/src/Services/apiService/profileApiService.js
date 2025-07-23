@@ -2,15 +2,14 @@ import { setLoading, setUser } from "../../Slices";
 import { apiCall } from "../apiConnector";
 import { endpoints } from "../../Utils/api.js";
 
-export function loginUser(data) {
-  return async (dispatch, navigate) => {
+export async function loginUser(data , navigate , dispatch) {
     dispatch(setLoading(true));
     try {
       const res = await apiCall("POST", endpoints.LOGIN, data);
 
       console.log("LOGIN API RESPONSE............", res);
 
-      if (res.statusText != "OK") {
+      if (res.status != 200) {
         throw new Error(res.data.message);
       }
 
@@ -23,7 +22,7 @@ export function loginUser(data) {
 
     dispatch(setLoading(false));
   };
-}
+
 
 export function logoutUser(dispatch, navigate) {
   localStorage.removeItem("user");

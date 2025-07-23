@@ -34,9 +34,7 @@ export const SignIn = () => {
 
         try {
 
-            const login = loginUser({ email: formData.email, password: formData.password });
-            await login(dispatch, navigate);
-            console.log("user : " , user);
+            const login = loginUser({ email: formData.email, password: formData.password } , navigate , dispatch);
             
         } catch (error) {
             console.log(error)
