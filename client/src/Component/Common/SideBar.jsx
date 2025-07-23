@@ -44,13 +44,13 @@ function SideBar({ setIsMenuOpen, adminList, alumniList, user }) {
                                         {
 
                                             alumniLi.data.map((alumniData) => {
-                                                return (<li key={alumniData.path}><NavLink to={alumniData.path} className={({ isActive }) => `block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 ${isActive ? "text-purple-500" : ""}`}>{alumniData.label}</NavLink></li>)
+                                                return (<li onClick={() => setIsMenuOpen(false)} key={alumniData.path}><NavLink to={alumniData.path} className={({ isActive }) => `block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 ${isActive ? "text-purple-500" : ""}`}>{alumniData.label}</NavLink></li>)
                                             })
 
                                         }
                                     </ul>
                                 </details>
-                            </li>) : (<li key={alumniLi.path}><NavLink to={alumniLi.path} className={({ isActive }) => `block rounded-lg px-4 py-2 text-sm font-medium ${user ? "" : "pr-22"} text-gray-500 hover:bg-gray-100 hover:text-gray-700 ${isActive ? "text-purple-500" : ""}`}>{alumniLi.label}</NavLink></li>)
+                            </li>) : (<li onClick={() => setIsMenuOpen(false)} key={alumniLi.path}><NavLink to={alumniLi.path} className={({ isActive }) => `block rounded-lg px-4 py-2 text-sm font-medium ${user ? "" : "pr-22"} text-gray-500 hover:bg-gray-100 hover:text-gray-700 ${isActive ? "text-purple-500" : ""}`}>{alumniLi.label}</NavLink></li>)
                         ))
                     )}
                    
@@ -84,13 +84,13 @@ function SideBar({ setIsMenuOpen, adminList, alumniList, user }) {
                                             {
 
                                                 adminLi.data.map((adminData) => {
-                                                    return (<li key={adminData.path}><NavLink to={adminData.path} className={({ isActive }) => `block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 ${isActive ? "text-purple-500" : ""}`}>{adminData.label}</NavLink></li>)
+                                                    return (<li onClick={() => setIsMenuOpen(false)} key={adminData.path}><NavLink to={adminData.path} className={({ isActive }) => `block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 ${isActive ? "text-purple-500" : ""}`}>{adminData.label}</NavLink></li>)
                                                 })
 
                                             }
                                         </ul>
                                     </details>
-                                </li>) : (<li key={adminLi.path}><NavLink to={adminLi.path} className={({ isActive }) => `block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 ${isActive ? "text-purple-500" : ""}`}>{adminLi.label}</NavLink></li>)
+                                </li>) : (<li onClick={() => setIsMenuOpen(false)} key={adminLi.path}><NavLink to={adminLi.path} className={({ isActive }) => `block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 ${isActive ? "text-purple-500" : ""}`}>{adminLi.label}</NavLink></li>)
                             ))
                         )
                     }

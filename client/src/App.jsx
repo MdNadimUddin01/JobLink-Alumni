@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import { Event, Home, UserOutlet, ViewAllJob ,ViewAllForum, ForumChat } from "./Pages"
+import { Event, Home, UserOutlet, ViewAllJob ,ViewAllForum, ForumChat, ErrorPage } from "./Pages"
 import { AddEvent, AddForum, AddJob, AlumniTable, SignIn, SignUp, VerifyEmail } from "./Component"
 
 
@@ -102,11 +102,16 @@ function App() {
           path: "/admin/addEvent",
           element:<AddEvent/>
         },
+
         // {
         //   path: "/admin/forums",
         //   element: <ViewAllForum adminForm={true}/>
         // }
 
+        {
+          path: "*",
+          element: <ErrorPage />
+        }
       ]
     }
   ])

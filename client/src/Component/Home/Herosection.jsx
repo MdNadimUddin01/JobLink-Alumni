@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import firstImage from "../../assets/Home/firstImage.jpg"
 import secondImage from "../../assets/Home/secondImage.jpg"
+import { useNavigate } from 'react-router';
 
 export const HeroSection = () => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [scrollY, setScrollY] = useState(0);
+    // const [isMenuOpen, setIsMenuOpen] = useState(false);
+    // const [scrollY, setScrollY] = useState(0);
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        const handleScroll = () => setScrollY(window.scrollY);
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    // useEffect(() => {
+    //     const handleScroll = () => setScrollY(window.scrollY);
+    //     window.addEventListener('scroll', handleScroll);
+    //     return () => window.removeEventListener('scroll', handleScroll);
+    // }, []);
 
     const stats = [
         { number: '50,000+', label: 'Active Alumni' },
@@ -44,31 +46,7 @@ export const HeroSection = () => {
         <div className="min-h-screen">
             
 
-            {/* Section 1: Hero */}
-            {/* <section className="pt-20 pb-16 bg-gradient-to-br from-indigo-50 via-white to-purple-50 relative overflow-hidden"> */}
-                {/* <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10"></div> */}
-                {/* <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-                    <div className="text-center py-20">
-                        <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-                            Connect. <span className="bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">Grow.</span> Succeed.
-                        </h1>
-                        <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-                            Join thousands of alumni building meaningful connections and advancing their careers through our exclusive network.
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <button className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all flex items-center justify-center">
-                                Join Network <span className="ml-2">→</span>
-                            </button>
-                            <button className="border-2 border-indigo-500 text-indigo-600 px-8 py-4 rounded-xl font-semibold hover:bg-indigo-50 transition-all">
-                                Learn More
-                            </button>
-                        </div>
-                    </div>
-                </div> */}
-                {/* <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-white to-transparent"></div> */}
-            {/* </section> */}
 
-            {/* Section 2: Features */}
             <section className="py-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
@@ -103,7 +81,7 @@ export const HeroSection = () => {
                             <p className="text-lg text-gray-600 mb-8 leading-relaxed">
                                 Whether you're a recent graduate looking for your first opportunity or an experienced professional seeking to expand your network, our community provides the tools and connections you need to succeed.
                             </p>
-                            <button className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all flex items-center">
+                            <button onClick={() => navigate("/jobs")} className="cursor-pointer bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all flex items-center">
                                 Discover Your Potential <span className="ml-2">→</span>
                             </button>
                         </div>
@@ -127,7 +105,7 @@ export const HeroSection = () => {
                             <p className="text-lg text-gray-600 mb-8 leading-relaxed">
                                 Get access to insider industry insights, learn from successful alumni, and build relationships that can transform your career. Our events span across multiple cities and industries.
                             </p>
-                            <button className="bg-gradient-to-r from-amber-500 to-orange-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all flex items-center">
+                            <button onClick={() => navigate("/events")} className="cursor-pointer bg-gradient-to-r from-amber-500 to-orange-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all flex items-center">
                                 <span className="mr-2">📅</span> Explore Events
                             </button>
                         </div>
