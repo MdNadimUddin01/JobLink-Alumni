@@ -2,8 +2,11 @@ import { apiCall } from "../apiConnector.js";
 import { forumEndpoints } from "../../Utils/api.js";
 import { setMyForm, setJoinedForum } from "../../Slices";
 import { message } from "../../../../server/Utils/status.message.js";
+import {toast} from "react-hot-toast";
 
 export const alumniAddForum = async (forum, navigate) => {
+  const toastId = toast.loading("Creating Forum...");
+
   try {
     const res = await apiCall("POST", forumEndpoints.ADD_FORUM, { forum });
 
@@ -12,9 +15,20 @@ export const alumniAddForum = async (forum, navigate) => {
     }
 
     // console.log("RES : ", res);
+    toast.success(res?.data?.message ?? "Forum add successfull", {
+      id: toastId,
+    });
     navigate("/alumni/viewMyForum");
   } catch (error) {
     console.log("error : ", error);
+
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.response?.data?.error ||
+      "Failed to add forum";
+
+    toast.error(errorMessage, { id: toastId });
+
     if (error.status === 440) {
       localStorage.clear();
       const { redirectTo } = error.response.data;
@@ -25,6 +39,7 @@ export const alumniAddForum = async (forum, navigate) => {
 
 export const alumniViewForum = async (dispatch) => {
   let result = [];
+  const toastId = toast.loading("Fetching forum deails...");
 
   try {
     const res = await apiCall("GET", forumEndpoints.VIEW_ALUMNI_FORUM);
@@ -34,12 +49,22 @@ export const alumniViewForum = async (dispatch) => {
     }
 
     result = res.data.forumData;
+    toast.success(res?.data?.message ?? "Forum Fetch successfull", {
+      id: toastId,
+    });
 
     // localStorage.setItem("viewAlumniForum", JSON.stringify(result));
     // dispatch(setMyForm(result));
-
   } catch (error) {
     console.log("Error : ", error);
+
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.response?.data?.error ||
+      "Failed to fetch forum";
+
+    toast.error(errorMessage, { id: toastId });
+
     if (error.status === 440) {
       localStorage.clear();
       const { redirectTo } = error.response.data;
@@ -51,19 +76,32 @@ export const alumniViewForum = async (dispatch) => {
 };
 
 export const getForumData = async (forumId) => {
+  const toastId = toast.loading("Fetching forum deails...");
 
   let result = {};
   try {
-    const res = await apiCall("POST", forumEndpoints.ALUMNI_GET_FORUM, { forumId });
+    const res = await apiCall("POST", forumEndpoints.ALUMNI_GET_FORUM, {
+      forumId,
+    });
 
     if (res.status !== 200) {
-      throw new Error("Alumni Updatetion Failed");
+      throw new Error("Alumni dat fetching Failed");
     }
 
-    
-    result = res.data.forumData
+    toast.success(res?.data?.message ?? "Forum Fetch successfull...", {
+      id: toastId,
+    });
+
+    result = res.data.forumData;
   } catch (error) {
-    console.log(error)
+    console.log(error);
+    
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.response?.data?.error ||
+      "Failed to fetch forum";
+
+    toast.error(errorMessage, { id: toastId });
     if (error.status === 440) {
       localStorage.clear();
       const { redirectTo } = error.response.data;
@@ -72,10 +110,12 @@ export const getForumData = async (forumId) => {
   }
   // console.log("RES : ", result);
 
-  return result
-}
+  return result;
+};
 
 export const alumniUpdateForum = async (forum, forumId, navigate) => {
+  const toastId = toast.loading("Updating forum deails...");
+
   try {
     const res = await apiCall("POST", forumEndpoints.ALUMNI_UPDATE_FORUM, {
       forum,
@@ -85,11 +125,20 @@ export const alumniUpdateForum = async (forum, forumId, navigate) => {
     if (res.status !== 200) {
       throw new Error("Alumni Updatetion Failed");
     }
-
+    toast.success(res?.data?.message ?? "Forum Updated...", {
+      id: toastId,
+    });
     // await alumniViewForum(dispatch);
     navigate("/alumni/viewMyForum");
-      
   } catch (error) {
+
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.response?.data?.error ||
+    "Forum updation Failed";
+
+    toast.error(errorMessage, { id: toastId });
+
     console.log(error);
     if (error.status === 440) {
       localStorage.clear();
@@ -101,6 +150,7 @@ export const alumniUpdateForum = async (forum, forumId, navigate) => {
 
 export const getAllForum = async () => {
   let result = [];
+  const toastId = toast.loading("Fetching forum deails...");
 
   try {
     const res = await apiCall("GET", forumEndpoints.ALUMNI_GET_ALL_FORUM);
@@ -108,10 +158,22 @@ export const getAllForum = async () => {
       throw new Error("Alumni Data fetch Failed");
     }
 
+    toast.success(res?.data?.message ?? "Forum Fetch successfull", {
+      id: toastId,
+    });
+
     // console.log("RES : ", res);
     result = res.data.forumData;
   } catch (error) {
     console.log(error);
+
+     const errorMessage =
+       error?.response?.data?.message ||
+       error?.response?.data?.error ||
+       "Failed to fetch forum";
+
+    toast.error(errorMessage, { id: toastId });
+    
     if (error.status === 440) {
       localStorage.clear();
       const { redirectTo } = error.response.data;
@@ -124,33 +186,45 @@ export const getAllForum = async () => {
 };
 
 export const alumniJoinForum = async (forumId, navigate) => {
-  
-    try {
+  const toastId = toast.loading("Joining forum...");
+
+  try {
     const res = await apiCall("POST", forumEndpoints.ALUMNI_JOIN_FORUM, {
       forumId,
     });
     if (res.status !== 200) {
       throw new Error("Alumni Updatetion Failed");
     }
-      
+
+    toast.success(res?.data?.message ?? "Forum Joined...", {
+      id: toastId,
+    });
+
     // localStorage.setItem("viewJoinedForum", JSON.stringify(res.data.forumData ?? []));
-      
-      
+
     navigate("/alumni/viewJoinedForum");
-      
   } catch (error) {
-      console.log(error);
-      if (error.status === 440) {
-        localStorage.clear();
-        const { redirectTo } = error.response.data;
-        window.location.href = redirectTo;
-      }
-    }
+    console.log(error);
+
+     const errorMessage =
+       error?.response?.data?.message ||
+       error?.response?.data?.error ||
+       "Forum joining failed";
+
+    toast.error(errorMessage, { id: toastId });
     
+    if (error.status === 440) {
+      localStorage.clear();
+      const { redirectTo } = error.response.data;
+      window.location.href = redirectTo;
+    }
+  }
 };
 
 export const getAllJoinedForum = async (dispatch) => {
-    let result = []
+  let result = [];
+  const toastId = toast.loading("Fetching Joined forum...");
+
   try {
     const res = await apiCall(
       "GET",
@@ -160,23 +234,36 @@ export const getAllJoinedForum = async (dispatch) => {
     if (res.status !== 200) {
       throw new Error("Fetching joined forum data failed");
     }
-      result = res.data.forumData
+    result = res.data.forumData;
+
+    toast.success(res?.data?.message ?? "Joined Forum Fetch successfull", {
+      id: toastId,
+    });
     // localStorage.setItem("viewJoinedForum", JSON.stringify(res.data.forumData));
     dispatch(setJoinedForum(result));
   } catch (error) {
     console.log(error);
+
+     const errorMessage =
+       error?.response?.data?.message ||
+       error?.response?.data?.error ||
+       "Failed to fetch joined forum";
+
+    toast.error(errorMessage, { id: toastId });
+    
     if (error.status === 440) {
       localStorage.clear();
       const { redirectTo } = error.response.data;
       window.location.href = redirectTo;
     }
   }
-    
-    return result;
+
+  return result;
 };
 
 export const adminGetAllForum = async () => {
   let result = [];
+  const toastId = toast.loading("Fetching forum deails...");
 
   try {
     const res = await apiCall("GET", forumEndpoints.ADMIN_GET_ALL_FORUM);
@@ -185,16 +272,25 @@ export const adminGetAllForum = async () => {
       throw new Error("Admin Data fetch Failed");
     }
 
-    result = res.data.forumData ?? [];
-    
-  } catch (error) {
+    toast.success(res?.data?.message ?? "Forum Fetch successfull", {
+      id: toastId,
+    });
 
-    
+    result = res.data.forumData ?? [];
+  } catch (error) {
     console.log(error);
+
+     const errorMessage =
+       error?.response?.data?.message ||
+       error?.response?.data?.error ||
+       "Failed to fetch forum";
+
+    toast.error(errorMessage, { id: toastId });
+    
     if (error.status === 440) {
       localStorage.clear();
-      const {redirectTo} = error.response.data
-      window.location.href = redirectTo
+      const { redirectTo } = error.response.data;
+      window.location.href = redirectTo;
     }
   }
 
@@ -204,7 +300,8 @@ export const adminGetAllForum = async () => {
 };
 
 export const adminRemoveForum = async (forumId) => {
-  
+  const toastId = toast.loading("Removing forum deails...");
+
   try {
     const res = await apiCall("POST", forumEndpoints.ADMIN_REMOVE_FORUM, {
       forumId,
@@ -212,8 +309,20 @@ export const adminRemoveForum = async (forumId) => {
     if (res.status !== 200) {
       throw new Error("Admin remove forum Failed");
     }
+
+    toast.success(res?.data?.message ?? "Forum Removed...", {
+      id: toastId,
+    });
   } catch (error) {
     console.log(error);
+
+     const errorMessage =
+       error?.response?.data?.message ||
+       error?.response?.data?.error ||
+       "Failed to remove forum...";
+
+    toast.error(errorMessage, { id: toastId });
+    
     if (error.status === 440) {
       localStorage.clear();
       const { redirectTo } = error.response.data;
@@ -223,6 +332,7 @@ export const adminRemoveForum = async (forumId) => {
 };
 
 export const alumniDeleteForum = async (forumId) => {
+  const toastId = toast.loading("Removing forum deails...");
   try {
     const res = await apiCall("POST", forumEndpoints.ALUMNI_DELETE_FORUM, {
       forumId,
@@ -233,11 +343,75 @@ export const alumniDeleteForum = async (forumId) => {
       throw new Error("Admin remove forum Failed");
     }
 
-    console.log("RES : " , res)
+    console.log("RES : ", res);
 
     // await alumniViewForum(dispatch);
-
+    toast.success(res?.data?.message ?? "Forum Removed", {
+      id: toastId,
+    });
     // navigate("/forums");
+  } catch (error) {
+    console.log(error);
+
+     const errorMessage =
+       error?.response?.data?.message ||
+       error?.response?.data?.error ||
+       "Failed to remove forum";
+
+    toast.error(errorMessage, { id: toastId });
+    
+    if (error.status === 440) {
+      localStorage.clear();
+      const { redirectTo } = error.response.data;
+      window.location.href = redirectTo;
+    }
+  }
+};
+
+export const getAllForumChat = async (forumId) => {
+  let result = [];
+  const toastId = toast.loading("Fetching forum chat...");
+
+  try {
+    const res = await apiCall("POST", forumEndpoints.GET_FORUM_CHAT, {
+      forumId,
+    });
+
+    toast.success(res?.data?.message ?? "ForumChat Fetch successfull", {
+      id: toastId,
+    });
+
+    result = res.data.forumChat;
+  } catch (error) {
+    console.log(error);
+
+     const errorMessage =
+       error?.response?.data?.message ||
+       error?.response?.data?.error ||
+       "Failed to Fetch Forum";
+
+    toast.error(errorMessage, { id: toastId });
+    
+    if (error.status === 440) {
+      localStorage.clear();
+      const { redirectTo } = error.response.data;
+      window.location.href = redirectTo;
+    }
+  }
+
+  return result;
+};
+
+export const sendMessage = async (forumId, message) => {
+  try {
+    const res = await apiCall("POST", forumEndpoints.SEND_FORUM_CHAT, {
+      forumId,
+      message,
+    });
+
+    if (res.status !== 200) {
+      throw new Error("Error occur at send message");
+    }
   } catch (error) {
     console.log(error);
     if (error.status === 440) {
@@ -247,49 +421,3 @@ export const alumniDeleteForum = async (forumId) => {
     }
   }
 };
-
-
-export const getAllForumChat = async (forumId) => {
-  
-  let result = [];
-
-  try {
-    
-    const res = await apiCall("POST", forumEndpoints.GET_FORUM_CHAT, { forumId });
-
-    result = res.data.forumChat;
-
-  } catch (error) {
-    console.log(error)
-    if (error.status === 440) {
-      localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
-    }
-  }
-
-  return result;
-}
-
-export const sendMessage = async (forumId, message) => {
-  
-  try {
-
-    const res = await apiCall("POST", forumEndpoints.SEND_FORUM_CHAT, {
-      forumId,message
-    });
-
-    if (res.status !== 200) {
-      throw new Error("Error occur at send message")
-    }
-
-  } catch (error) {
-    console.log(error);
-    if (error.status === 440) {
-      localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
-    }
-  }
-
-}

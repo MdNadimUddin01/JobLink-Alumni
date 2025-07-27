@@ -50,7 +50,8 @@ export const ForumChat = () => {
 
         chatSocket.emit("join_forum", { forumId });
 
-        chatSocket.on("initial_data", ({ messages , member }) => {
+        chatSocket.on("initial_data", ({ messages, member }) => {
+            // console.log("Initail Data : " , message)
             setForumChat(messages)
             setTotalMember(member);
         });
