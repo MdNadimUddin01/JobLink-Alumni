@@ -31,7 +31,7 @@ const AddForum = () => {
 
 
     const getForumInfo = async () => {
-        const data = await getForumData(forumId);
+        const data = await getForumData(forumId , navigate);
 
         {
             data && setFormData({

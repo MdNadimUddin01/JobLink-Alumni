@@ -30,7 +30,7 @@ export const AddJob = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const getJobData = async () => {
-        const data = await viewJobData(jobId);
+        const data = await viewJobData(jobId , navigate);
         setFormData(data);
     }
 

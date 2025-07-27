@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { adminViewJobs, getAlumni, viewAllJobData, viewAlumniJobData } from '../../Services/apiService';
 import { JobCard } from '../../Component';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 
 export const ViewAllJob = ({ myjob }) => {
     // console.log("myjob : " , myjob)
@@ -12,19 +13,20 @@ export const ViewAllJob = ({ myjob }) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [alumniData, setAlumniData] = useState([]);
     const user = useSelector(state => state.profile.user);
+    const navigate = useNavigate();
 
     const jobData = useCallback(async () => {
         let jobsData = []
         try {
             if (user && user.role === "Admin") {
-                jobsData = await adminViewJobs();
+                jobsData = await adminViewJobs(navigate);
 
             } else {
                 if (!myjob) {
-                    jobsData = await viewAllJobData();
+                    jobsData = await viewAllJobData(navigate);
 
                 } else {
-                    jobsData = await viewAlumniJobData();
+                    jobsData = await viewAlumniJobData(navigate);
                 }
             }
 

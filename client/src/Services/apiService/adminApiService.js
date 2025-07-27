@@ -2,7 +2,7 @@ import { apiCall } from "../apiConnector";
 import { admin } from "../../Utils/api.js";
 import { toast } from "react-hot-toast";
 
-export const getAlumniData = async () => {
+export const getAlumniData = async (navigate) => {
   let result = [];
   const toastId = toast.loading("Fetching alumni data...");
 
@@ -28,15 +28,14 @@ export const getAlumniData = async () => {
 
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 
   return result;
 };
 
-export const verifyAlumniEmail = async (alumniId) => {
+export const verifyAlumniEmail = async (alumniId , navigate) => {
   const toastId = toast.loading("Verifying alumni data...");
 
   try {
@@ -61,8 +60,7 @@ export const verifyAlumniEmail = async (alumniId) => {
 
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 };

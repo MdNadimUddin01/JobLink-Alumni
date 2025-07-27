@@ -1,12 +1,13 @@
 import React from 'react'
 import { deleteJobPost, removeJobPost } from '../../Services/apiService';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 export function JobCard({ jobData, job, showAlumniIcon, alumniHandler }) {
 
     const user = useSelector(state => state.profile.user);
     // console.log(user)
+    const navigate = useNavigate()
 
     const getJobTypeStyle = (jobType) => {
         const styles = {
@@ -18,12 +19,12 @@ export function JobCard({ jobData, job, showAlumniIcon, alumniHandler }) {
     };
 
     const handleDelete = async () => {
-        await deleteJobPost(job._id);
+        await deleteJobPost(job._id , navigate);
         jobData();
     }
 
     const handleRemove = async () => {
-        await removeJobPost(job._id);
+        await removeJobPost(job._id , navigate);
         jobData();
     }
 

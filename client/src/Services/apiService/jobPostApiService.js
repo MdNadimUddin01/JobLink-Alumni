@@ -25,13 +25,12 @@ export const addJobPost = async (jobData, navigate) => {
     toast.error(errorMessage, { id: toastId });
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 };
 
-export const viewAllJobData = async () => {
+export const viewAllJobData = async (navigate) => {
   let result = [];
   const toastId = toast.loading("Fetching job post...");
 
@@ -58,15 +57,14 @@ export const viewAllJobData = async () => {
     console.log(error);
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+     navigate("signIn");
     }
   }
 
   return result;
 };
 
-export const viewJobData = async (jobId) => {
+export const viewJobData = async (jobId , navigate) => {
   let result = {};
   const toastId = toast.loading("Fetching job post...");
 
@@ -92,8 +90,7 @@ export const viewJobData = async (jobId) => {
     toast.error(errorMessage, { id: toastId });
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 
@@ -141,15 +138,14 @@ export const updateJobData = async (job, jobId, navigate) => {
     toast.error(errorMessage, { id: toastId });
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 
   navigate("/alumni/viewMyJob");
 };
 
-export const viewAlumniJobData = async () => {
+export const viewAlumniJobData = async (navigate) => {
   let result = [];
   const toastId = toast.loading("Fetching job post...");
 
@@ -176,15 +172,14 @@ export const viewAlumniJobData = async () => {
 
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 
   return result;
 };
 
-export const deleteJobPost = async (jobId) => {
+export const deleteJobPost = async (jobId , navigate) => {
   const toastId = toast.loading("Removing job post...");
   try {
     const res = await apiCall("POST", jobEndPoints.DELETE_JOB, { jobId });
@@ -208,13 +203,12 @@ export const deleteJobPost = async (jobId) => {
     toast.error(errorMessage, { id: toastId });
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 };
 
-export const removeJobPost = async (jobId) => {
+export const removeJobPost = async (jobId , navigate) => {
   const toastId = toast.loading("Removing job post...");
 
   try {
@@ -234,13 +228,12 @@ export const removeJobPost = async (jobId) => {
     console.log(error);
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 };
 
-export const adminViewJobs = async () => {
+export const adminViewJobs = async (navigate) => {
   let result = [];
   const toastId = toast.loading("Fetching job post...");
 
@@ -255,7 +248,7 @@ export const adminViewJobs = async () => {
     toast.success(res?.data?.message ?? "Job post fetch successfull", {
       id: toastId,
     });
-    
+
   } catch (error) {
     const errorMessage =
       error?.response?.data?.message ||
@@ -266,8 +259,7 @@ export const adminViewJobs = async () => {
     console.log(error);
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 

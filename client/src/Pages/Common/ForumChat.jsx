@@ -1,10 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { data, useParams } from 'react-router';
+import { data, useNavigate, useParams } from 'react-router';
 import { getAllForumChat, sendMessage, getForumData } from '../../Services/apiService';
 import { chatSocket } from '../../Services/socketConnector';
-
-
 
 export const ForumChat = () => {
 
@@ -13,6 +11,7 @@ export const ForumChat = () => {
     const forumChatRef = useRef([]);
     const [forumChat, setForumChat] = useState([]);
     const [totalMember, setTotalMember] = useState(0);
+    const navigate = useNavigate();
 
     useEffect(() => {
         forumChatRef.current = forumChat;
@@ -31,12 +30,12 @@ export const ForumChat = () => {
     
 
     const getForumChat = async () => {
-        const data = await getAllForumChat(forumId);
+        const data = await getAllForumChat(forumId , navigate);
         setForumChat(data)
     }
 
     const getForumInfo = async () => {
-        const data = await getForumData(forumId);
+        const data = await getForumData(forumId , navigate);
         setForumData(data);
     }
 

@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { getAlumniData, verifyAlumniEmail } from '../../../Services/apiService';
+import { useNavigate } from 'react-router';
 
 export const AlumniTable = () => {
     // Sample data
@@ -9,11 +10,12 @@ export const AlumniTable = () => {
     const [filterStatus, setFilterStatus] = useState("All");
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
-
+    const navigate = useNavigate();
+    
     const handleApi = async () => {
         console.log("HAndle API")
         try {
-            const data = await getAlumniData();
+            const data = await getAlumniData(navigate);
             setAlumni(data);
 
         } catch (error) {
@@ -24,7 +26,7 @@ export const AlumniTable = () => {
 
     const handleVerify = async (alumniId) => {
         try {
-            await verifyAlumniEmail(alumniId);
+            await verifyAlumniEmail(alumniId , navigate);
             handleApi();
         } catch (error) {
             console.log(error)

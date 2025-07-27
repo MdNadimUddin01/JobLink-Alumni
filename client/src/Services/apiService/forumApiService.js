@@ -31,13 +31,12 @@ export const alumniAddForum = async (forum, navigate) => {
 
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 };
 
-export const alumniViewForum = async (dispatch) => {
+export const alumniViewForum = async (dispatch , navigate) => {
   let result = [];
   const toastId = toast.loading("Fetching forum deails...");
 
@@ -67,15 +66,14 @@ export const alumniViewForum = async (dispatch) => {
 
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 
   return result;
 };
 
-export const getForumData = async (forumId) => {
+export const getForumData = async (forumId , navigate) => {
   const toastId = toast.loading("Fetching forum deails...");
 
   let result = {};
@@ -104,8 +102,7 @@ export const getForumData = async (forumId) => {
     toast.error(errorMessage, { id: toastId });
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
   // console.log("RES : ", result);
@@ -142,13 +139,12 @@ export const alumniUpdateForum = async (forum, forumId, navigate) => {
     console.log(error);
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 };
 
-export const getAllForum = async () => {
+export const getAllForum = async (navigate) => {
   let result = [];
   const toastId = toast.loading("Fetching forum deails...");
 
@@ -167,17 +163,16 @@ export const getAllForum = async () => {
   } catch (error) {
     console.log(error);
 
-     const errorMessage =
-       error?.response?.data?.message ||
-       error?.response?.data?.error ||
-       "Failed to fetch forum";
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.response?.data?.error ||
+      "Failed to fetch forum";
 
     toast.error(errorMessage, { id: toastId });
-    
+
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 
@@ -215,13 +210,12 @@ export const alumniJoinForum = async (forumId, navigate) => {
     
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 };
 
-export const getAllJoinedForum = async (dispatch) => {
+export const getAllJoinedForum = async (dispatch, navigate) => {
   let result = [];
   const toastId = toast.loading("Fetching Joined forum...");
 
@@ -244,24 +238,23 @@ export const getAllJoinedForum = async (dispatch) => {
   } catch (error) {
     console.log(error);
 
-     const errorMessage =
-       error?.response?.data?.message ||
-       error?.response?.data?.error ||
-       "Failed to fetch joined forum";
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.response?.data?.error ||
+      "Failed to fetch joined forum";
 
     toast.error(errorMessage, { id: toastId });
-    
+
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 
   return result;
 };
 
-export const adminGetAllForum = async () => {
+export const adminGetAllForum = async (navigate) => {
   let result = [];
   const toastId = toast.loading("Fetching forum deails...");
 
@@ -280,17 +273,16 @@ export const adminGetAllForum = async () => {
   } catch (error) {
     console.log(error);
 
-     const errorMessage =
-       error?.response?.data?.message ||
-       error?.response?.data?.error ||
-       "Failed to fetch forum";
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.response?.data?.error ||
+      "Failed to fetch forum";
 
     toast.error(errorMessage, { id: toastId });
-    
+
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 
@@ -299,7 +291,7 @@ export const adminGetAllForum = async () => {
   return result;
 };
 
-export const adminRemoveForum = async (forumId) => {
+export const adminRemoveForum = async (forumId, navigate) => {
   const toastId = toast.loading("Removing forum deails...");
 
   try {
@@ -316,22 +308,21 @@ export const adminRemoveForum = async (forumId) => {
   } catch (error) {
     console.log(error);
 
-     const errorMessage =
-       error?.response?.data?.message ||
-       error?.response?.data?.error ||
-       "Failed to remove forum...";
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.response?.data?.error ||
+      "Failed to remove forum...";
 
     toast.error(errorMessage, { id: toastId });
-    
+
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 };
 
-export const alumniDeleteForum = async (forumId) => {
+export const alumniDeleteForum = async (forumId, navigate) => {
   const toastId = toast.loading("Removing forum deails...");
   try {
     const res = await apiCall("POST", forumEndpoints.ALUMNI_DELETE_FORUM, {
@@ -353,22 +344,21 @@ export const alumniDeleteForum = async (forumId) => {
   } catch (error) {
     console.log(error);
 
-     const errorMessage =
-       error?.response?.data?.message ||
-       error?.response?.data?.error ||
-       "Failed to remove forum";
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.response?.data?.error ||
+      "Failed to remove forum";
 
     toast.error(errorMessage, { id: toastId });
-    
+
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 };
 
-export const getAllForumChat = async (forumId) => {
+export const getAllForumChat = async (forumId, navigate) => {
   let result = [];
   const toastId = toast.loading("Fetching forum chat...");
 
@@ -385,24 +375,23 @@ export const getAllForumChat = async (forumId) => {
   } catch (error) {
     console.log(error);
 
-     const errorMessage =
-       error?.response?.data?.message ||
-       error?.response?.data?.error ||
-       "Failed to Fetch Forum";
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.response?.data?.error ||
+      "Failed to Fetch Forum";
 
     toast.error(errorMessage, { id: toastId });
-    
+
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 
   return result;
 };
 
-export const sendMessage = async (forumId, message) => {
+export const sendMessage = async (forumId, message, navigate) => {
   try {
     const res = await apiCall("POST", forumEndpoints.SEND_FORUM_CHAT, {
       forumId,
@@ -416,8 +405,7 @@ export const sendMessage = async (forumId, message) => {
     console.log(error);
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 };

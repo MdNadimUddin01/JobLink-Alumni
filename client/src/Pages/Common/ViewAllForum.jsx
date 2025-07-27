@@ -2,19 +2,20 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { adminGetAllForum, alumniViewForum, getAllForum, getAllJoinedForum } from '../../Services/apiService';
 import { ForumCard, Title } from '../../Component';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 // import { ForumCard } from './ForumCard';
 
 const ViewAllForum = ({ myform, joinedForm, allForm }) => {
 
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
-
+    const navigate = useNavigate();
     const [forums, setForums] = useState([]);
     const { alumniMyForum } = useSelector(state => state.forum);
     const dispatch = useDispatch();
 
     const loadAllFormData = async () => {
-        const result = await getAllForum();
+        const result = await getAllForum(navigate);
         setForums(result);
     }
 
@@ -23,17 +24,17 @@ const ViewAllForum = ({ myform, joinedForm, allForm }) => {
     const [adminForm, setAdminForum] = useState(user && user.role === "Admin");
 
     const getMyForm = async() => {
-        const result = await alumniViewForum();
+        const result = await alumniViewForum(navigate);
         setForums(result)
     }
 
     const getJoinedForm = async () => {
-        const alumniJoinedForum = await getAllJoinedForum(dispatch)
+        const alumniJoinedForum = await getAllJoinedForum(dispatch , navigate)
         setForums(alumniJoinedForum)
     }
 
     const getAdminForm = async () => {
-        const result = await adminGetAllForum();
+        const result = await adminGetAllForum(navigate);
         setForums(result)
     }
 

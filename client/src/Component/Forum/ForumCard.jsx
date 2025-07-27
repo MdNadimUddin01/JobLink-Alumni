@@ -35,12 +35,12 @@ function ForumCard({ forum, joinedForm, adminForm, myform, allForm, forumData })
     }
 
     const handleDelete = async () => {
-        await alumniDeleteForum(forum._id);
+        await alumniDeleteForum(forum._id , navigate);
         forumData();
     }
 
     const handleAdminDelete = async () => {
-        await adminRemoveForum(forum._id);
+        await adminRemoveForum(forum._id , navigate);
         forumData();
     }
 

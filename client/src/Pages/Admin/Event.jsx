@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { EventCard } from "../../Component/Admin/Event";
 import { deleteEventData, getAllEventData } from "../../Services/apiService";
+import { useNavigate } from "react-router";
 
-// Demo component showing multiple cards
 export const Event = () => {
 
+    const navigate = useNavigate();
     const [event , setEvent] = useState([]);
 
     const loadEvent = async () => {
         
-        const result = await getAllEventData();
+        const result = await getAllEventData(navigate);
         setEvent(result);
 
     }
@@ -19,7 +20,7 @@ export const Event = () => {
     }, []);
 
     const deleteEvent = async (eventId) => {
-        await deleteEventData(eventId);
+        await deleteEventData(eventId , navigate);
         // console.log("Deleted");
         loadEvent();
     }

@@ -32,13 +32,12 @@ export const addEvent = async (eventData, navigate) => {
 
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 };
 
-export const getAllEventData = async () => {
+export const getAllEventData = async (navigate) => {
   let result = [];
   const toastId = toast.loading("Fetching event data...");
   try {
@@ -64,15 +63,14 @@ export const getAllEventData = async () => {
 
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 
   return result;
 };
 
-export const deleteEventData = async (eventId) => {
+export const deleteEventData = async (eventId, navigate) => {
   const toastId = toast.loading("Removing event data...");
   try {
 
@@ -97,8 +95,7 @@ export const deleteEventData = async (eventId) => {
 
     if (error.status === 440) {
       localStorage.clear();
-      const { redirectTo } = error.response.data;
-      window.location.href = redirectTo;
+      navigate("signIn");
     }
   }
 };
