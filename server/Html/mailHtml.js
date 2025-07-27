@@ -1,11 +1,10 @@
 export function getHtml(email, verificationLink = "https:localhost:5173") {
-    
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alumni Tracker - Email Verification</title>
+    <title>JobLink Alumni - Email Verification</title>
     <style>
         body {
             margin: 0;
@@ -226,7 +225,7 @@ export function getHtml(email, verificationLink = "https:localhost:5173") {
 <body>
     <div class="email-container">
         <div class="header">
-            <h1>Alumni Tracker System</h1>
+            <h1>JobLink Alumni</h1>
             <p>Connecting Alumni Communities</p>
         </div>
         
@@ -236,7 +235,7 @@ export function getHtml(email, verificationLink = "https:localhost:5173") {
             </div>
             
             <div class="message">
-                Welcome to the Alumni Tracker System! We're excited to have you join our community of alumni.
+                Welcome to the JobLink Alumni! We're excited to have you join our community of alumni.
                 <br><br>
                 To complete your registration and secure your account, please verify your email address by clicking the button below:
             </div>
@@ -255,18 +254,18 @@ export function getHtml(email, verificationLink = "https:localhost:5173") {
             
             <div class="security-note">
                 <h3>🔒 Security Notice</h3>
-                <p>This verification link will expire in 24 hours for your security. If you didn't create an account with Alumni Tracker System, please ignore this email.</p>
+                <p>This verification link will expire in 24 hours for your security. If you didn't create an account with JobLink Alumni, please ignore this email.</p>
             </div>
         </div>
         
         <div class="footer">
             <p>
-                <strong>Alumni Tracker System</strong><br>
+                <strong>JobLink Alumni</strong><br>
                 Connecting graduates, building networks, creating opportunities
             </p>
             <div class="contact-info">
                 <p>Need help? Contact us at <strong>support@alumnitracker.com</strong></p>
-                <p>© 2025 Alumni Tracker System. All rights reserved.</p>
+                <p>© 2025 JobLink Alumni. All rights reserved.</p>
             </div>
         </div>
     </div>
@@ -277,13 +276,13 @@ export function getHtml(email, verificationLink = "https:localhost:5173") {
 
 export const subjectVerify = "Hello Alumni Its a Verification Mail";
 
-export function adminVerifyEmail(email){
-    return `<!DOCTYPE html>
+export function adminVerifyEmail(email) {
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Verified Successfully - Alumni Tracker System</title>
+    <title>Email Verified Successfully - JobLink Alumni</title>
     <style>
         * {
             margin: 0;
@@ -616,7 +615,7 @@ export function adminVerifyEmail(email){
             </div>
 
             <h1>Email Verified Successfully!</h1>
-            <p class="subtitle">Welcome to the Alumni Tracker System community. Your account is now active and ready to use.</p>
+            <p class="subtitle">Welcome to the JobLink Alumni community. Your account is now active and ready to use.</p>
 
             <div class="email-info">
                 <p><strong>Verified Email:</strong> <span id="userEmail">${email}</span></p>
@@ -630,7 +629,7 @@ export function adminVerifyEmail(email){
 
         <div class="footer-info">
             <p><strong>What's Next?</strong></p>
-            <p>You can now access all features of the Alumni Tracker System, including connecting with fellow alumni, updating your profile, and exploring networking opportunities.</p>
+            <p>You can now access all features of the JobLink Alumni, including connecting with fellow alumni, updating your profile, and exploring networking opportunities.</p>
             
             <div class="security-tips">
                 <h4>🔒 Account Security Tips:</h4>
@@ -675,5 +674,5 @@ export function adminVerifyEmail(email){
         });
     </script>
 </body>
-</html>`
+</html>`;
 }

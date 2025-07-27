@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { Event, Home, UserOutlet, ViewAllJob ,ViewAllForum, ForumChat, ErrorPage } from "./Pages"
 import { AddEvent, AddForum, AddJob, AlumniTable, SignIn, SignUp, VerifyEmail } from "./Component"
-
+import {Toaster} from "react-hot-toast"
 
 function App() {
 
@@ -119,6 +119,7 @@ function App() {
   return (
     <>
       <RouterProvider router={route} />
+      <Toaster position="top-right" />
     </>
   )
 }

@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { FileUpload } from '../';
 import axios from "axios";
-
+import { useNavigate } from 'react-router';
+import toast from 'react-hot-toast';
 
 export function SignUp() {
+    const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -18,14 +22,110 @@ export function SignUp() {
         currentCompany: '',
         designation: '',
         linkedInProfileLink: '',
+        terms: false
     });
 
     const [profile, setProfile] = useState("");
+    const [errors, setErrors] = useState({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    console.log(profile)
+    const validateForm = () => {
+        const newErrors = {};
+
+        if (!formData.email.trim()) {
+            newErrors.email = 'Email is required';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            newErrors.email = 'Please enter a valid email address';
+        }
+
+        if (!formData.password) {
+            newErrors.password = 'Password is required';
+        } else if (formData.password.length < 6) {
+            newErrors.password = 'Password must be at least 6 characters long';
+        } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
+            newErrors.password = 'Password must contain at least one uppercase letter, one lowercase letter, and one number';
+        }
+
+        if (!formData.userName.trim()) {
+            newErrors.userName = 'Name is required';
+        } else if (formData.userName.trim().length < 2) {
+            newErrors.userName = 'Name must be at least 2 characters long';
+        } else if (!/^[a-zA-Z\s]+$/.test(formData.userName.trim())) {
+            newErrors.userName = 'Name can only contain letters and spaces';
+        }
+
+        if (!formData.contact.trim()) {
+            newErrors.contact = 'Contact number is required';
+        } else if (!/^[0-9]{10}$/.test(formData.contact.replace(/\D/g, ''))) {
+            newErrors.contact = 'Please enter a valid 10-digit phone number';
+        }
+
+        if (!formData.dateOfBirth) {
+            newErrors.dateOfBirth = 'Date of birth is required';
+        } else {
+            const birthDate = new Date(formData.dateOfBirth);
+            const today = new Date();
+            const age = today.getFullYear() - birthDate.getFullYear();
+            if (age < 18 || age > 80) {
+                newErrors.dateOfBirth = 'Age must be between 18 and 80 years';
+            }
+        }
+
+        if (!formData.gender) {
+            newErrors.gender = 'Please select your gender';
+        }
+
+        if (!formData.passoutYear) {
+            newErrors.passoutYear = 'Passout year is required';
+        } else {
+            const year = parseInt(formData.passoutYear);
+            const currentYear = new Date().getFullYear();
+            if (year < 1990 || year > currentYear + 2) {
+                newErrors.passoutYear = `Year must be between 1990 and ${currentYear + 2}`;
+            }
+        }
+
+        if (!formData.stream) {
+            newErrors.stream = 'Please select your stream';
+        }
+
+        if (!formData.branch.trim()) {
+            newErrors.branch = 'Branch/Specialization is required';
+        } else if (formData.branch.trim().length < 2) {
+            newErrors.branch = 'Branch must be at least 2 characters long';
+        }
+
+        if (!formData.experience) {
+            newErrors.experience = 'Please select your experience level';
+        }
+
+        if (formData.linkedInProfileLink.trim() &&
+            !/^https?:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9-]+\/?$/.test(formData.linkedInProfileLink)) {
+            newErrors.linkedInProfileLink = 'Please enter a valid LinkedIn profile URL';
+        }
+
+        if (!formData.terms) {
+            newErrors.terms = 'You must agree to the terms and conditions';
+        }
+
+        if (!profile) {
+            newErrors.profile = 'Profile image is required';
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
+
+        if (errors[name]) {
+            setErrors(prev => ({
+                ...prev,
+                [name]: ''
+            }));
+        }
+
         setFormData(prev => ({
             ...prev,
             [name]: type === 'checkbox' ? checked : value
@@ -34,17 +134,21 @@ export function SignUp() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
-        handleSignUpapi();
+
+        if (validateForm()) {
+            handleSignUpapi();
+        } else {
+            toast.error('Please fix the errors in the form');
+        }
     };
 
-
     const handleSignUpapi = async () => {
+        if (isSubmitting) return; 
+
+        setIsSubmitting(true);
+        const toastId = toast.loading("Creating alumni account...");
 
         try {
-
-            console.log("FORM : ", formData);
-
             const {
                 userName,
                 contact,
@@ -60,47 +164,62 @@ export function SignUp() {
             } = formData;
 
             const alumni = {
-                userName,
-                contact,
+                userName: userName.trim(),
+                contact: contact.replace(/\D/g, ''), // Remove non-digits
                 dateOfBirth,
                 gender,
-                passoutYear,
+                passoutYear: parseInt(passoutYear),
                 stream,
-                branch,
+                branch: branch.trim(),
                 experience,
-                currentCompany,
-                designation,
-                linkedInProfileLink
+                currentCompany: currentCompany.trim(),
+                designation: designation.trim(),
+                linkedInProfileLink: linkedInProfileLink.trim()
             }
-            console.log("HELLEO")
 
             const formdata = new FormData();
             formdata.append("profile", profile, profile.name);
-            formdata.append("email", formData.email);
+            formdata.append("email", formData.email.trim().toLowerCase());
             formdata.append("password", formData.password);
-
-            console.log(formdata)
-
-            // Convert object to JSON string
             formdata.append("alumni", JSON.stringify(alumni));
 
-            const data = await axios.post("http://localhost:3000/api/alumni/signUp", formdata, {
+            const data = await axios.post(BASE_URL + "/alumni/signUp", formdata, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
             });
-            
-            console.log(data);
+
+            toast.success("Alumni Account created successfully!", { id: toastId });
+            navigate("/signIn");
 
         } catch (error) {
-            console.log("Error : ", error);
-        }
+            const errorMessage = error?.response?.data?.message ||
+                error?.response?.data?.error ||
+                "Failed to create alumni account";
 
-    }
+            if (error?.response?.status === 400) {
+                if (errorMessage.toLowerCase().includes('email')) {
+                    setErrors(prev => ({ ...prev, email: 'This email is already registered' }));
+                } else if (errorMessage.toLowerCase().includes('username')) {
+                    setErrors(prev => ({ ...prev, userName: 'This username is already taken' }));
+                }
+            }
+
+            toast.error(errorMessage, { id: toastId });
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const getInputClass = (fieldName) => {
+        const baseClass = "w-full pl-10 pr-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-slate-500 bg-white";
+        return errors[fieldName]
+            ? `${baseClass} border-red-500 focus:ring-red-500 focus:border-red-500`
+            : `${baseClass} border-slate-300 focus:ring-slate-500`;
+    };
 
     return (
         <div className="min-h-screen w-full mx-auto bg-slate-50 flex">
-
             <div className='w-full mx-auto'>
                 <div className="w-full flex items-center justify-center p-8 bg-white">
                     <div className="w-full max-w-2xl">
@@ -113,7 +232,7 @@ export function SignUp() {
                                 <p className="text-slate-600">Please fill in your details to register</p>
                             </div>
 
-                            <div className="space-y-8">
+                            <form onSubmit={handleSubmit} className="space-y-8">
                                 {/* Personal Information */}
                                 <div className="border-b border-slate-200 pb-6">
                                     <h3 className="text-lg font-semibold text-slate-700 mb-4 flex items-center">
@@ -135,10 +254,11 @@ export function SignUp() {
                                                     required
                                                     value={formData.email}
                                                     onChange={handleInputChange}
-                                                    className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring focus:ring-slate-500 focus:border-slate-500 bg-white"
+                                                    className={getInputClass('email')}
                                                     placeholder="Enter your email"
                                                 />
                                             </div>
+                                            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                                         </div>
 
                                         <div className="space-y-2">
@@ -154,10 +274,11 @@ export function SignUp() {
                                                     required
                                                     value={formData.password}
                                                     onChange={handleInputChange}
-                                                    className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring focus:ring-slate-500 focus:border-slate-500 bg-white"
+                                                    className={getInputClass('password')}
                                                     placeholder="Create password"
                                                 />
                                             </div>
+                                            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
                                         </div>
 
                                         <div className="space-y-2">
@@ -173,10 +294,11 @@ export function SignUp() {
                                                     required
                                                     value={formData.userName}
                                                     onChange={handleInputChange}
-                                                    className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring focus:ring-slate-500 focus:border-slate-500 bg-white"
-                                                    placeholder="Choose username"
+                                                    className={getInputClass('userName')}
+                                                    placeholder="Enter your full name"
                                                 />
                                             </div>
+                                            {errors.userName && <p className="text-red-500 text-sm mt-1">{errors.userName}</p>}
                                         </div>
 
                                         <div className="space-y-2">
@@ -192,10 +314,11 @@ export function SignUp() {
                                                     required
                                                     value={formData.contact}
                                                     onChange={handleInputChange}
-                                                    className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring focus:ring-slate-500 focus:border-slate-500 bg-white"
-                                                    placeholder="Phone number"
+                                                    className={getInputClass('contact')}
+                                                    placeholder="10-digit phone number"
                                                 />
                                             </div>
+                                            {errors.contact && <p className="text-red-500 text-sm mt-1">{errors.contact}</p>}
                                         </div>
 
                                         <div className="space-y-2">
@@ -211,9 +334,10 @@ export function SignUp() {
                                                     required
                                                     value={formData.dateOfBirth}
                                                     onChange={handleInputChange}
-                                                    className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring focus:ring-slate-500 focus:border-slate-500 bg-white"
+                                                    className={getInputClass('dateOfBirth')}
                                                 />
                                             </div>
+                                            {errors.dateOfBirth && <p className="text-red-500 text-sm mt-1">{errors.dateOfBirth}</p>}
                                         </div>
 
                                         <div className="space-y-2">
@@ -228,7 +352,7 @@ export function SignUp() {
                                                     required
                                                     value={formData.gender}
                                                     onChange={handleInputChange}
-                                                    className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring focus:ring-slate-500 focus:border-slate-500 bg-white"
+                                                    className={getInputClass('gender')}
                                                 >
                                                     <option value="">Select Gender</option>
                                                     <option value="male">Male</option>
@@ -237,12 +361,14 @@ export function SignUp() {
                                                     <option value="prefer-not-to-say">Prefer not to say</option>
                                                 </select>
                                             </div>
+                                            {errors.gender && <p className="text-red-500 text-sm mt-1">{errors.gender}</p>}
                                         </div>
                                     </div>
 
-                                    <FileUpload setFile={setProfile} />
-
-
+                                    <div className="mt-4">
+                                        <FileUpload setFile={setProfile} />
+                                        {errors.profile && <p className="text-red-500 text-sm mt-1">{errors.profile}</p>}
+                                    </div>
                                 </div>
 
                                 {/* Academic Information */}
@@ -268,10 +394,11 @@ export function SignUp() {
                                                     required
                                                     value={formData.passoutYear}
                                                     onChange={handleInputChange}
-                                                    className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring focus:ring-slate-500 focus:border-slate-500 bg-white"
+                                                    className={getInputClass('passoutYear')}
                                                     placeholder="Graduation year"
                                                 />
                                             </div>
+                                            {errors.passoutYear && <p className="text-red-500 text-sm mt-1">{errors.passoutYear}</p>}
                                         </div>
 
                                         <div className="space-y-2">
@@ -286,7 +413,7 @@ export function SignUp() {
                                                     required
                                                     value={formData.stream}
                                                     onChange={handleInputChange}
-                                                    className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring focus:ring-slate-500 focus:border-slate-500 bg-white"
+                                                    className={getInputClass('stream')}
                                                 >
                                                     <option value="">Select Stream</option>
                                                     <option value="engineering">Engineering</option>
@@ -298,6 +425,7 @@ export function SignUp() {
                                                     <option value="other">Other</option>
                                                 </select>
                                             </div>
+                                            {errors.stream && <p className="text-red-500 text-sm mt-1">{errors.stream}</p>}
                                         </div>
 
                                         <div className="space-y-2 md:col-span-2">
@@ -313,10 +441,11 @@ export function SignUp() {
                                                     required
                                                     value={formData.branch}
                                                     onChange={handleInputChange}
-                                                    className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring focus:ring-slate-500 focus:border-slate-500 bg-white"
+                                                    className={getInputClass('branch')}
                                                     placeholder="Your specialization"
                                                 />
                                             </div>
+                                            {errors.branch && <p className="text-red-500 text-sm mt-1">{errors.branch}</p>}
                                         </div>
                                     </div>
                                 </div>
@@ -341,7 +470,7 @@ export function SignUp() {
                                                     required
                                                     value={formData.experience}
                                                     onChange={handleInputChange}
-                                                    className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring focus:ring-slate-500 focus:border-slate-500 bg-white"
+                                                    className={getInputClass('experience')}
                                                 >
                                                     <option value="">Select Experience</option>
                                                     <option value="0 Year">Fresher</option>
@@ -354,6 +483,7 @@ export function SignUp() {
                                                     <option value="10+ Years">10+ Years</option>
                                                 </select>
                                             </div>
+                                            {errors.experience && <p className="text-red-500 text-sm mt-1">{errors.experience}</p>}
                                         </div>
 
                                         <div className="space-y-2">
@@ -368,7 +498,7 @@ export function SignUp() {
                                                     name="currentCompany"
                                                     value={formData.currentCompany}
                                                     onChange={handleInputChange}
-                                                    className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring focus:ring-slate-500 focus:border-slate-500 bg-white"
+                                                    className={getInputClass('currentCompany')}
                                                     placeholder="Current workplace"
                                                 />
                                             </div>
@@ -386,7 +516,7 @@ export function SignUp() {
                                                     name="designation"
                                                     value={formData.designation}
                                                     onChange={handleInputChange}
-                                                    className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring focus:ring-slate-500 focus:border-slate-500 bg-white"
+                                                    className={getInputClass('designation')}
                                                     placeholder="Job title"
                                                 />
                                             </div>
@@ -404,13 +534,13 @@ export function SignUp() {
                                                     name="linkedInProfileLink"
                                                     value={formData.linkedInProfileLink}
                                                     onChange={handleInputChange}
-                                                    className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring focus:ring-slate-500 focus:border-slate-500 bg-white"
+                                                    className={getInputClass('linkedInProfileLink')}
                                                     placeholder="https://linkedin.com/in/yourprofile"
                                                 />
                                             </div>
+                                            {errors.linkedInProfileLink && <p className="text-red-500 text-sm mt-1">{errors.linkedInProfileLink}</p>}
                                         </div>
                                     </div>
-
                                 </div>
 
                                 {/* Terms and Submit */}
@@ -436,14 +566,18 @@ export function SignUp() {
                                             </a>
                                         </label>
                                     </div>
+                                    {errors.terms && <p className="text-red-500 text-sm">{errors.terms}</p>}
 
                                     <button
-                                        type="button"
-                                        onClick={handleSubmit}
-                                        className="w-full bg-slate-700 hover:bg-slate-800 text-white py-3 px-4 rounded-md font-medium transition-colors duration-200 flex items-center justify-center space-x-2"
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        className={`w-full py-3 px-4 rounded-md font-medium transition-colors duration-200 flex items-center justify-center space-x-2 ${isSubmitting
+                                                ? 'bg-slate-400 cursor-not-allowed'
+                                                : 'bg-slate-700 hover:bg-slate-800 cursor-pointer'
+                                            } text-white`}
                                     >
-                                        <span>✓</span>
-                                        <span>Create Account</span>
+                                        <span>{isSubmitting ? '⏳' : '✓'}</span>
+                                        <span>{isSubmitting ? 'Creating Account...' : 'Create Account'}</span>
                                     </button>
 
                                     <div className="text-center">
@@ -455,12 +589,11 @@ export function SignUp() {
                                         </p>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     );
 }

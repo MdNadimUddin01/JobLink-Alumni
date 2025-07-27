@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import loginImage from "../../assets/login.avif"
-import axios from "axios"
 import { loginUser } from '../../Services';
 import { useDispatch, useSelector } from 'react-redux';
 import { data, useNavigate } from 'react-router';
@@ -14,46 +13,136 @@ export const SignIn = () => {
         rememberMe: false
     });
 
+    const [errors, setErrors] = useState({
+        email: '',
+        password: '',
+        general: ''
+    });
+
+    const [isLoading, setIsLoading] = useState(false);
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const validateEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    const validatePassword = (password) => {
+        return password.length >= 6; 
+    };
+
+    const clearError = (fieldName) => {
+        if (errors[fieldName]) {
+            setErrors(prev => ({
+                ...prev,
+                [fieldName]: ''
+            }));
+        }
+    };
+
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
+
         setFormData(prev => ({
             ...prev,
             [name]: type === 'checkbox' ? checked : value
         }));
+
+        clearError(name);
+        clearError('general');
     };
 
     const user = useSelector((state) => state.profile.user);
 
-    // console.log(user)
+    const validateForm = () => {
+        const newErrors = {};
 
+        // Email validation
+        if (!formData.email.trim()) {
+            newErrors.email = 'Email is required';
+        } else if (!validateEmail(formData.email)) {
+            newErrors.email = 'Please enter a valid email address';
+        }
+
+        // Password validation
+        if (!formData.password.trim()) {
+            newErrors.password = 'Password is required';
+        } else if (!validatePassword(formData.password)) {
+            newErrors.password = 'Password must be at least 6 characters long';
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
     const hanldeLogin = async () => {
-
         try {
+            setIsLoading(true);
+            setErrors(prev => ({ ...prev, general: '' }));
 
-            const login = loginUser({ email: formData.email, password: formData.password } , navigate , dispatch);
-            
+            const login = await loginUser({
+                email: formData.email,
+                password: formData.password
+            }, navigate, dispatch);
+
         } catch (error) {
-            console.log(error)
+            console.log(error);
+
+            if (error.response) {
+                const status = error.response.status;
+                const message = error.response.data?.message || error.response.data?.error;
+
+                if (status === 401) {
+                    setErrors(prev => ({
+                        ...prev,
+                        general: 'Invalid email or password. Please try again.'
+                    }));
+                } else if (status === 404) {
+                    setErrors(prev => ({
+                        ...prev,
+                        general: 'Account not found. Please check your email or sign up.'
+                    }));
+                } else if (status >= 500) {
+                    setErrors(prev => ({
+                        ...prev,
+                        general: 'Server error. Please try again later.'
+                    }));
+                } else {
+                    setErrors(prev => ({
+                        ...prev,
+                        general: message || 'Login failed. Please try again.'
+                    }));
+                }
+            } else if (error.request) {
+                setErrors(prev => ({
+                    ...prev,
+                    general: 'Network error. Please check your internet connection.'
+                }));
+            } else {
+                setErrors(prev => ({
+                    ...prev,
+                    general: 'An unexpected error occurred. Please try again.'
+                }));
+            }
+        } finally {
+            setIsLoading(false);
         }
-        
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("SUbmitting Data : ");
-        hanldeLogin();
+        console.log("Submitting Data : ");
+
+        if (validateForm()) {
+            hanldeLogin();
+        }
     };
 
     return (
         <div className="min-h-screen bg-gray-50 flex">
-            {/* Left Side - Image */}
             <div className="hidden mx-auto items-center justify-center md:flex sm:w-1/2 bg-gradient-to-br from-pink-600 to-purple-700 relative overflow-hidden">
-                {/* <div className="absolute inset-0  bg-opacity-20"></div> */}
-
                 <div className="relative z-10 flex flex-col gap-8 justify-center items-center text-white p-12">
                     <div className="max-w-md text-center">
                         <h1 className="text-4xl font-bold mb-6">Welcome Back</h1>
@@ -64,13 +153,8 @@ export const SignIn = () => {
 
                     <img className='rounded-md object-contain w-[80%]' src={loginImage}></img>
                 </div>
-                {/* Decorative circles */}
-                {/* <div className="absolute top-20 left-20 w-32 h-32 bg-white bg-opacity-10 rounded-full"></div>
-                <div className="absolute bottom-20 right-20 w-24 h-24 bg-white bg-opacity-10 rounded-full"></div>
-                <div className="absolute top-1/2 right-32 w-16 h-16 bg-white bg-opacity-10 rounded-full"></div> */}
             </div>
 
-            {/* Right Side - Sign In Form */}
             <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
                 <div className="w-full max-w-md">
                     <div className="text-center mb-8">
@@ -78,8 +162,16 @@ export const SignIn = () => {
                         <p className="text-gray-600">Enter your credentials to access your account</p>
                     </div>
 
-                    <div className="space-y-6">
+                    {errors.general && (
+                        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                            <div className="flex items-center">
+                                <span className="text-red-400 text-lg mr-2">⚠️</span>
+                                <p className="text-red-700 text-sm">{errors.general}</p>
+                            </div>
+                        </div>
+                    )}
 
+                    <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                                 Email Address
@@ -94,12 +186,20 @@ export const SignIn = () => {
                                     name="email"
                                     value={formData.email}
                                     onChange={handleInputChange}
-                                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg transition duration-200 bg-white"
+                                    className={`w-full pl-10 pr-4 py-3 border rounded-lg transition duration-200 bg-white ${errors.email
+                                            ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
+                                            : 'border-gray-300 focus:border-purple-500 focus:ring-purple-500'
+                                        }`}
                                     placeholder="Enter your email"
                                     required
                                 />
-
                             </div>
+                            {errors.email && (
+                                <p className="mt-2 text-sm text-red-600 flex items-center">
+                                    <span className="mr-1">❌</span>
+                                    {errors.email}
+                                </p>
+                            )}
                         </div>
 
                         <div>
@@ -116,7 +216,10 @@ export const SignIn = () => {
                                     name="password"
                                     value={formData.password}
                                     onChange={handleInputChange}
-                                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg    transition duration-200 bg-white"
+                                    className={`w-full pl-10 pr-12 py-3 border rounded-lg transition duration-200 bg-white ${errors.password
+                                            ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
+                                            : 'border-gray-300 focus:border-purple-500 focus:ring-purple-500'
+                                        }`}
                                     placeholder="Enter your password"
                                     required
                                 />
@@ -130,6 +233,12 @@ export const SignIn = () => {
                                     </span>
                                 </button>
                             </div>
+                            {errors.password && (
+                                <p className="mt-2 text-sm text-red-600 flex items-center">
+                                    <span className="mr-1">❌</span>
+                                    {errors.password}
+                                </p>
+                            )}
                         </div>
 
                         <div className="flex items-center justify-between">
@@ -155,14 +264,22 @@ export const SignIn = () => {
                         </div>
 
                         <button
-                            type="button"
-                            onClick={handleSubmit}
-                            className="w-full cursor-pointer bg-purple-500 text-white py-3 px-4 rounded-lg font-medium hover:bg-purple-600 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200"
+                            type="submit"
+                            disabled={isLoading}
+                            className={`w-full py-3 px-4 rounded-lg font-medium transition duration-200 ${isLoading
+                                    ? 'bg-gray-400 cursor-not-allowed'
+                                    : 'bg-purple-500 hover:bg-purple-600 cursor-pointer'
+                                } text-white focus:ring-2 focus:ring-purple-500 focus:ring-offset-2`}
                         >
-                            Sign In
+                            {isLoading ? (
+                                <span className="flex items-center justify-center">
+                                    <span className="mr-2">⏳</span>
+                                    Signing In...
+                                </span>
+                            ) : (
+                                'Sign In'
+                            )}
                         </button>
-
-
 
                         <div className="relative my-6">
                             <div className="absolute inset-0 flex items-center">
@@ -173,10 +290,6 @@ export const SignIn = () => {
                             </div>
                         </div>
 
-
-
-
-                        {/* Sign Up Link */}
                         <p className="text-center text-sm text-gray-600 mt-6">
                             Don't have an account ?{' '}
                             <button
@@ -186,8 +299,7 @@ export const SignIn = () => {
                                 Sign up here
                             </button>
                         </p>
-
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

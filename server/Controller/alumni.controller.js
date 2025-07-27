@@ -5,13 +5,11 @@ import { message, statusCode } from "../Utils/status.message.js";
 import bcrypt from "bcrypt";
 import { fileURLToPath } from "url";
 import { getHtml, subjectVerify } from "../Html/mailHtml.js";
-import { url } from "inspector/promises";
-// import {} from ".."
 
 export const alumniSignupController = async (req, res) => {
   try {
-    console.log("req : ", req.body);
-    console.log("File : ", req.files);
+    // console.log("req : ", req.body);
+    // console.log("File : ", req.files);
 
     const { email, password, alumni } = req.body;
     const _alumni = JSON.parse(alumni);
@@ -65,11 +63,13 @@ export const alumniSignupController = async (req, res) => {
           });
 
           const verificationLink =
-            "http://localhost:5173/" +
+            process.env.FRONT_END_URL +
             "alumni/verifyEmail?id=" +
-            encodeURIComponent(userData._id) + "&email=" +encodeURIComponent(email);
+            encodeURIComponent(userData._id) +
+            "&email=" +
+            encodeURIComponent(email);
 
-          console.log("alumniData : ", alumniData);
+          // console.log("alumniData : ", alumniData);
 
           alumniData.save();
           console.log(alumniData);
@@ -87,6 +87,7 @@ export const alumniSignupController = async (req, res) => {
                 return res.status(statusCode.SUCCESS).send({
                   message: message.WAIT_FOR_ADMIN_APPROVAL,
                 });
+                
               } else {
                 console.log("Error while sending mail from mailer");
                 return res.status(statusCode.ERROR).send({
