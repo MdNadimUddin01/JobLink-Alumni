@@ -1,4 +1,4 @@
-export function getHtml(email, verificationLink = "https:localhost:5173") {
+export function getHtml(email, verificationLink = "https:localhost:5173/") {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>

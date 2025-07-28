@@ -64,7 +64,7 @@ export const alumniSignupController = async (req, res) => {
 
           const verificationLink =
             process.env.FRONT_END_URL +
-            "alumni/verifyEmail?id=" +
+            "/alumni/verifyEmail?id=" +
             encodeURIComponent(userData._id) +
             "&email=" +
             encodeURIComponent(email);
