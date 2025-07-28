@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { axiosInstance } from '../../Services';
-
+import {toast} from "react-hot-toast"
 export const VerifyEmail = () => {
 
     const navigate = useNavigate();
@@ -16,15 +16,14 @@ export const VerifyEmail = () => {
     const [verificationStatus, setVerificationStatus] = useState('pending'); // pending, success, error
     // const [copyStatus, setCopyStatus] = useState('Copy');
 
-    // const verificationLink = `https://alumnitracker.com/verify?token=${token}&email=${encodeURIComponent(email)}`;
 
     const verifyEmail = async () => {
         setIsVerifying(true);
-
+        const toastId = toast.loading("Verifying email ...")
         try {
             // Simulate API call
             const response = await axiosInstance({
-                url: 'http://localhost:3000/api/alumni/verifyEmail',
+                url: import.meta.env.VITE_BACKEND_URL +'/alumni/verifyEmail',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -32,36 +31,25 @@ export const VerifyEmail = () => {
                 data : {email , id}
             });
 
-            console.log(response);
+            toast.success("Email verified ...", { id: toastId })
+            
+            setVerificationStatus('success');
 
-            if (response.status === 200 ) {
-                setVerificationStatus('success');
-                if (onVerificationSuccess) {
-                    onVerificationSuccess();
-                }
-
-                // Simulate redirect after 3 seconds
-                setTimeout(() => {
-                    console.log('Redirecting to login...');
-                    navigate("/signIn")
-                    // window.location.href = '/login';
-                }, 3000);
-
-            } else {
-                throw new Error('Verification failed');
-            }
+            setTimeout(() => {
+                navigate("/signIn");
+            } , 1000)
 
         } catch (error) {
             setVerificationStatus('error');
-            if (onVerificationError) {
-                onVerificationError(error);
-            }
+            console.log("Error : " , error)
+            toast.error("Email Verification Failed", { id: toastId })
 
             setTimeout(() => {
                 setVerificationStatus('pending');
                 setIsVerifying(false);
             }, 3000);
         }
+        setIsVerifying(false);
         
     };
 

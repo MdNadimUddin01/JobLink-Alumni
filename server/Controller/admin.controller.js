@@ -73,7 +73,7 @@ export const adminVerifyAlumni = async (req, res) => {
 export const getAlumniData = async (req, res) => {
   try {
     const alumniData = await AlumniModel.find({}).populate("alumniId");
-    // console.log("alumniData : " ,alumniData);
+    console.log("alumniData : " ,alumniData);
 
     const data = alumniData.map((data) => {
 
