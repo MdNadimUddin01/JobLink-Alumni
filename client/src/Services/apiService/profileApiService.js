@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 
 export async function loginUser(data, navigate, dispatch) {
   dispatch(setLoading(true));
-  const toastId = toast.loading("Login Successfull...");
+  const toastId = toast.loading("Loging...");
 
   try {
     const res = await apiCall("POST", endpoints.LOGIN, data);
