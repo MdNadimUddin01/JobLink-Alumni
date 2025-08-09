@@ -16,6 +16,7 @@ export {
   adminAddEventConroller,
   adminDeleteEventcontroller,
   adminUpdateEventController,
+  getEventData
 } from "./admin.event.controller.js";
 
 export { getAllEvent } from "./user.event.controller.js";
@@ -44,5 +45,6 @@ export {
   getJoinedForum,
   deleteForum,
   getForum,
-  getAllForumChat
+  getAllForumChat,
+  getAllForumListIfLogin
 } from "./forum.controller.js";

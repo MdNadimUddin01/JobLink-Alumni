@@ -188,6 +188,31 @@ export const joinForum = async (req, res) => {
   }
 };
 
+export const getAllForumListIfLogin = async (req, res) => {
+  try {
+    let forumData = await ForumModel.find({ status: true });
+
+    const alumniId = req.userId
+
+    let joinedForum = await ForumMemberModel.find({ status: true, alumniId });
+    
+    forumData = forumData.filter((forum) => {
+      const isJoined = joinedForum.some((jf) => jf.forumId.equals(forum._id));
+      return !isJoined;
+    });
+
+
+    return res.status(statusCode.SUCCESS).send({
+      message: message.ALUMNI_GET_MY_FORUM_SUCCESS,
+      forumData,
+    });
+  } catch (error) {
+    console.log("Error at get all forum list : ", error);
+    return res.status(statusCode.ERROR).send({
+      message: message.SERVER_ERROR,
+    });
+  }
+}
 // export const joinForum = async (forumId , alumniId) => {
 //   try {
     

@@ -11,6 +11,7 @@ import {
   deleteForum,
   getForum,
   getAllForumChat,
+  getAllForumListIfLogin,
 } from "../Controller/index.js";
 
 import { getAuth, verifyAdmin, verifyAlumni } from "../Middleware/index.js";
@@ -30,6 +31,9 @@ export const forumRouter = (router) => {
 
   router.route("/alumni/getAllForum").get(getAllForumList);
 
+  router
+    .route("/alumni/auth/getAllForum")
+    .get(getAuth, verifyAlumni, getAllForumListIfLogin);
   router
     .route("/alumni/getAllJoinedForum")
     .get(getAuth, verifyAlumni, getJoinedForum);
