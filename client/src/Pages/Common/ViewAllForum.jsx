@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { adminGetAllForum, alumniViewForum, getAllForum, getAllJoinedForum } from '../../Services/apiService';
-import { ForumCard, Title } from '../../Component';
+import { ForumCard, Loader, Title } from '../../Component';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import { getAllForumIfLogin } from '../../Services/apiService/forumApiService';
 // import { ForumCard } from './ForumCard';
 
 const ViewAllForum = ({ myform, joinedForm, allForm }) => {
@@ -11,59 +12,78 @@ const ViewAllForum = ({ myform, joinedForm, allForm }) => {
     const [selectedCategory, setSelectedCategory] = useState('all');
     const navigate = useNavigate();
     const [forums, setForums] = useState([]);
-    const { alumniMyForum } = useSelector(state => state.forum);
+    // const { alumniMyForum } = useSelector(state => state.profile.user);
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false)
 
     const loadAllFormData = async () => {
+        // setLoading(true)
         const result = await getAllForum(navigate);
         setForums(result);
     }
 
-    const {user} = useSelector(state => state.profile)
+    const loadAllFormDataIfLogin = async () => {
+        const result = await getAllForumIfLogin(navigate);
+        setForums(result);
+    }
+
+    const { user } = useSelector(state => state.profile)
 
     const [adminForm, setAdminForum] = useState(user && user.role === "Admin");
 
-    const getMyForm = async() => {
+    const getMyForm = async () => {
+        // setLoading(true)
         const result = await alumniViewForum(navigate);
         setForums(result)
+        // setLoading(false)
     }
 
     const getJoinedForm = async () => {
-        const alumniJoinedForum = await getAllJoinedForum(dispatch , navigate)
+        const alumniJoinedForum = await getAllJoinedForum(dispatch, navigate)
         setForums(alumniJoinedForum)
     }
 
     const getAdminForm = async () => {
+        // setLoading(true)
         const result = await adminGetAllForum(navigate);
         setForums(result)
+        // setLoading(false)
     }
 
     const forumData = useCallback(async () => {
-
+        setLoading(true);
+        console.log(user)
         try {
             if (adminForm) {
-                getAdminForm()
+                await getAdminForm()
             }
             else if (allForm) {
-                loadAllFormData();
+                user ? await loadAllFormDataIfLogin() : await loadAllFormData();
             } else if (myform) {
-                getMyForm();
+                await getMyForm();
             }
             else if (joinedForm) {
-                getJoinedForm();
+                await getJoinedForm();
             }
 
         } catch (error) {
             console.log(error);
         }
 
+        // setTimeout(() => {
+        // } , 3000)
+        setLoading(false)
+
+
     }, [myform, joinedForm, allForm, adminForm]);
 
 
 
     useEffect(() => {
+        // setLoading(true)
         console.table([myform, joinedForm, allForm, adminForm]);
         forumData();
+        // setLoading(false)
     }, [myform, joinedForm, allForm, adminForm, forumData]);
 
 
@@ -88,7 +108,7 @@ const ViewAllForum = ({ myform, joinedForm, allForm }) => {
     return (
         <div className="min-h-screen mx-auto container bg-gradient-to-br from-slate-50 to-slate-100 py-4">
 
-            <div className="text-center">
+            {!loading && <div className="text-center">
                 <div className="relative inline-block mb-4">
                     {/* <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur-xl animate-pulse"></div> */}
                     <div className="relative w-24 h-24 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-2xl">
@@ -97,9 +117,9 @@ const ViewAllForum = ({ myform, joinedForm, allForm }) => {
                 </div>
 
                 {myform && <Title title1={"My"} title2={"Forum"} />}
-                
+
                 {joinedForm && <Title title1={"Joined"} title2={"Forum"} />}
-                
+
                 {allForm && (!user || user.role !== "Admin") && <Title title1={"All"} title2={"Forum"} />}
 
                 {adminForm && <Title title1={"Admin"} title2={"Forum"} />}
@@ -112,10 +132,13 @@ const ViewAllForum = ({ myform, joinedForm, allForm }) => {
                 <div className="flex justify-center mb-6">
                     <div className="w-32 h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 rounded-full animate-pulse"></div>
                 </div>
-            </div>
-            
-            
-            <div className=" mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+            </div>}
+
+            {
+                loading && <Loader />
+            }
+
+            {!loading && <div className=" mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
                 {/* Search and Filter Bar */}
                 <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
                     <div className="relative flex-1">
@@ -192,14 +215,19 @@ const ViewAllForum = ({ myform, joinedForm, allForm }) => {
                 {/* Empty State */}
                 {filteredForums.length === 0 && (
                     <div className="text-center py-12">
-                        <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto">
                             <span className="text-slate-400 text-2xl">🔍</span>
                         </div>
-                        <h3 className="text-lg font-medium text-slate-700 mb-2">No forums found</h3>
-                        <p className="text-slate-500">Try adjusting your search or filter criteria.</p>
+                        <h3 className="text-lg font-medium text-slate-700 mb-6">No forums found</h3>
+                        {forums.length > 0 && <p className="text-slate-500">Try adjusting your search or filter criteria.</p>}
+                        {forums.length == 0 && user && <Link to={"/alumni/addForum"} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            Create Forum
+                        </Link>}
+
                     </div>
                 )}
             </div>
+            }
 
         </div>
     );
