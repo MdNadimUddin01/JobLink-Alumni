@@ -4,7 +4,7 @@ import { mailer } from "../Utils/mailer.js";
 import { message, statusCode } from "../Utils/status.message.js";
 import bcrypt from "bcrypt";
 import { fileURLToPath } from "url";
-import { getHtml, subjectVerify } from "../Html/mailHtml.js";
+import { alumniVerifyEmail, getHtml, subjectVerify } from "../Html/mailHtml.js";
 
 export const alumniSignupController = async (req, res) => {
   try {
@@ -63,7 +63,7 @@ export const alumniSignupController = async (req, res) => {
           });
 
           const verificationLink =
-            process.env.FRONT_END_URL +
+            process.env.BACKEND_URL +
             "/alumni/verifyEmail?id=" +
             encodeURIComponent(userData._id) +
             "&email=" +
@@ -116,8 +116,11 @@ export const alumniSignupController = async (req, res) => {
 export const alumniEmailVerify = async (req, res) => {
   try {
 
-    console.log(req.body)
-    const { email , id } = req.body;
+    // console.log(req.body)
+    const { email, id } = req.query;
+    console.log(email, id);
+
+    console.log("REQ : " , email)
 
     const status = {
       $set: {
@@ -136,11 +139,11 @@ export const alumniEmailVerify = async (req, res) => {
     }
 
     const updatedData = await AlumniModel.updateOne({ alumniId : id }, status);
-    console.log("Email Veirify Result : ", updatedData);
+    // console.log("Email Veirify Result : ", updatedData);
 
-    return res.status(statusCode.SUCCESS).send({
-      message: message.MAIL_VERIFICATION_SUCCESSFULL,
-    });
+    return res
+      .status(200)
+      .send(alumniVerifyEmail(email, process.env.FRONT_END_URL));
 
   } catch (error) {
     console.log("ERROR WHILE VERIFYING MAIL : ", error);
@@ -149,7 +152,6 @@ export const alumniEmailVerify = async (req, res) => {
     });
   }
 };
-
 
 export const getAlumniInfo = async (req, res) => {
   
@@ -194,3 +196,4 @@ export const getAlumniInfo = async (req, res) => {
   }
 
 }
+

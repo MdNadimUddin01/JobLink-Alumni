@@ -244,13 +244,7 @@ export function getHtml(email, verificationLink = "https:localhost:5173/") {
                 <a href="${verificationLink}" class="verify-button">Verify My Email Address</a>
             </div>
             
-            <div class="alternative-section">
-                <h3>🔗 Having trouble with the button?</h3>
-                <p>You can also click this verification link :</p>
-                <div class="copy-link" onclick="copyLink()">
-                    <span id="verificationLink">${verificationLink}</span>
-                </div>
-            </div>
+           
             
             <div class="security-note">
                 <h3>🔒 Security Notice</h3>
@@ -673,6 +667,75 @@ export function adminVerifyEmail(email) {
             }
         });
     </script>
+</body>
+</html>`;
+}
+
+
+export function alumniVerifyEmail(email , frontendUrl){
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+    <div class=" flex items-center justify-center p-5">
+        <div class=" bg-transparent overflow-hidden ">
+            
+    
+            <div class="p-12 text-center">
+                <div
+                    class="relative w-24 h-24 bg-gradient-to-br from-blue-50 to-blue-100 border-3 border-blue-200 rounded-full mx-auto mb-8 flex items-center justify-center animate-pulse">
+                    <span class="text-4xl">📧</span>
+                    <div
+                        class="absolute -top-2 -right-2 w-7 h-7 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold border-3 border-white animate-bounce">
+                        
+                    </div>
+                </div>
+    
+                <h2 class="text-2xl font-semibold text-gray-800 mb-5">
+                    Email Verification Successfull
+                </h2>
+    
+                <p class="text-lg text-gray-600 mb-8 max-w-md mx-auto leading-relaxed">
+                    Welcome to the Alumni Tracker System! We're excited to have you join our community of alumni.
+                    <br /><br />
+                </p>
+    
+                <div
+                    class="relative bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-6 mb-8">
+                    <div class="absolute -top-4 left-5 bg-white px-3 py-1 rounded-full">
+                        <span class="text-lg">✉️</span>
+                    </div>
+                    <p class="text-blue-900 mb-1">
+                        <strong>Email :</strong>
+                    </p>
+                    <p class="text-blue-800 text-xl font-bold tracking-wide">${email}</p>
+                </div>
+    
+              
+                <div
+                    class="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-2xl p-5 mt-5 text-green-800">
+                    <strong>✅ Email Verified Successfully!</strong><br />
+                    Your account is now active. You will be redirected to the login page shortly.
+                </div>
+                
+                <a href=${frontendUrl} class="
+                                    mt-7 from-purple-400 to-purple-500 relative overflow-hidden inline-block bg-gradient-to-r text-white font-bold text-lg
+                                    px-10 py-5 rounded-full shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1
+                                    active:translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed">
+                    <span class="relative z-10">Go to Home page!</span>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-20 -translate-x-full transition-transform duration-500 hover:translate-x-full">
+                    </div>
+                </a>
+            </div>
+    
+        </div>
+    </div>
 </body>
 </html>`;
 }
