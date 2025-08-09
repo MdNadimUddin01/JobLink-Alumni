@@ -1,7 +1,8 @@
 import {
   adminAddEventConroller,
   adminDeleteEventcontroller,
-  adminUpdateEventController
+  adminUpdateEventController,
+  getEventData
 } from "../Controller/index.js";
 
 import { getAuth, verifyAdmin } from "../Middleware/auth.js";
@@ -18,7 +19,9 @@ export const adminEventRouter = (router) => {
     .post(getAuth, verifyAdmin, adminDeleteEventcontroller);
 
   router
-    .route("/admin/updateEvent/:eventId")
-    .put(getAuth, verifyAdmin, adminUpdateEventController);
+    .route("/admin/updateEvent")
+    .post(getAuth, verifyAdmin, adminUpdateEventController);
+  
+  router.route("/getEvent").post(getEventData);
   
 };

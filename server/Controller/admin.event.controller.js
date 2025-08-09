@@ -70,7 +70,7 @@ export const adminDeleteEventcontroller = async (req, res) => {
 
 export const adminUpdateEventController = async (req, res) => {
   try {
-    const { eventId } = req.params;
+    const { eventId } = req.body;
     const eventData = await EventModel.findOne({ _id: eventId });
     // console.log("eventData : " , eventData)
 
@@ -110,3 +110,24 @@ export const adminUpdateEventController = async (req, res) => {
     });
   }
 };
+
+
+export const getEventData = async (req, res) => {
+  
+  const { eventId } = req.body;
+
+  try {
+    const eventData = await EventModel.findOne({ _id :  eventId});
+
+    return res.status(statusCode.SUCCESS).send({
+      event: eventData,
+      message: `Events ${message.LIST_FETCHED_SUCCESSFULLY}`,
+    });
+  } catch (error) {
+    console.log("ERROR WHILE FETCHING EVENT : ", error.message);
+    return res.status(statusCode.ERROR).send({
+      message: message.EVENT_LIST_ERROR,
+    });
+  }
+
+}
