@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { eventEndpoints } from '../../../Utils/api';
 import { addEvent } from '../../../Services/apiService';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
+import { getEvent, updateEvent } from '../../../Services/apiService/eventApiService';
 
 
-export const AddEvent = () => {
+export const AddEvent = ({ update }) => {
 
     const navigate = useNavigate();
 
@@ -23,9 +24,12 @@ export const AddEvent = () => {
         startDateToApply: '',
         lastDateToApply: '',
         startTimeToApply: '',
-        endTimeToApply : '',
+        endTimeToApply: '',
+        applyLink: '',
         status: true
     });
+
+    const { eventId} = useParams();
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -33,8 +37,10 @@ export const AddEvent = () => {
             ...prev,
             [name]: type === 'checkbox' ? checked : value
         }));
-    };
 
+        // console.log(value)
+    };
+    
     
     const handleSubmit = async(e) => {
         e.preventDefault();
@@ -45,6 +51,11 @@ export const AddEvent = () => {
         // alert('Event added successfully!');
     };
 
+    const handleUpdate = async (e) => {
+        e.preventDefault();
+        await updateEvent(formData, navigate);
+    }
+
     const applyModes = [
         'Online Application',
         'Email Registration',
@@ -52,6 +63,15 @@ export const AddEvent = () => {
         'Phone Registration',
         'Walk-in Registration'
     ];
+
+    const getData = async () => {
+        const result = await getEvent(eventId);
+        setFormData(result);
+    }
+
+    useEffect(() => {
+        getData();
+    }, []);
 
     return (
         <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
@@ -74,20 +94,41 @@ export const AddEvent = () => {
                                 <h2 className="text-xl font-semibold text-gray-900">Basic Information</h2>
                             </div>
 
-                            <div className='mb-6'>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Event Name *
-                                </label>
-                                <input
-                                    type="text"
-                                    name="eventName"
-                                    value={formData.eventName}
-                                    onChange={handleInputChange}
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    placeholder="Enter event name"
-                                    required
-                                />
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                                <div className='mb-6'>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Event Name *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="eventName"
+                                        value={formData.eventName}
+                                        onChange={handleInputChange}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Enter event name"
+                                        required
+                                    />
+                                </div>
+
+                                <div className='mb-6'>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Event Apply Link *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="applyLink"
+                                        value={formData.applyLink}
+                                        onChange={handleInputChange}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Enter event apply Link"
+                                        required
+                                    />
+                                </div>
+                                
                             </div>
+
+                            
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
@@ -348,14 +389,23 @@ export const AddEvent = () => {
                             >
                                 Cancel
                             </button>
-                            <button
+                            {!update && <button
                                 type="button"
                                 onClick={handleSubmit}
                                 className="px-8 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center"
                             >
                                 <span className="mr-2">+</span>
                                 Add Event
-                            </button>
+                            </button>}
+
+                            {update && <button
+                                type="button"
+                                onClick={handleUpdate}
+                                className="px-8 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center"
+                            >
+                                {/* <span className="mr-2">+</span> */}
+                                Update Event
+                            </button>}
                         </div>
                     </div>
                 </div>

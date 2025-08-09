@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Link, Links } from 'react-router';
 
 export const EventCard = ({
     event,
@@ -62,13 +63,29 @@ export const EventCard = ({
 
     const isApplicationOpen = () => {
         const now = new Date((new Date()).toDateString()).getTime();
-        const applyFromDate = new Date(event.applyFrom).getTime();
-        const applyTillDate = new Date(event.applyTill).getTime();
+        const applyFromDate = new Date(event.startDateToApply).getTime();
+        const applyTillDate = new Date(event.lastDateToApply).getTime();
 
         const time = parseTime((new Date()).toLocaleTimeString());
-        const applyEndTime = parseTime(event.endTime);
+        const applyEndTime = parseTime(event.endTimeToApply);
+
+        // console.table([event]);
+        console.log(event)
       
         return (now >= applyFromDate && now <= applyTillDate) || (now == applyTillDate && time <= applyEndTime);
+    };
+
+    const isApplicationNotStart = () => {
+        const now = new Date((new Date()).toDateString()).getTime();
+        const applyFromDate = new Date(event.startDateToApply).getTime();
+        const applyTillDate = new Date(event.lastDateToApply).getTime();
+
+        const time = parseTime((new Date()).toLocaleTimeString());
+        const applyStartTime = parseTime(event.startTimeToApply);
+
+        // console.table();
+
+        return (now < applyFromDate) || (now == applyTillDate && time < applyStartTime);
     };
 
     const truncateDescription = (text, maxLength = 100) => {
@@ -86,8 +103,16 @@ export const EventCard = ({
 
     const getDaysUntilApplication = () => {
         const now = new Date();
-        const applyTillDate = new Date(event.applyTill);
+        const applyTillDate = new Date(event.lastDateToApply);
         const diffTime = applyTillDate - now;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays;
+    };
+
+    const getDaysRemainApplication = () => {
+        const now = new Date();
+        const applystartDate = new Date(event.startDateToApply);
+        const diffTime = now - applystartDate;
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         return diffDays;
     };
@@ -160,7 +185,7 @@ export const EventCard = ({
                                 ? 'bg-green-100 text-green-800 border border-green-200'
                                 : 'bg-red-100 text-red-800 border border-red-200'
                             }`}>
-                            {isApplicationOpen() ? '✅ OPEN' : '❌ CLOSED'}
+                            {isApplicationOpen() ? '✅ OPEN' : isApplicationNotStart() ? '🕒 Application not Start ye' : '❌ CLOSED'}
                         </div>
                     </div>
 
@@ -191,6 +216,16 @@ export const EventCard = ({
                                 </div>
                             </div>
                         )}
+
+                        {isApplicationNotStart() && daysUntilApplication > 0 && (
+                            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-2 mt-3">
+                                <div className="text-yellow-800 text-xs font-bold">
+                                    ⏰ {getDaysRemainApplication()} days Remain to apply!
+                                </div>
+                            </div>
+                        )}
+
+
                     </div>
 
                     {event.criteria && (
@@ -213,9 +248,9 @@ export const EventCard = ({
 
                     <div className="flex items-center gap-2">
                         {(!user || user.role !== "Admin") && isApplicationOpen() && (
-                            <button className=" cursor-pointer bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-4 rounded-full text-sm font-bold transition-all duration-200 transform hover:scale-105 shadow-lg">
+                            <a href={event.applyLink} className=" cursor-pointer bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-4 rounded-full text-sm font-bold transition-all duration-200 transform hover:scale-105 shadow-lg">
                                 🚀 Apply Now
-                            </button>
+                            </a>
                         )}
 
                         {(!user || user.role !== "Admin") &&
@@ -228,13 +263,13 @@ export const EventCard = ({
 
                         {user && user.role === "Admin" && (
                             <div className="flex items-center gap-1 ml-3">
-                                <button
-                                    onClick={onUpdate}
+                                <Link
+                                    to={"/admin/updateEvent/"+event._id}
                                     className="px-3 py-2 text-gray-600 cursor-pointer hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 text-sm font-semibold border border-gray-200 hover:border-blue-200"
                                     title="Update Event"
                                 >
                                     ✏️ Edit
-                                </button>
+                                </Link>
                                 <button
                                     onClick={onDelete}
                                     className="px-3 py-2 cursor-pointer text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 text-sm font-semibold border border-gray-200 hover:border-red-200"
@@ -245,6 +280,7 @@ export const EventCard = ({
                             </div>
                         )}
                     </div>
+
                 </div>
             </div>
         </div>
