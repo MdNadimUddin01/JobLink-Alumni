@@ -70,6 +70,14 @@ const jobSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  adminRemove: {
+    type: Boolean,
+    default:false
+  },
+  applyLink: {
+    type: String,
+    required : true
+  }
   
 
 });

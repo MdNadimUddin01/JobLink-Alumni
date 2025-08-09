@@ -28,7 +28,7 @@ export const createJobPost = async (req, res) => {
 
 export const viewAllJobData = async (req, res) => {
   try {
-    const jobData = await JobModel.find({ status: true });
+    const jobData = await JobModel.find({ status: true, adminRemove:false });
 
     return res.status(statusCode.SUCCESS).send({
       message: message.ALL_JOB_DATA_FETCHED,
@@ -82,7 +82,7 @@ export const viewAlumniJob = async (req, res) => {
     //   })
     // }
 
-    const jobData = await JobModel.find({ alumniId });
+    const jobData = await JobModel.find({ alumniId , status:true});
 
     return res.status(statusCode.SUCCESS).send({
       message: message.ALUMNI_JOB_DATA_FETCHED,
@@ -101,7 +101,12 @@ export const alumniDeleteJobPost = async (req, res) => {
     const alumniId = req.userId;
     const { jobId } = req.body;
 
-    console.log(jobId);
+    // console.log(jobId);
+    const status = {
+      $set: {
+        status: false,
+      },
+    };
 
     if (!jobId) {
       return res.status(statusCode.REQUIRED).send({
@@ -109,7 +114,7 @@ export const alumniDeleteJobPost = async (req, res) => {
       });
     }
 
-    const deletedData = await JobModel.deleteOne({ _id: jobId, alumniId });
+    const deletedData = await JobModel.updateOne({ _id: jobId , alumniId}, status);
     console.log(deletedData);
 
     return res.status(statusCode.SUCCESS).send({
@@ -148,7 +153,7 @@ export const updateJobPost = async (req, res) => {
 
     console.log(updateJob);
     return res.status(statusCode.SUCCESS).send({
-      message: message,
+      message: message.JOB_UPDATED_SUCCESSFULLY,
     });
   } catch (error) {
     console.log("Error Occur in UpdateJobPost event");
@@ -161,7 +166,7 @@ export const updateJobPost = async (req, res) => {
 
 export const AdminViewJobPost = async (req, res) => {
   try {
-    const jobData = await JobModel.find({});
+    const jobData = await JobModel.find({status:true});
 
     return res.status(statusCode.SUCCESS).send({
       jobData,
@@ -180,7 +185,7 @@ export const AdminRemoveJobPost = async (req, res) => {
     const { jobId } = req.body;
     const status = {
       $set: {
-        status: false,
+        adminRemove: true,
       },
     };
 
@@ -195,6 +200,7 @@ export const AdminRemoveJobPost = async (req, res) => {
     return res.status(statusCode.SUCCESS).send({
       message: message.JOB_REMOVED_SUCCESSFULLY,
     });
+
   } catch (error) {
     console.log("Error occur at Admin Remove Job POst : ", error);
     return res.status(statusCode.ERROR).send({

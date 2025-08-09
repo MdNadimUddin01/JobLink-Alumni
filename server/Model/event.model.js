@@ -61,6 +61,10 @@ const eventSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  applyLink: {
+    type: String,
+    required : true
+  },
   uploadTime: {
     type: String,
     required: true,
