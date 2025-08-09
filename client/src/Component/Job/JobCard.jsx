@@ -9,6 +9,8 @@ export function JobCard({ jobData, job, showAlumniIcon, alumniHandler }) {
     // console.log(user)
     const navigate = useNavigate()
 
+    console.log(job)
+
     const getJobTypeStyle = (jobType) => {
         const styles = {
             'Full Time': 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/25',
@@ -18,12 +20,14 @@ export function JobCard({ jobData, job, showAlumniIcon, alumniHandler }) {
         return styles[jobType] || 'bg-gradient-to-r from-gray-500 to-slate-500 text-white shadow-lg shadow-gray-500/25';
     };
 
-    const handleDelete = async () => {
+    const handleDelete = async (e) => {
+        e.preventDefault();
         await deleteJobPost(job._id , navigate);
         jobData();
     }
 
-    const handleRemove = async () => {
+    const handleRemove = async (e) => {
+        e.preventDefault()
         await removeJobPost(job._id , navigate);
         jobData();
     }
@@ -36,10 +40,10 @@ export function JobCard({ jobData, job, showAlumniIcon, alumniHandler }) {
 
             <div className="relative bg-white/90 backdrop-blur-lg rounded-3xl border border-gray-200 shadow-lg p-8 hover:bg-white transition-all duration-500 hover:transform hover:-translate-y-3 hover:shadow-2xl">
 
-                {/* Job Header with Enhanced Styling */}
                 <div className="flex justify-between items-start mb-6">
                     <div className="flex-1">
                         <div className="flex items-center gap-4 mb-4">
+                           
                             <div className="relative">
                                 <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-xl">
                                     <span className="text-white text-2xl">
@@ -87,7 +91,7 @@ export function JobCard({ jobData, job, showAlumniIcon, alumniHandler }) {
                     </div>}
 
                     {
-                        !showAlumniIcon && !job.status && <div className="space-y-2 flex justify-end items-center" >
+                        !showAlumniIcon && job.adminRemove && <div className="space-y-2 flex justify-end items-center" >
                             <h3 className="text-lg font-semibold text-red-800">
                                 Job Removed by an administrator
                             </h3>
@@ -97,7 +101,6 @@ export function JobCard({ jobData, job, showAlumniIcon, alumniHandler }) {
                     }
                 </div>
 
-                {/* Enhanced Details Grid */}
                 <div className="grid grid-cols-2 gap-4 mb-6">
                     {[
                         { icon: '📍', label: 'Location', value: job.location, bgColor: 'bg-blue-50', textColor: 'text-blue-900', borderColor: 'border-blue-200' },
@@ -115,7 +118,6 @@ export function JobCard({ jobData, job, showAlumniIcon, alumniHandler }) {
                     ))}
                 </div>
 
-                {/* Bond Information */}
                 {job.bond && job.bond !== "No bound" && (
                     <div className="bg-amber-50 rounded-xl p-4 mb-6 border border-amber-200">
                         <div className="flex items-center gap-2 mb-2">
@@ -126,7 +128,6 @@ export function JobCard({ jobData, job, showAlumniIcon, alumniHandler }) {
                     </div>
                 )}
 
-                {/* Requirements Section */}
                 <div className="bg-slate-50 rounded-xl p-4 mb-6 border border-slate-200">
                     <div className="flex items-center gap-2 mb-3">
                         <span className="text-lg">📋</span>
@@ -135,7 +136,6 @@ export function JobCard({ jobData, job, showAlumniIcon, alumniHandler }) {
                     <p className="text-slate-700 text-sm leading-relaxed">{job.requirement}</p>
                 </div>
 
-                {/* Application Timeline with Progress */}
                 <div className="bg-indigo-50 rounded-xl p-5 mb-6 border border-indigo-200">
                     <div className="flex items-center gap-2 mb-3">
                         <span className="text-lg">📅</span>
@@ -144,7 +144,7 @@ export function JobCard({ jobData, job, showAlumniIcon, alumniHandler }) {
                     <div className="flex items-center justify-between">
                         <div className="text-center">
                             <p className="text-xs text-gray-500 mb-1">Opens</p>
-                            <p className="font-bold text-gray-900 text-sm">{job.applystartDate}</p>
+                            <p className="font-bold text-gray-900 text-sm">{new Date(job.applystartDate).toDateString()}</p>
                         </div>
                         <div className="flex-1 mx-4 relative">
                             <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
@@ -153,12 +153,11 @@ export function JobCard({ jobData, job, showAlumniIcon, alumniHandler }) {
                         </div>
                         <div className="text-center">
                             <p className="text-xs text-gray-500 mb-1">Closes</p>
-                            <p className="font-bold text-gray-900 text-sm">{job.applyEndDate}</p>
+                            <p className="font-bold text-gray-900 text-sm">{new Date(job.applyEndDate).toDateString()}</p>
                         </div>
                     </div>
                 </div>
 
-                {/* Enhanced Tags */}
                 <div className="flex flex-wrap gap-3 mb-6">
                     <span className={`px-4 py-2 rounded-full text-sm font-semibold ${getJobTypeStyle(job.jobType)} transform hover:scale-105 transition-all duration-300`}>
                         {job.jobType}
@@ -183,7 +182,6 @@ export function JobCard({ jobData, job, showAlumniIcon, alumniHandler }) {
                     )}
                 </div>
 
-                {/* Action Footer */}
                 <div className="flex justify-between items-center pt-6 border-t border-gray-200">
                     <div className="text-sm text-gray-500">
                         <div className="flex items-center gap-2 mb-1">
@@ -197,13 +195,13 @@ export function JobCard({ jobData, job, showAlumniIcon, alumniHandler }) {
                     </div>
                     {
                         !showAlumniIcon && <div className="flex items-center gap-1 ml-3">
-                            <Link
+                            {<Link
                                 to={"/alumni/updateJob/" + job._id}
                                 className="px-3 py-2 text-gray-600 cursor-pointer hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 text-sm font-semibold border border-gray-200 hover:border-blue-200"
                                 title="Update Event"
                             >
                                 ✏️ Edit
-                            </Link>
+                            </Link>}
                             <button
                                 onClick={handleDelete}
                                 className="px-3 py-2 cursor-pointer text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 text-sm font-semibold border border-gray-200 hover:border-red-200"
@@ -215,8 +213,9 @@ export function JobCard({ jobData, job, showAlumniIcon, alumniHandler }) {
                     }
                     {showAlumniIcon &&
                         <div className='flex gap-2 items-center'>
-                            <button
-                                className="relative overflow-hidden bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white px-8 py-3 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 group"
+                            <a
+                                href={job.applyLink}
+                                className="relative cursor-pointer overflow-hidden bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white px-8 py-3 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 group"
                                 disabled={!job.status}
                             >
                                 <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -224,16 +223,15 @@ export function JobCard({ jobData, job, showAlumniIcon, alumniHandler }) {
                                     <span>{job.status ? 'Apply Now' : 'Closed'}</span>
                                     <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
                                 </span>
-                            </button>
+                            </a>
                             {user && user.role === "Admin" && <button
-                                onClick={job.status ? handleRemove : () => { }}
+                                onClick={!job.adminRemove ? handleRemove : () => { }}
                                 className=" px-4 py-3  cursor-pointer text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 text-sm font-semibold border border-gray-200 hover:border-red-200"
                                 title="Delete Event"
                             >
-                                {job.status ? "🗑️ Remove" : "Removed" }
+                                {!job.adminRemove ? "🗑️ Remove" : "Removed" }
                             </button>}
                         </div>
-
                     }
                 </div>
             </div>

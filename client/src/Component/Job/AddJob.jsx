@@ -21,6 +21,7 @@ export const AddJob = () => {
         jobType: 'Internship',
         status: true,
         referralAvailable: 'No',
+        applyLink: ''
     });
 
     const navigate = useNavigate();
@@ -42,11 +43,9 @@ export const AddJob = () => {
 
     }, [jobId])
     
-    const handleUpdate = async () => {
-        
-        if (jobId) {
-            const res = await updateJobData(formData, jobId, navigate);
-        }
+    const handleUpdate = async (e) => {
+        e.preventDefault();
+        await updateJobData(formData, jobId, navigate);
     }
 
     const handleInputChange = (e) => {
@@ -78,6 +77,7 @@ export const AddJob = () => {
         if (!formData.applystartDate) newErrors.applystartDate = 'Application start date is required';
         if (!formData.applyEndDate) newErrors.applyEndDate = 'Application end date is required';
         if (!formData.requirement.trim()) newErrors.requirement = 'requirement  is required';
+        if (!formData.applyLink.trim()) newErrors.applyLink = 'Job Link is required';
 
         // Date validation
         if (formData.applystartDate && formData.applyEndDate) {
@@ -92,10 +92,12 @@ export const AddJob = () => {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
         if (!validateForm()) {
             return;
         }
+
+        e.preventDefault()
 
         setIsSubmitting(true);
 
@@ -172,7 +174,7 @@ export const AddJob = () => {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                                 <div className="space-y-2">
                                     <label className="block text-sm font-semibold text-gray-700 mb-3">
                                         Job ID <span >(If Any)</span>
@@ -205,9 +207,32 @@ export const AddJob = () => {
 
 
                             </div>
+
+                            <div className="space-y-2 ">
+                                <label className="block text-sm font-semibold text-gray-700 mb-3">
+                                    Job Link <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    name="applyLink"
+                                    value={formData.applyLink}
+                                    onChange={handleInputChange}
+                                    className={`w-full px-4 py-3 border rounded-lg text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.jobId ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+                                        }`}
+                                    placeholder="Enter job Link"
+                                />
+
+                            </div>
+                            {errors.applyLink && (
+                                <p className="text-red-500 text-xs mt-2 flex items-center">
+                                    <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                    </svg>
+                                    {errors.applyLink}
+                                </p>
+                            )}
                         </div>
 
-                        {/* Job Details Section */}
                         <div className="mb-12">
                             <div className="flex items-center mb-8">
                                 <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
@@ -399,7 +424,6 @@ export const AddJob = () => {
                             </div>
                         </div>
 
-                        {/* Application Timeline Section */}
                         <div className="mb-12">
                             <div className="flex items-center mb-8">
                                 <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
