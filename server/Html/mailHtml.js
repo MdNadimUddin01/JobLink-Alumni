@@ -258,7 +258,6 @@ export function getHtml(email, verificationLink = "https:localhost:5173/") {
                 Connecting graduates, building networks, creating opportunities
             </p>
             <div class="contact-info">
-                <p>Need help? Contact us at <strong>support@alumnitracker.com</strong></p>
                 <p>© 2025 JobLink Alumni. All rights reserved.</p>
             </div>
         </div>
@@ -616,10 +615,7 @@ export function adminVerifyEmail(email) {
             </div>
         </div>
 
-        <div class="action-buttons">
-            <a href="/login" class="btn btn-primary">Sign In to Your Account</a>
-            <a href="/dashboard" class="btn btn-secondary">Explore Dashboard</a>
-        </div>
+        
 
         <div class="footer-info">
             <p><strong>What's Next?</strong></p>
