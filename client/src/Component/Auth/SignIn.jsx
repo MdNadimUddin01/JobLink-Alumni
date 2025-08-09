@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import loginImage from "../../assets/login.avif"
 import { loginUser } from '../../Services';
 import { useDispatch, useSelector } from 'react-redux';
-import { data, useNavigate } from 'react-router';
+import { data, Link, useNavigate } from 'react-router';
 
 export const SignIn = () => {
 
@@ -292,12 +292,14 @@ export const SignIn = () => {
 
                         <p className="text-center text-sm text-gray-600 mt-6">
                             Don't have an account ?{' '}
-                            <button
+                            <Link
+                                to={"/signUp"}
                                 type="button"
+
                                 className="text-purple-600 cursor-pointer hover:text-purple-500 font-medium"
                             >
                                 Sign up here
-                            </button>
+                            </Link>
                         </p>
                     </form>
                 </div>
