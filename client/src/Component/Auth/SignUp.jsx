@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FileUpload } from '../';
 import axios from "axios";
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
 
 export function SignUp() {
@@ -583,9 +583,9 @@ export function SignUp() {
                                     <div className="text-center">
                                         <p className="text-sm text-slate-600">
                                             Already have an account?{' '}
-                                            <a href="#" className="text-slate-700 hover:text-slate-900 font-medium underline">
+                                            <Link to={"/signIn"} className="text-slate-700 hover:text-slate-900 font-medium underline">
                                                 Sign in here
-                                            </a>
+                                            </Link>
                                         </p>
                                     </div>
                                 </div>
