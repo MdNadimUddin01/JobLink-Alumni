@@ -4,6 +4,7 @@ import { SignIn, SignUp, VerifyEmail } from "./Auth";
 import { AddEvent, AlumniTable ,EventCard} from "./Admin"
 import { AddJob  ,JobCard} from "./Job"
 import {AddForum  , ForumCard , Title} from "./Forum"
+import { Loader } from "./Loader/index.js"
 
 export {
   BannerSlider,
@@ -27,5 +28,6 @@ export {
   
   AddForum,
   ForumCard,
-  Title
+  Title,
+  Loader
 };

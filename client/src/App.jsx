@@ -102,6 +102,10 @@ function App() {
           path: "/admin/addEvent",
           element:<AddEvent/>
         },
+        {
+          path: "/admin/updateEvent/:eventId",
+          element: <AddEvent update={ true} />
+        },
 
         // {
         //   path: "/admin/forums",

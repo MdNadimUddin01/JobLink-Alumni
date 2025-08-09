@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { adminViewJobs, getAlumni, viewAllJobData, viewAlumniJobData } from '../../Services/apiService';
-import { JobCard } from '../../Component';
+import { JobCard, Loader } from '../../Component';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
@@ -14,8 +14,10 @@ export const ViewAllJob = ({ myjob }) => {
     const [alumniData, setAlumniData] = useState([]);
     const user = useSelector(state => state.profile.user);
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const jobData = useCallback(async () => {
+        setLoading(true);
         let jobsData = []
         try {
             if (user && user.role === "Admin") {
@@ -26,6 +28,7 @@ export const ViewAllJob = ({ myjob }) => {
                     jobsData = await viewAllJobData(navigate);
 
                 } else {
+                    console.log("HELLEOEOE")
                     jobsData = await viewAlumniJobData(navigate);
                 }
             }
@@ -35,12 +38,16 @@ export const ViewAllJob = ({ myjob }) => {
         }
 
         setJobs(jobsData ? jobsData : []);
+        setLoading(false);
     }, [myjob]);
 
 
     useEffect(() => {
         // console.log("JOB CALLED")
+        
         jobData();
+        // setLoading(false);
+
     }, [myjob, jobData])
 
     const alumniHandler = async (alumniId) => {
@@ -79,8 +86,10 @@ export const ViewAllJob = ({ myjob }) => {
     return (
         <div className="min-h-screen container mx-auto text-black">
 
-            {/* Premium Job Cards */}
-            <div className="relative  p-y-3 lg:p-8">
+            {
+                loading && <Loader/>
+            }
+            {!loading && <div className="relative  p-y-3 lg:p-8">
                 <div className=" mx-auto max-w-6xl">
 
 
@@ -211,7 +220,7 @@ export const ViewAllJob = ({ myjob }) => {
 
 
                 </div>
-            </div>
+            </div>}
 
 
         </div>
