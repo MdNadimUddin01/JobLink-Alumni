@@ -50,7 +50,7 @@ app.get("/", (req, res) => {
   // req.headers()
   // res.cookie("token" , token , {expires:"1d"})
   console.log(req.cookies);
-  res.send(`<h1>Hello ji,/h1>`);
+  res.send(`<h1>Hello ji</h1>`);
   // console.log("hello");
 });
 

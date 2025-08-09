@@ -7,7 +7,7 @@ export const message = {
   ALREADY_ACCOUNT_EXIST: "Acount is alreay exist",
   SERVER_ERROR: "Internal Server Error Please try again after sometime",
   ALL_FIELD_REQUIRED: "All Fields are required",
-  ACCOUNT_LOGIN_SUCCESSFULL: "Accoutnlogin successfull",
+  ACCOUNT_LOGIN_SUCCESSFULL: "Account login successfull",
   ADMIN_PROTECTED_ROUTE: "This is protected route for Admin",
   ALUMNI_PROTECTED_ROUTE: "This is protected route for Alumni",
   SUCCESSFULLY_ADDED: "Successfully added",
@@ -27,7 +27,7 @@ export const message = {
   ACCOUNT_CLOSED:
     "Your Account is closed If you want to optn please contact Admin",
   JOB_ADDITION_SUCCESSFULL: "Job Posting Successfull",
-  JOB_ADMIN_VIEW_SUCCESS: "JOb fetched successfully",
+  JOB_ADMIN_VIEW_SUCCESS: "Job fetched successfully",
 
   USER_NOT_FOUND: "Your Account doesn't  exist signup your account",
   ALUMNI_DATA_FETCHED: "Alumni data fetched successfully",
