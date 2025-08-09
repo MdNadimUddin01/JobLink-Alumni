@@ -31,7 +31,7 @@ export const alumniAddForum = async (forum, navigate) => {
 
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 };
@@ -66,7 +66,7 @@ export const alumniViewForum = async (dispatch , navigate) => {
 
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 
@@ -102,7 +102,7 @@ export const getForumData = async (forumId , navigate) => {
     toast.error(errorMessage, { id: toastId });
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
   // console.log("RES : ", result);
@@ -122,7 +122,7 @@ export const alumniUpdateForum = async (forum, forumId, navigate) => {
     if (res.status !== 200) {
       throw new Error("Alumni Updatetion Failed");
     }
-    toast.success(res?.data?.message ?? "Forum Updated...", {
+    toast.success(res?.data?.message ?? "Forum Updated", {
       id: toastId,
     });
     // await alumniViewForum(dispatch);
@@ -139,7 +139,7 @@ export const alumniUpdateForum = async (forum, forumId, navigate) => {
     console.log(error);
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 };
@@ -172,7 +172,7 @@ export const getAllForum = async (navigate) => {
 
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 
@@ -191,7 +191,7 @@ export const alumniJoinForum = async (forumId, navigate) => {
       throw new Error("Alumni Updatetion Failed");
     }
 
-    toast.success(res?.data?.message ?? "Forum Joined...", {
+    toast.success(res?.data?.message ?? "Forum Joined", {
       id: toastId,
     });
 
@@ -210,7 +210,7 @@ export const alumniJoinForum = async (forumId, navigate) => {
     
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 };
@@ -247,7 +247,7 @@ export const getAllJoinedForum = async (dispatch, navigate) => {
 
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 
@@ -282,7 +282,7 @@ export const adminGetAllForum = async (navigate) => {
 
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 
@@ -317,7 +317,7 @@ export const adminRemoveForum = async (forumId, navigate) => {
 
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 };
@@ -353,7 +353,7 @@ export const alumniDeleteForum = async (forumId, navigate) => {
 
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 };
@@ -384,7 +384,7 @@ export const getAllForumChat = async (forumId, navigate) => {
 
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 
@@ -405,7 +405,44 @@ export const sendMessage = async (forumId, message, navigate) => {
     console.log(error);
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 };
+
+
+export const getAllForumIfLogin = async (navigate) => {
+  let result = [];
+  const toastId = toast.loading("Fetching forum deails...");
+
+  try {
+    const res = await apiCall("GET", forumEndpoints.ALUMNI_GET_ALL_FORUM_USER_EXIST);
+    if (res.status !== 200) {
+      throw new Error("Alumni Data fetch Failed");
+    }
+
+    toast.success(res?.data?.message ?? "Forum Fetch successfull", {
+      id: toastId,
+    });
+
+    // console.log("RES : ", res);
+    result = res.data.forumData;
+  } catch (error) {
+    console.log(error);
+
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.response?.data?.error ||
+      "Failed to fetch forum";
+
+    toast.error(errorMessage, { id: toastId });
+
+    if (error.status === 440) {
+      localStorage.clear();
+      navigate("/signIn");
+    }
+  }
+
+  // console.log('res ' , result)
+  return result;
+}

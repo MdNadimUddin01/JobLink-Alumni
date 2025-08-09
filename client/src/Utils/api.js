@@ -5,6 +5,8 @@ export const eventEndpoints = {
   ADD_EVENT: BASE_URL + "/admin/addEvent",
   GET_ALL_EVENT_DATA: BASE_URL + "/user/getAllEvents",
   DELETE_EVENT: BASE_URL + "/admin/deleteEvent",
+  GET_EVENT_DATA: BASE_URL + "/getEvent",
+  UPDATE_EVENT_DATA: BASE_URL + "/admin/updateEvent",
 };
 
 export const endpoints = {
@@ -35,7 +37,9 @@ export const forumEndpoints = {
   VIEW_ALUMNI_FORUM: BASE_URL + "/alumni/viewMyForum",
   ALUMNI_UPDATE_FORUM: BASE_URL + "/alumni/updateForum",
   ALUMNI_GET_ALL_FORUM: BASE_URL + "/alumni/getAllForum",
-
+  
+  ALUMNI_GET_ALL_FORUM_USER_EXIST: BASE_URL + "/alumni/auth/getAllForum",
+  
   ALUMNI_JOIN_FORUM: BASE_URL + "/alumni/joinForum",
   ALUMNI_GET_ALL_JOINED_FORUM: BASE_URL + "/alumni/getAllJoinedForum",
   ALUMNI_GET_FORUM: BASE_URL + "/alumni/getForum",

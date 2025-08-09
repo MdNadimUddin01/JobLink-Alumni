@@ -10,7 +10,7 @@ export async function loginUser(data, navigate, dispatch) {
   try {
     const res = await apiCall("POST", endpoints.LOGIN, data);
 
-    console.log("LOGIN API RESPONSE............", res);
+    // console.log("LOGIN API RESPONSE............", res);
 
     if (res.status != 200) {
       throw new Error(res.data.message);

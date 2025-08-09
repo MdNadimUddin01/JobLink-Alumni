@@ -28,7 +28,7 @@ export const getAlumniData = async (navigate) => {
 
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 
@@ -46,7 +46,7 @@ export const verifyAlumniEmail = async (alumniId , navigate) => {
       throw Error("Alumni email verify failed");
     }
 
-    toast.success(res?.data?.message ?? "Alumni successfull", {
+    toast.success(res?.data?.message ?? "Alumni verify successfull", {
       id: toastId,
     });
       
@@ -60,7 +60,7 @@ export const verifyAlumniEmail = async (alumniId , navigate) => {
 
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 };

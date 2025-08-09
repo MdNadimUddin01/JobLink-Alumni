@@ -32,7 +32,7 @@ export const addEvent = async (eventData, navigate) => {
 
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 };
@@ -63,7 +63,7 @@ export const getAllEventData = async (navigate) => {
 
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 
@@ -95,7 +95,70 @@ export const deleteEventData = async (eventId, navigate) => {
 
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
+    }
+  }
+};
+
+export const getEvent = async (eventId, navigate) => {
+  
+  let result = {};
+  const toastId = toast.loading("Fetching event data...");
+  try {
+    
+    const res = await apiCall("POST" , eventEndpoints.GET_EVENT_DATA, { eventId });
+    result = res.data.event;
+     toast.success(res?.data?.message ?? "Event fetch successfully", {
+       id: toastId,
+     });
+
+  } catch (error) {
+    console.log("Error");
+
+     const errorMessage =
+       error?.response?.data?.message ||
+       error?.response?.data?.error ||
+       "Failed to fetch event";
+
+     toast.error(errorMessage, { id: toastId });
+  }
+
+  return result;
+}
+
+export const updateEvent = async (eventData, navigate) => {
+  const toastId = toast.loading("Updating Event data...");
+  try {
+
+    const res = await apiCall("POST", eventEndpoints.UPDATE_EVENT_DATA, {
+      event: eventData,
+      eventId:eventData._id,
+    });
+
+    console.log(res);
+
+    if (res.status !== 200) {
+      throw Error("Event Updation failed");
+    }
+
+    toast.success(res?.data?.message ?? "Event Update successfull", {
+      id: toastId,
+    });
+
+    navigate("/admin/events");
+  } catch (error) {
+    console.log(error);
+
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.response?.data?.error ||
+      "Failed to Update event";
+
+    toast.error(errorMessage, { id: toastId });
+
+    if (error.status === 440) {
+      localStorage.clear();
+      navigate("/signIn");
     }
   }
 };

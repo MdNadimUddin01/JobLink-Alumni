@@ -25,7 +25,7 @@ export const addJobPost = async (jobData, navigate) => {
     toast.error(errorMessage, { id: toastId });
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 };
@@ -42,6 +42,7 @@ export const viewAllJobData = async (navigate) => {
     }
 
     // console.log(res);
+    console.log("RESponse : ", res);
     result = res.data.jobData;
     toast.success(res?.data?.message ?? "Job post fetch successfull", {
       id: toastId,
@@ -57,7 +58,7 @@ export const viewAllJobData = async (navigate) => {
     console.log(error);
     if (error.status === 440) {
       localStorage.clear();
-     navigate("signIn");
+     navigate("/signIn");
     }
   }
 
@@ -90,7 +91,7 @@ export const viewJobData = async (jobId , navigate) => {
     toast.error(errorMessage, { id: toastId });
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 
@@ -128,6 +129,8 @@ export const updateJobData = async (job, jobId, navigate) => {
       id: toastId,
     });
 
+    navigate("/alumni/viewMyJob");
+
   } catch (error) {
     console.log(error);
     const errorMessage =
@@ -138,11 +141,11 @@ export const updateJobData = async (job, jobId, navigate) => {
     toast.error(errorMessage, { id: toastId });
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 
-  navigate("/alumni/viewMyJob");
+  
 };
 
 export const viewAlumniJobData = async (navigate) => {
@@ -160,6 +163,7 @@ export const viewAlumniJobData = async (navigate) => {
       id: toastId,
     });
     //   console.log(res);
+    console.log("RESULT : ", res);
     result = res.data.jobData;
   } catch (error) {
     console.log(error);
@@ -172,9 +176,11 @@ export const viewAlumniJobData = async (navigate) => {
 
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
+
+  
 
   return result;
 };
@@ -203,7 +209,7 @@ export const deleteJobPost = async (jobId , navigate) => {
     toast.error(errorMessage, { id: toastId });
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 };
@@ -228,7 +234,7 @@ export const removeJobPost = async (jobId , navigate) => {
     console.log(error);
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 };
@@ -259,7 +265,7 @@ export const adminViewJobs = async (navigate) => {
     console.log(error);
     if (error.status === 440) {
       localStorage.clear();
-      navigate("signIn");
+      navigate("/signIn");
     }
   }
 
